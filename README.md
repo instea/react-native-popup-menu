@@ -10,6 +10,10 @@ Target platforms are both Android and iOS.
 npm install instea/react-native-popup-menu --save
 ```
 
+## Demo
+
+![](./android.demo.gif)
+
 ## Basic Usage
 
 ```js
@@ -91,7 +95,7 @@ Menu can by opened by clicking on `<MenuTrigger />` or by calling context method
 
 ### MenuOptions
 
-This components wrapps all menu options.
+This component wrapps all menu options.
 
 **Note:** It is necessary that `<MenuOptions />` is a direct child of `<Menu />`.
 
