@@ -1,0 +1,38 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    }
+  },
+  "plugins": [
+    "react"
+  ],
+
+  "env": {
+    "node": true,
+    "es6": true,
+    "browser": true
+  },
+
+  "globals": {
+    "options": true,
+    "describe": true,
+    "it": true,
+    "before": true,
+    "beforeEach": true,
+    "after": true,
+    "afterEach": true
+  },
+
+  "rules": {
+    "no-console": 0,
+    "comma-dangle": 0,
+    "react/prop-types": 0,
+    "react/no-did-mount-set-state": 0,
+  }
+}

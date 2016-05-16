@@ -1,0 +1,4 @@
+node_modules/*
+examples/node_modules/*
+examples/android/*
+examples/ios/*

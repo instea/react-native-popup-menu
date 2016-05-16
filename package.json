@@ -1,0 +1,35 @@
+{
+  "name": "react-native-popup-menu",
+  "version": "0.1.0",
+  "description": "popup/context menu for react native",
+  "main": "src/index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "mocha --compilers js:babel-core/register",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:instea/react-native-popup-menu.git"
+
+  },
+  "author": "instea.co",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/instea/react-native-popup-menu/issues"
+  },
+  "homepage": "https://github.com/instea/react-native-popup-menu",
+  "devDependencies": {
+    "babel-core": "^6.8.0",
+    "babel-eslint": "^6.0.4",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-react-native": "^1.7.0",
+    "chai": "^3.5.0",
+    "eslint": "^2.9.0",
+    "eslint-plugin-react": "^5.1.1",
+    "mocha": "^2.4.5",
+    "sinon": "^1.17.4"
+  }
+}
