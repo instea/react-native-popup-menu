@@ -10,4 +10,8 @@ const MenuOptions = props => (
   </View>
 );
 
+MenuOptions.propTypes = {
+  onSelect: React.PropTypes.func,
+};
+
 export default MenuOptions;
