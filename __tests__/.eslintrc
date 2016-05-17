@@ -8,6 +8,7 @@
     "after": true,
     "afterEach": true,
     "jest": true,
-    "expect": true
+    "expect": true,
+    "jasmine": true
   }
 }
