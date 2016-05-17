@@ -1,4 +1,5 @@
 node_modules/*
+coverage/*
 examples/node_modules/*
 examples/android/*
 examples/ios/*
