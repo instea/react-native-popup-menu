@@ -7,8 +7,7 @@
     "example": "examples"
   },
   "scripts": {
-    "test-mocha": "mocha --compilers js:babel-core/register",
-    "test": "rm -rf ./node_modules/jest-cli/.haste_cache && jest",
+    "test": "jest",
     "lint": "eslint ."
   },
   "repository": {
@@ -23,10 +22,15 @@
   "homepage": "https://github.com/instea/react-native-popup-menu",
   "jest": {
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
-    "testFileExtensions": [ "js" ],
-    "moduleFileExtensions": [ "js" ],
+    "testFileExtensions": [
+      "js"
+    ],
+    "moduleFileExtensions": [
+      "js"
+    ],
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/react",
+      "<rootDir>/node_modules/chai",
       "<rootDir>/node_modules/fbjs"
     ],
     "verbose": true,

@@ -1,5 +1,7 @@
 import { expect } from 'chai';
-import makeMenuRetistry from '../src/menuRegistry';
+
+jest.dontMock('../src/menuRegistry');
+const makeMenuRegistry = require('../src/menuRegistry').default;
 
 describe('menuRegistry tests', () => {
 
@@ -18,11 +20,11 @@ describe('menuRegistry tests', () => {
   };
 
   it('should export function', () => {
-    expect(makeMenuRetistry).to.be.a('function');
+    expect(makeMenuRegistry).to.be.a('function');
   });
 
   it('should create an object', () => {
-    expect(makeMenuRetistry(new Map())).to.be.an('object');
+    expect(makeMenuRegistry(new Map())).to.be.an('object');
   });
 
   describe('getMenu', () => {
@@ -30,14 +32,14 @@ describe('menuRegistry tests', () => {
       const menus = new Map([
         [menu1.name, menu1]
       ]);
-      const registry = makeMenuRetistry(menus);
+      const registry = makeMenuRegistry(menus);
       expect(registry.getMenu(menu1.name)).to.eql(menu1);
     });
   });
 
   describe('subscribe', () => {
     it('should subscribe menu', () => {
-      const registry = makeMenuRetistry();
+      const registry = makeMenuRegistry();
       registry.subscribe(menu1.name, menu1);
       expect(registry.getMenu(menu1.name)).to.eql(menu1);
     });
@@ -49,7 +51,7 @@ describe('menuRegistry tests', () => {
         [menu1.name, menu1],
         [menu2.name, menu2]
       ]);
-      const registry = makeMenuRetistry(menus);
+      const registry = makeMenuRegistry(menus);
       registry.unsubscribe(menu1.name);
       expect(registry.getMenu(menu1.name)).to.be.undefined;
       expect(registry.getMenu(menu2.name)).to.eql(menu2);
@@ -66,7 +68,7 @@ describe('menuRegistry tests', () => {
         triggerLayout: 5,
         optionsLayout: 6
       }]]);
-      const registry = makeMenuRetistry(menus);
+      const registry = makeMenuRegistry(menus);
       registry.update('menu3', {
         options: [7, 8],
         trigger: 'trigger3x',
@@ -91,7 +93,7 @@ describe('menuRegistry tests', () => {
         triggerLayout: 5,
         optionsLayout: 6
       }]]);
-      const registry = makeMenuRetistry(menus);
+      const registry = makeMenuRegistry(menus);
       registry.updateLayoutInfo('menu3', { optionsLayout: 7 });
       expect(registry.getMenu('menu3')).to.eql({
         name: 'menu3',
@@ -106,7 +108,7 @@ describe('menuRegistry tests', () => {
         triggerLayout: 5,
         optionsLayout: 6
       }]]);
-      const registry = makeMenuRetistry(menus);
+      const registry = makeMenuRegistry(menus);
       registry.updateLayoutInfo('menu3', { triggerLayout: 7 });
       expect(registry.getMenu('menu3')).to.eql({
         name: 'menu3',

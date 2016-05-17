@@ -1,5 +1,7 @@
 import { expect } from 'chai';
-import { measure, makeName, computeBestMenuPosition } from '../src/helpers';
+
+jest.dontMock('../src/helpers');
+const { measure, makeName, computeBestMenuPosition } = require('../src/helpers');
 
 describe('helpers test', () => {
 
@@ -32,14 +34,10 @@ describe('helpers test', () => {
 
     it('should return unique names', () => {
       const name1 = makeName(),
-            name2 = makeName(),
-            name3 = require('../src/helpers').makeName();
+            name2 = makeName();
       expect(name1).to.be.a('string');
       expect(name2).to.be.a('string');
-      expect(name3).to.be.a('string');
       expect(name1).not.to.be.equal(name2);
-      expect(name1).not.to.be.equal(name3);
-      expect(name2).not.to.be.equal(name3);
     });
 
   });

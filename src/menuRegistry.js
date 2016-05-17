@@ -10,7 +10,7 @@
  *   optionsLayout: Object
  * }
 */
-export default function makeMenuRetistry(menus = new Map()) {
+export default function makeMenuRegistry(menus = new Map()) {
 
   /**
    * Subscribes menu by name.
