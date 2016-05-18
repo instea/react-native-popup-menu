@@ -2,24 +2,30 @@ const React = require('react');
 const ReactNative = React;
 
 ReactNative.StyleSheet = {
-    create: function create(styles) {
-        return styles;
-    }
+  create: function create(styles) {
+      return styles;
+  }
 };
 
 class View extends React.Component {
-    render() { return false; }
+  render() { return false; }
 }
 
 class ListView extends React.Component {
-    static DataSource() {
-    }
+  static DataSource() {
+  }
 }
 
 class AppRegistry {
-    static registerComponent () {
-    }
+  static registerComponent () {
+  }
 }
+
+const Animated = {
+  timing: () => ({ start: () => undefined }),
+  Value: class {},
+  View: View
+};
 
 // TODO: use better approach
 const dimensions = {
@@ -35,7 +41,8 @@ ReactNative.TouchableHighlight = View;
 ReactNative.TouchableWithoutFeedback = View;
 ReactNative.ToolbarAndroid = View;
 ReactNative.Image = View;
-ReactNative.Dimensions = dimensions;
 ReactNative.AppRegistry = AppRegistry;
+ReactNative.Dimensions = dimensions;
+ReactNative.Animated = Animated;
 
 module.exports = ReactNative;
