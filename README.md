@@ -17,7 +17,8 @@ npm install instea/react-native-popup-menu --save
 ## Basic Usage
 
 ```js
-import React, { Text, AppRegistry } from 'react-native';
+import React from 'react';
+import { Text, AppRegistry } from 'react-native';
 import Menu, {
   MenuContext,
   MenuOptions,
