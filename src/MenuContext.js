@@ -56,7 +56,7 @@ export default class MenuContext extends Component {
           {this.props.children}
         </View>
         {this.isMenuOpen() &&
-          <TouchableWithoutFeedback onPress={() => this.closeMenu()}>
+          <TouchableWithoutFeedback onPress={() => this.closeMenu()} ref='backdrop'>
             <View style={[styles.backdrop, { width, height }]} />
           </TouchableWithoutFeedback>
         }
@@ -85,7 +85,8 @@ export default class MenuContext extends Component {
     const MenuComponent = isVisible ? AnimatedView : View;
     const style = [ styles.optionsContainer, this.props.optionsContainerStyle, { top, left } ];
     const onLayout = e => this._onOptionsLayout(e, name);
-    return React.createElement(MenuComponent, { style, onLayout }, options);
+    const ref = 'menu-options';
+    return React.createElement(MenuComponent, { style, onLayout, ref }, options);
   }
 
 }

@@ -21,6 +21,11 @@ class AppRegistry {
     }
 }
 
+// TODO: use better approach
+const dimensions = {
+  get: () => ({ width: 400, height: 600 })
+};
+
 ReactNative.View = View;
 ReactNative.ScrollView = View;
 ReactNative.ListView = ListView;
@@ -30,6 +35,7 @@ ReactNative.TouchableHighlight = View;
 ReactNative.TouchableWithoutFeedback = View;
 ReactNative.ToolbarAndroid = View;
 ReactNative.Image = View;
+ReactNative.Dimensions = dimensions;
 ReactNative.AppRegistry = AppRegistry;
 
 module.exports = ReactNative;

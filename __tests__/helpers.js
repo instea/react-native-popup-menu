@@ -8,5 +8,5 @@ export function render(Component) {
   renderer.render(Component);
   const instance = renderer._instance._instance;
   const output = renderer.getRenderOutput();
-  return { output, instance };
+  return { output, instance, renderer };
 }
