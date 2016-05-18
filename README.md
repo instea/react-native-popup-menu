@@ -1,13 +1,13 @@
 # react-native-popup-menu
 
 Popup menu component for React Native.
-It is inspired by [react-native-menu](https://github.com/jaysoo/react-native-menu) component which has some performance limitations.
-Target platforms are both Android and iOS.
+It is inspired by [react-native-menu](https://github.com/jaysoo/react-native-menu) component which has some limitations.
+Target platforms are both Android and iOS. The library is prepared for React Native 0.26.
 
 ## Installation
 
 ```
-npm install instea/react-native-popup-menu --save
+npm install react-native-popup-menu --save
 ```
 
 ## Demo
