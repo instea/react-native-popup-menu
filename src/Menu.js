@@ -12,7 +12,6 @@ export default class Menu extends Component {
   constructor(props) {
     super(props);
     this._openMenu = this._openMenu.bind(this);
-    this._onTriggerRef = this._onTriggerRef.bind(this);
     this._onSelect = this._onSelect.bind(this);
   }
 
@@ -56,10 +55,6 @@ export default class Menu extends Component {
     if (shouldClose) {
         this.context.menuActions.closeMenu();
     }
-  }
-
-  _onTriggerRef(ref) {
-      this.context.menuActions.updateTriggerRef(this._name, ref);
   }
 
   _buildMenuData() {
