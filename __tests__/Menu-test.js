@@ -61,6 +61,80 @@ describe('Menu', () => {
     }));
   });
 
+  it('should not subscribe menu because of missing options', () => {
+    const { instance, renderer } = render(
+      <Menu name='menu1'>
+        <MenuTrigger />
+        <Text>Some text</Text>
+      </Menu>
+    );
+    const menuRegistry = {
+      subscribe: createSpy()
+    };
+    instance.context = { menuRegistry };
+    instance.componentDidMount();
+    expect(menuRegistry.subscribe).not.toHaveBeenCalled();
+    const output = renderer.getRenderOutput();
+    expect(output.type).toEqual(View);
+    expect(output.props.children).toEqual([
+      objectContaining({
+        type: MenuTrigger
+      }),
+      <Text>Some text</Text>
+    ]);
+  });
+
+  it('should not subscribe menu because of missing trigger', () => {
+    const { instance, renderer } = render(
+      <Menu name='menu1'>
+        <Text>Some text</Text>
+        <MenuOptions />
+      </Menu>
+    );
+    const menuRegistry = {
+      subscribe: createSpy()
+    };
+    instance.context = { menuRegistry };
+    instance.componentDidMount();
+    expect(menuRegistry.subscribe).not.toHaveBeenCalled();
+    const output = renderer.getRenderOutput();
+    expect(output.type).toEqual(View);
+    expect(output.props.children).toEqual([
+      <Text>Some text</Text>
+    ]);
+  });
+
+  it('should not fail without MenuOptions and MenuTrigger', () => {
+    const { instance, renderer } = render(
+      <Menu name='menu1'>
+        <Text>Some text</Text>
+      </Menu>
+    );
+    const menuRegistry = { subscribe: createSpy(), unsubscribe: createSpy() };
+    instance.context = { menuRegistry };
+    instance.componentDidMount();
+    const output = renderer.getRenderOutput();
+    expect(output.type).toEqual(View);
+    expect(output.props.children).toEqual([
+      <Text>Some text</Text>
+    ]);
+    instance.componentWillUnmount();
+  });
+
+  it('should not fail without any children', () => {
+    const { instance, renderer } = render(
+      <Menu>
+      </Menu>
+    );
+    const menuRegistry = { subscribe: createSpy(), unsubscribe: createSpy() };
+    instance.context = { menuRegistry };
+    instance.componentDidMount();
+    const output = renderer.getRenderOutput();
+    expect(output.type).toEqual(View);
+    expect(output.props.children).toEqual([]);
+    instance.componentWillUnmount();
+  });
+
   it('should subscribe events', () => {
     const onOpen = () => 1, onClose = () => 2;
     const { instance } = render(

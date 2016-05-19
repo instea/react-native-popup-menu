@@ -7,6 +7,13 @@ const isRegularComponent = c => c.type !== MenuOptions && c.type !== MenuTrigger
 const isTrigger = c => c.type === MenuTrigger;
 const isMenuOptions = c => c.type === MenuOptions;
 
+const normalizeChildren = children => {
+  if (children) {
+    return Array.isArray(children) ? children : [ children ];
+  }
+  return [];
+};
+
 export default class Menu extends Component {
 
   constructor(props) {
@@ -17,11 +24,13 @@ export default class Menu extends Component {
 
   componentDidMount() {
     this._name = this.props.name || makeName();
-    this.context.menuRegistry.subscribe(this._name, this._buildMenuData());
+    this._validateChildren() &&
+      this.context.menuRegistry.subscribe(this._name, this._buildMenuData());
   }
 
   componentDidUpdate() {
-    this.context.menuRegistry.update(this._name, this._buildMenuData());
+    this._validateChildren() &&
+      this.context.menuRegistry.update(this._name, this._buildMenuData());
   }
 
   componentWillUnmount() {
@@ -39,7 +48,7 @@ export default class Menu extends Component {
   }
 
   _reduceChildren() {
-    return this.props.children.reduce((r, child) => {
+    return normalizeChildren(this.props.children).reduce((r, child) => {
       if (isTrigger(child)) {
         r.push(React.cloneElement(child, {
           key: null,
@@ -56,6 +65,19 @@ export default class Menu extends Component {
     }, []);
   }
 
+  _validateChildren() {
+    const children = normalizeChildren(this.props.children);
+    const options = children.find(isMenuOptions);
+    if (!options) {
+      console.warn('Menu has to contain MenuOptions component');
+    }
+    const trigger = children.find(isTrigger);
+    if (!trigger) {
+      console.warn('Menu has to contain MenuTrigger component');
+    }
+    return options && trigger;
+  }
+
   _openMenu() {
     this.context.menuActions.openMenu(this._name);
   }
@@ -70,7 +92,7 @@ export default class Menu extends Component {
   _buildMenuData() {
     const { children, onOpen, onClose } = this.props;
     const name = this._name;
-    const optionsElem = children.find(isMenuOptions);
+    const optionsElem = normalizeChildren(children).find(isMenuOptions);
     const options = React.cloneElement(optionsElem, { onSelect: this._onSelect });
     const trigger = this._trigger;
     return { name, options, trigger, events: { onOpen, onClose } };
