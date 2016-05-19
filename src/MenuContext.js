@@ -86,7 +86,8 @@ export default class MenuContext extends Component {
     const style = [ styles.optionsContainer, this.props.optionsContainerStyle, { top, left } ];
     const onLayout = e => this._onOptionsLayout(e, name);
     const ref = 'menu-options';
-    return React.createElement(MenuComponent, { style, onLayout, ref }, options);
+    const collapsable = false;
+    return React.createElement(MenuComponent, { style, onLayout, ref, collapsable }, options);
   }
 
   _getWindowDimensions() {

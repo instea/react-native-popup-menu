@@ -4,7 +4,7 @@ import { View } from 'react-native';
 
 const MenuTrigger = props => (
   <TouchableWithoutFeedback onPress={e => !props.disabled && props.events.onPress(e)}>
-    <View {...props} ref={props.events.onRef}>
+    <View {...props} ref={props.events.onRef} collapsable={false}>
       {props.children}
     </View>
   </TouchableWithoutFeedback>
