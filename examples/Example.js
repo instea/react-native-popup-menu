@@ -53,7 +53,7 @@ export default class Example extends Component {
 
   render() {
     return (
-      <MenuContext>
+      <MenuContext style={{flex: 1}}>
         <View style={styles.container}>
 
           <View style={styles.topbar}>
