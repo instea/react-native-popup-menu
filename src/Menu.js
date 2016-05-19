@@ -29,21 +29,31 @@ export default class Menu extends Component {
   }
 
   render() {
-    const { children, style } = this.props;
-    const components = children.filter(isRegularComponent);
-    const triggerElem = children.find(isTrigger);
-    const trigger = React.cloneElement(triggerElem, {
-      events: {
-        onPress: this._openMenu,
-        onRef: t => this._trigger = t
-      }
-    });
+    const { style } = this.props;
+    const children = this._reduceChildren();
     return (
       <View style={style}>
-        {trigger}
-        {components}
+        {children}
       </View>
     );
+  }
+
+  _reduceChildren() {
+    return this.props.children.reduce((r, child) => {
+      if (isTrigger(child)) {
+        r.push(React.cloneElement(child, {
+          key: null,
+          events: {
+            onPress: this._openMenu,
+            onRef: t => this._trigger = t
+          }
+        }));
+      }
+      if (isRegularComponent(child)) {
+        r.push(child);
+      }
+      return r;
+    }, []);
   }
 
   _openMenu() {

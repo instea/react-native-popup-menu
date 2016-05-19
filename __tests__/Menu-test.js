@@ -15,27 +15,32 @@ const { objectContaining, createSpy, any } = jasmine;
 
 describe('Menu', () => {
 
-  it('should render component', () => {
+  it('should render component and preserve children order', () => {
     const { output } = render(
       <Menu>
+        <Text>Some text</Text>
         <MenuTrigger />
         <MenuOptions />
-        <Text>Some text</Text>
         <Text>Some other text</Text>
       </Menu>
     );
     expect(output.type).toEqual(View);
-    expect(output.props.children.length).toEqual(2);
-    const [ trigger, components ] = output.props.children;
-    expect(trigger.type).toEqual(MenuTrigger);
-    expect(trigger.props.events).toEqual(objectContaining({
-      onRef: any(Function),
-      onPress: any(Function)
+    expect(output.props.children.length).toEqual(3);
+    expect(output.props.children[0]).toEqual(
+      <Text>Some text</Text>
+    );
+    expect(output.props.children[1]).toEqual(objectContaining({
+      type: MenuTrigger,
+      props: objectContaining({
+        events: objectContaining({
+          onRef: any(Function),
+          onPress: any(Function)
+        })
+      })
     }));
-    expect(components).toEqual([
-      <Text>Some text</Text>,
+    expect(output.props.children[2]).toEqual(
       <Text>Some other text</Text>
-    ]);
+    );
   });
 
   it('should subscribe menu', () => {
