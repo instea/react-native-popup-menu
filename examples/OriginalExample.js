@@ -174,7 +174,8 @@ const styles = StyleSheet.create({
     padding: 5
   },
   dropdownOptions: {
-    marginTop: 30,
+    marginTop: 24,
+    margin: -6,
     borderColor: '#ccc',
     borderWidth: 2,
     width: 300,

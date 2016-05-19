@@ -65,7 +65,7 @@ describe('helpers test', () => {
       const trigger = { width: 50, height: 50, x: 100, y: 100 };
       const options = { width: 50, height: 50 };
       expect(computeBestMenuPosition(window, trigger, options)).to.eql({
-        top: 150, left: 100, isVisible: true
+        top: 100, left: 100, isVisible: true
       });
     });
 
@@ -74,7 +74,7 @@ describe('helpers test', () => {
       const trigger = { width: 50, height: 50, x: 10, y: 10 };
       const options = { width: 50, height: 50 };
       expect(computeBestMenuPosition(window, trigger, options)).to.eql({
-        top: 60, left: 10, isVisible: true
+        top: 10, left: 10, isVisible: true
       });
     });
 
@@ -83,7 +83,7 @@ describe('helpers test', () => {
       const trigger = { width: 100, height: 50, x: 300, y: 0 };
       const options = { width: 150, height: 100 };
       expect(computeBestMenuPosition(window, trigger, options)).to.eql({
-        top: 50, left: 250, isVisible: true
+        top: 0, left: 250, isVisible: true
       });
     });
 
@@ -92,7 +92,7 @@ describe('helpers test', () => {
       const trigger = { width: 100, height: 100, x: 10, y: 500 };
       const options = { width: 150, height: 150 };
       expect(computeBestMenuPosition(window, trigger, options)).to.eql({
-        top: 350, left: 10, isVisible: true
+        top: 450, left: 10, isVisible: true
       });
     });
 
@@ -101,7 +101,7 @@ describe('helpers test', () => {
       const trigger = { width: 100, height: 100, x: 300, y: 500 };
       const options = { width: 150, height: 150 };
       expect(computeBestMenuPosition(window, trigger, options)).to.eql({
-        top: 350, left: 250, isVisible: true
+        top: 450, left: 250, isVisible: true
       });
     });
 

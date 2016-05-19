@@ -35,7 +35,7 @@ export const computeBestMenuPosition = (windowLayout, triggerLayout, optionsLayo
   // TODO: scroll bar for big menus
   const { x: tX, y: tY, height: tHeight, width: tWidth } = triggerLayout;
   const { height: oHeight, width: oWidth } = optionsLayout;
-  const top  = (tY + tHeight + oHeight > wHeight) ? tY - oHeight : tY + tHeight;
+  const top  = (tY + oHeight > wHeight) ? tY + tHeight - oHeight : tY;
   const left = (tX + oWidth > wWidth) ? tX - oWidth + tWidth : tX;
   return { top, left, isVisible: true };
 }

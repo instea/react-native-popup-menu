@@ -83,7 +83,7 @@ export default class MenuContext extends Component {
   _makeOptions({ options, triggerLayout, optionsLayout, name }, windowLayout) {
     const { top, left, isVisible } = computeBestMenuPosition(windowLayout, triggerLayout, optionsLayout)
     const MenuComponent = isVisible ? AnimatedView : View;
-    const style = [ styles.optionsContainer, this.props.optionsContainerStyle, { top, left } ];
+    const style = [ styles.optionsContainer, options.props.optionsContainerStyle, { top, left } ];
     const onLayout = e => this._onOptionsLayout(e, name);
     const ref = 'menu-options';
     const collapsable = false;
