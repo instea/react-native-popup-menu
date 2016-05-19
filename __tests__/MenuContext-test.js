@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
-import { render } from './helpers';
+import { render, normalizeStyle } from './helpers';
+const { objectContaining, createSpy, any } = jasmine;
 
 jest.dontMock('../src/MenuContext');
 
@@ -9,7 +10,9 @@ jest.mock('../src/menuRegistry', () => () => {
   const subscribe = m => (menu = m);
   const unsubscribe = () => (menu = {});
   const getMenu = name => name === menu.name ? menu : undefined;
-  const updateLayoutInfo = () => 0;
+  const updateLayoutInfo = (name, info) => {
+    menu = name === menu.name ? Object.assign({}, menu, info) : menu;
+  };
   const update = () => 0;
   return { getMenu, updateLayoutInfo, subscribe, unsubscribe, update };
 });
@@ -144,8 +147,8 @@ describe('MenuContext', () => {
     const { instance } = render(
       <MenuContext />
     );
-    const onOpenSpy = jasmine.createSpy();
-    const onCloseSpy = jasmine.createSpy();
+    const onOpenSpy = createSpy();
+    const onCloseSpy = createSpy();
     const menu = Object.assign({}, menu1, {
       events: {
         onOpen: onOpenSpy,
@@ -166,6 +169,107 @@ describe('MenuContext', () => {
     menuActions.toggleMenu('menu1');
     expect(onOpenSpy.calls.count()).toEqual(2);
     expect(onCloseSpy.calls.count()).toEqual(2);
+  });
+
+  it('should update options layout', () => {
+    const { instance, renderer } = render(
+      <MenuContext />
+    );
+    const { menuRegistry, menuActions } = instance.getChildContext();
+    menuRegistry.subscribe(menu1);
+    menuActions.openMenu('menu1');
+    const output = renderer.getRenderOutput();
+    expect(output.props.children.length).toEqual(3);
+    const options = output.props.children[2];
+    expect(typeof options.props.onLayout).toEqual('function');
+    options.props.onLayout({
+      nativeEvent: {
+        layout: {
+          width: 22,
+          height: 33
+        }
+      }
+    });
+    expect(menuRegistry.getMenu('menu1')).toEqual(objectContaining({
+      optionsLayout: {
+        width: 22,
+        height: 33
+      }
+    }));
+  });
+
+  it('should render backdrop', () => {
+    const { instance, renderer } = render(
+      <MenuContext />
+    );
+    const { menuRegistry, menuActions } = instance.getChildContext();
+    menuRegistry.subscribe(menu1);
+    menuActions.openMenu('menu1');
+    const output = renderer.getRenderOutput();
+    expect(output.props.children.length).toEqual(3);
+    const backdrop = output.props.children[1];
+    const backdropView = backdrop.props.children;
+    expect(backdropView.type).toEqual(View);
+    expect(typeof backdropView.props.style).toEqual('object');
+    const styles = normalizeStyle(backdropView.props.style);
+    expect(styles).toEqual(objectContaining({
+      width: any(Number),
+      height: any(Number)
+    }));
+  });
+
+  it('should render landscape backdrop', () => {
+    const { instance, renderer, output } = render(
+      <MenuContext />
+    );
+    const { menuRegistry, menuActions } = instance.getChildContext();
+    menuRegistry.subscribe(menu1);
+    menuActions.openMenu('menu1');
+    expect(typeof output.props.onLayout).toEqual('function');
+    output.props.onLayout({
+      nativeEvent: {
+        layout: {
+          width: 600,
+          height: 400
+        }
+      }
+    });
+    const nextOutput = renderer.getRenderOutput();
+    const backdrop = nextOutput.props.children[1];
+    const backdropView = backdrop.props.children;
+    const styles = normalizeStyle(backdropView.props.style);
+    // 400x600 comes from Dimensions mock
+    expect(styles).toEqual(objectContaining({
+      width: 600,
+      height: 400
+    }));
+  });
+
+  it('should render portrait backdrop', () => {
+    const { instance, renderer, output } = render(
+      <MenuContext />
+    );
+    const { menuRegistry, menuActions } = instance.getChildContext();
+    menuRegistry.subscribe(menu1);
+    menuActions.openMenu('menu1');
+    expect(typeof output.props.onLayout).toEqual('function');
+    output.props.onLayout({
+      nativeEvent: {
+        layout: {
+          width: 400,
+          height: 600
+        }
+      }
+    });
+    const nextOutput = renderer.getRenderOutput();
+    const backdrop = nextOutput.props.children[1];
+    const backdropView = backdrop.props.children;
+    const styles = normalizeStyle(backdropView.props.style);
+    // 400x600 comes from Dimensions mock
+    expect(styles).toEqual(objectContaining({
+      width: 400,
+      height: 600
+    }));
   });
 
 });

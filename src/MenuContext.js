@@ -49,9 +49,10 @@ export default class MenuContext extends Component {
   }
 
   render() {
-    const { width, height } = Dimensions.get('window');
+    const dimensions = this._getWindowDimensions();
+    const { width, height } = dimensions;
     return (
-      <View style={{flex:1}}>
+      <View style={{flex:1}} onLayout={e => this._onLayout(e)}>
         <View style={this.props.style}>
           {this.props.children}
         </View>
@@ -61,7 +62,7 @@ export default class MenuContext extends Component {
           </TouchableWithoutFeedback>
         }
         {this.isMenuOpen() &&
-          this._makeOptions(this.state.openedMenu)
+          this._makeOptions(this.state.openedMenu, dimensions)
         }
       </View>
     );
@@ -79,14 +80,49 @@ export default class MenuContext extends Component {
     this._refresh(name);
   }
 
-  _makeOptions({ options, triggerLayout, optionsLayout, name }) {
-    const windowLayout = Dimensions.get('window');
+  _makeOptions({ options, triggerLayout, optionsLayout, name }, windowLayout) {
     const { top, left, isVisible } = computeBestMenuPosition(windowLayout, triggerLayout, optionsLayout)
     const MenuComponent = isVisible ? AnimatedView : View;
     const style = [ styles.optionsContainer, this.props.optionsContainerStyle, { top, left } ];
     const onLayout = e => this._onOptionsLayout(e, name);
     const ref = 'menu-options';
     return React.createElement(MenuComponent, { style, onLayout, ref }, options);
+  }
+
+  _getWindowDimensions() {
+    const dim = Dimensions.get('window');
+    const landscape = dim.width > dim.height;
+    if (this._orientation === 'landscape') {
+      return {
+        width: landscape ? dim.width : dim.height,
+        height: landscape ? dim.height : dim.width
+      };
+    }
+    if (this._orientation === 'portrait') {
+      return {
+        width: landscape ? dim.height : dim.width,
+        height: landscape ? dim.width : dim.height
+      };
+    }
+    return dim;
+  }
+
+  _onLayout({ nativeEvent: { layout } }) {
+    // handle screen rotation
+    const orientation = layout.width > layout.height ? 'landscape' : 'portrait';
+    if (this._orientation === orientation) {
+      return;
+    }
+    this._orientation = orientation;
+    if (this.isMenuOpen()) {
+      const { openedMenu } = this.state;
+      measure(openedMenu.trigger).then(triggerLayout => {
+        this._menuRegistry.updateLayoutInfo(openedMenu.name, { triggerLayout });
+        this.setState({
+          openedMenu: this._menuRegistry.getMenu(openedMenu.name)
+        });
+      });
+    }
   }
 
 }
