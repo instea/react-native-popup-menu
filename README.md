@@ -100,6 +100,11 @@ This component wrapps all menu options.
 
 **Note:** It is necessary that `<MenuOptions />` is a direct child of `<Menu />`.
 
+#### Options
+| Option | Type | Opt/Required | Default | Note |
+|---|---|---|---|---|
+|`optionsContainerStyle`|`Style`|Optional||Custom styles for options container|
+|`renderOptionsContainer`|`Func`|Optional|`options => options`|Custom render function for `<MenuOptions />`. It takes options component as argument and returns component. E.g.: `options => <SomeCustomContainer>{options}</SomeCustomContainer>`|
 
 ### MenuOption
 
