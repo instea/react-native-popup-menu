@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
   topbar: {
     flexDirection: 'row',
     backgroundColor: 'dimgray',
+    paddingTop : 15,
   },
   trigger: {
     padding: 5,

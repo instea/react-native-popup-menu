@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
+import Menu from 'react-native-popup-menu';
 
 import Example from './Example';
 import BasicExample from './BasicExample';
@@ -10,6 +11,9 @@ const demos = [
   { Component: Example, name: 'Advanced example' },
   { Component: OriginalExample, name: 'Original example' },
 ];
+
+// show debug messages for demos.
+Menu.debug = true;
 
 export default class Demo extends Component {
   constructor(props, ctx) {
