@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { TouchableWithoutFeedback, StyleSheet, Dimensions, View } from 'react-native';
+import { TouchableWithoutFeedback, StyleSheet, View } from 'react-native';
 import AnimatedView from './AnimatedView';
 import makeMenuRegistry from './menuRegistry';
+import Backdrop from './Backdrop';
 import { measure, computeBestMenuPosition } from './helpers';
 import { debug } from './logger.js';
 
 const defaultOptionsContainerRenderer = options => options;
+const layoutsEqual = (a, b) => (
+  a === b || (a && b && a.width === b.width && a.height === b.height)
+);
 
 export default class MenuContext extends Component {
 
@@ -56,24 +60,24 @@ export default class MenuContext extends Component {
   }
 
   render() {
-    const dimensions = this._getWindowDimensions();
-    const { width, height } = dimensions;
-    debug('render menu', this.isMenuOpen(), dimensions, this._orientation);
+    debug('render menu', this.isMenuOpen(), this._ownLayout);
     return (
       <View style={{flex:1}} onLayout={e => this._onLayout(e)}>
         <View style={this.props.style}>
-          {this.props.children}
+          { this.props.children }
         </View>
-        {this.isMenuOpen() &&
-          <TouchableWithoutFeedback onPress={() => this.closeMenu()} ref='backdrop'>
-            <View style={[styles.backdrop, { width, height }]} />
-          </TouchableWithoutFeedback>
+        {this.isMenuOpen() && this._isInitialized() &&
+          <Backdrop onPress={() => this.closeMenu()} dimensions={this._ownLayout} />
         }
-        {this.isMenuOpen() &&
-          this._makeOptions(this.state.openedMenu, dimensions)
+        {this.isMenuOpen() && this._isInitialized() &&
+          this._makeOptions(this.state.openedMenu)
         }
       </View>
     );
+  }
+
+  _isInitialized() {
+    return !!this._ownLayout;
   }
 
   _refresh(name) {
@@ -89,7 +93,8 @@ export default class MenuContext extends Component {
     this._refresh(name);
   }
 
-  _makeOptions({ options, triggerLayout, optionsLayout, name }, windowLayout) {
+  _makeOptions({ options, triggerLayout, optionsLayout, name }) {
+    const windowLayout = this._ownLayout;
     const { top, left, isVisible } = computeBestMenuPosition(windowLayout, triggerLayout, optionsLayout);
     debug('got best size', { windowLayout, triggerLayout, optionsLayout }, { top, left, isVisible });
     const MenuComponent = isVisible ? AnimatedView : View;
@@ -102,42 +107,23 @@ export default class MenuContext extends Component {
     return React.createElement(MenuComponent, { style, onLayout, ref, collapsable }, renderer(options));
   }
 
-  _getWindowDimensions() {
-    const dim = Dimensions.get('window');
-    const landscape = dim.width > dim.height;
-    if (this._orientation === 'landscape') {
-      return {
-        width: landscape ? dim.width : dim.height,
-        height: landscape ? dim.height : dim.width
-      };
-    }
-    if (this._orientation === 'portrait') {
-      return {
-        width: landscape ? dim.height : dim.width,
-        height: landscape ? dim.width : dim.height
-      };
-    }
-    return dim;
-  }
-
   _onLayout({ nativeEvent: { layout } }) {
-    // handle screen rotation
-    const orientation = layout.width > layout.height ? 'landscape' : 'portrait';
-    if (this._orientation === orientation) {
+    if (layoutsEqual(this._ownLayout, layout)) {
       return;
     }
-    this._orientation = orientation;
-    if (this.isMenuOpen()) {
-      debug('orientation has changed', orientation);
-      const { openedMenu } = this.state;
-      measure(openedMenu.trigger).then(triggerLayout => {
-        debug('got trigger measurements after orientation change', triggerLayout);
-        this._menuRegistry.updateLayoutInfo(openedMenu.name, { triggerLayout });
-        this.setState({
-          openedMenu: this._menuRegistry.getMenu(openedMenu.name)
-        });
-      });
+    this._ownLayout = layout;
+    debug('context layout has changed', this._ownLayout);
+    if (!this.isMenuOpen()) {
+      return;
     }
+    const { openedMenu } = this.state;
+    measure(openedMenu.trigger).then(triggerLayout => {
+      debug('got trigger measurements after context layout change', triggerLayout);
+      this._menuRegistry.updateLayoutInfo(openedMenu.name, { triggerLayout });
+      this.setState({
+        openedMenu: this._menuRegistry.getMenu(openedMenu.name)
+      });
+    });
   }
 
 }
@@ -163,10 +149,4 @@ const styles = StyleSheet.create({
     // This will elevate the view on Android, causing shadow to be drawn.
     elevation: 5,
   },
-  backdrop: {
-    opacity: 0,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  }
 });

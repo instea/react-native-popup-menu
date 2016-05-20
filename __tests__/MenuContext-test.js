@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { render, normalizeStyle } from './helpers';
 import { MenuOptions, MenuTrigger } from '../src/index';
+import Backdrop from '../src/Backdrop';
 const { objectContaining, createSpy, any } = jasmine;
 
 jest.dontMock('../src/MenuContext');
@@ -46,6 +47,15 @@ describe('MenuContext', () => {
     }
   };
 
+  const defaultLayout = {
+    nativeEvent: {
+      layout: {
+        width: 400,
+        height: 600
+      }
+    }
+  };
+
   it('should expose api', () => {
     const { instance } = render(
       <MenuContext />
@@ -71,6 +81,7 @@ describe('MenuContext', () => {
       </MenuContext>
     );
     expect(output.type).toEqual(View);
+    expect(typeof output.props.onLayout).toEqual('function');
     expect(output.props.children.length).toEqual(3);
     const [ components, backdrop, options ] = output.props.children;
     expect(components.type).toEqual(View);
@@ -83,27 +94,29 @@ describe('MenuContext', () => {
   });
 
   it('should open menu', () => {
-    const { instance, renderer } = render(
+    const { output: initOutput, instance, renderer } = render(
       <MenuContext />
     );
     const { menuRegistry, menuActions } = instance.getChildContext();
     menuRegistry.subscribe(menu1);
     menuActions.openMenu('menu1');
     expect(menuActions.isMenuOpen()).toEqual(true);
+    initOutput.props.onLayout(defaultLayout);
     const output = renderer.getRenderOutput();
     expect(output.props.children.length).toEqual(3);
     const [ components, backdrop, options ] = output.props.children;
     expect(components.type).toEqual(View);
-    expect(backdrop.ref).toEqual('backdrop');
+    expect(backdrop.type).toEqual(Backdrop);
     expect(options.ref).toEqual('menu-options');
     expect(options.props.children.type).toEqual(MenuOptions);
   });
 
   it('should close menu', () => {
-    const { instance, renderer } = render(
+    const { output: initOutput, instance, renderer } = render(
       <MenuContext />
     );
     const { menuRegistry, menuActions } = instance.getChildContext();
+    initOutput.props.onLayout(defaultLayout);
     menuRegistry.subscribe(menu1);
     menuActions.openMenu('menu1');
     menuActions.closeMenu();
@@ -130,15 +143,31 @@ describe('MenuContext', () => {
   });
 
   it('should not open menu', () => {
-    const { instance, renderer } = render(
+    const { output: initOutput, instance, renderer } = render(
       <MenuContext />
     );
     const { menuRegistry, menuActions } = instance.getChildContext();
+    initOutput.props.onLayout(defaultLayout);
     menuRegistry.subscribe(menu1);
     menuActions.openMenu('menu_not_existing');
     expect(menuActions.isMenuOpen()).toEqual(false);
     const output = renderer.getRenderOutput();
     const [ components, backdrop, options ] = output.props.children;
+    expect(components.type).toEqual(View);
+    expect(backdrop).toBeFalsy();
+    expect(options).toBeFalsy();
+  });
+
+  it('should not open menu if not initialized', () => {
+    const { output, instance, renderer } = render(
+      <MenuContext />
+    );
+    const { menuRegistry, menuActions } = instance.getChildContext();
+    menuRegistry.subscribe(menu1);
+    menuActions.openMenu('menu1');
+    expect(menuActions.isMenuOpen()).toEqual(true);
+    const [ components, backdrop, options ] = output.props.children;
+    // on layout has not been not called
     expect(components.type).toEqual(View);
     expect(backdrop).toBeFalsy();
     expect(options).toBeFalsy();
@@ -173,10 +202,11 @@ describe('MenuContext', () => {
   });
 
   it('should update options layout', () => {
-    const { instance, renderer } = render(
+    const { output: initOutput, instance, renderer } = render(
       <MenuContext />
     );
     const { menuRegistry, menuActions } = instance.getChildContext();
+    initOutput.props.onLayout(defaultLayout);
     menuRegistry.subscribe(menu1);
     menuActions.openMenu('menu1');
     const output = renderer.getRenderOutput();
@@ -200,20 +230,18 @@ describe('MenuContext', () => {
   });
 
   it('should render backdrop', () => {
-    const { instance, renderer } = render(
+    const { output: initOutput, instance, renderer } = render(
       <MenuContext />
     );
     const { menuRegistry, menuActions } = instance.getChildContext();
+    initOutput.props.onLayout(defaultLayout);
     menuRegistry.subscribe(menu1);
     menuActions.openMenu('menu1');
     const output = renderer.getRenderOutput();
     expect(output.props.children.length).toEqual(3);
     const backdrop = output.props.children[1];
-    const backdropView = backdrop.props.children;
-    expect(backdropView.type).toEqual(View);
-    expect(typeof backdropView.props.style).toEqual('object');
-    const styles = normalizeStyle(backdropView.props.style);
-    expect(styles).toEqual(objectContaining({
+    expect(backdrop.type).toEqual(Backdrop);
+    expect(backdrop.props.dimensions).toEqual(objectContaining({
       width: any(Number),
       height: any(Number)
     }));
@@ -226,7 +254,6 @@ describe('MenuContext', () => {
     const { menuRegistry, menuActions } = instance.getChildContext();
     menuRegistry.subscribe(menu1);
     menuActions.openMenu('menu1');
-    expect(typeof output.props.onLayout).toEqual('function');
     output.props.onLayout({
       nativeEvent: {
         layout: {
@@ -237,10 +264,8 @@ describe('MenuContext', () => {
     });
     const nextOutput = renderer.getRenderOutput();
     const backdrop = nextOutput.props.children[1];
-    const backdropView = backdrop.props.children;
-    const styles = normalizeStyle(backdropView.props.style);
-    // 400x600 comes from Dimensions mock
-    expect(styles).toEqual(objectContaining({
+    expect(backdrop.type).toEqual(Backdrop);
+    expect(backdrop.props.dimensions).toEqual(objectContaining({
       width: 600,
       height: 400
     }));
@@ -264,10 +289,8 @@ describe('MenuContext', () => {
     });
     const nextOutput = renderer.getRenderOutput();
     const backdrop = nextOutput.props.children[1];
-    const backdropView = backdrop.props.children;
-    const styles = normalizeStyle(backdropView.props.style);
-    // 400x600 comes from Dimensions mock
-    expect(styles).toEqual(objectContaining({
+    expect(backdrop.type).toEqual(Backdrop);
+    expect(backdrop.props.dimensions).toEqual(objectContaining({
       width: 400,
       height: 600
     }));

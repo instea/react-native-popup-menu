@@ -31,11 +31,6 @@ const Animated = {
   View: View
 };
 
-// TODO: use better approach
-const dimensions = {
-  get: () => ({ width: 400, height: 600 })
-};
-
 ReactNative.View = View;
 ReactNative.ScrollView = View;
 ReactNative.ListView = ListView;
@@ -46,7 +41,6 @@ ReactNative.TouchableWithoutFeedback = View;
 ReactNative.ToolbarAndroid = View;
 ReactNative.Image = View;
 ReactNative.AppRegistry = AppRegistry;
-ReactNative.Dimensions = dimensions;
 ReactNative.Animated = Animated;
 
 module.exports = ReactNative;
