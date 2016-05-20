@@ -3,6 +3,7 @@ import { TouchableWithoutFeedback, StyleSheet, Dimensions, View } from 'react-na
 import AnimatedView from './AnimatedView';
 import makeMenuRegistry from './menuRegistry';
 import { measure, computeBestMenuPosition } from './helpers';
+import { debug } from './logger.js';
 
 const defaultOptionsContainerRenderer = options => options;
 
@@ -34,7 +35,9 @@ export default class MenuContext extends Component {
     if (!openedMenu) {
       return console.warn(`menu with name ${name} does not exist`);
     }
+    debug('open menu', name);
     measure(openedMenu.trigger).then(triggerLayout => {
+      debug('got trigger measurements', triggerLayout);
       openedMenu.events.onOpen();
       this._menuRegistry.updateLayoutInfo(name, { triggerLayout });
       this.setState({ openedMenu: this._menuRegistry.getMenu(name) });
@@ -42,17 +45,20 @@ export default class MenuContext extends Component {
   }
 
   closeMenu() {
+    debug('close menu', this.isMenuOpen(), this.isMenuOpen() && this.state.openedMenu.name);
     this.isMenuOpen() && this.state.openedMenu.events.onClose();
     this.setState({ openedMenu: null });
   }
 
   toggleMenu(name) {
+    debug('toggle menu', name);
     this.isMenuOpen() ? this.closeMenu() : this.openMenu(name);
   }
 
   render() {
     const dimensions = this._getWindowDimensions();
     const { width, height } = dimensions;
+    debug('render menu', this.isMenuOpen(), dimensions, this._orientation);
     return (
       <View style={{flex:1}} onLayout={e => this._onLayout(e)}>
         <View style={this.props.style}>
@@ -78,12 +84,14 @@ export default class MenuContext extends Component {
   }
 
   _onOptionsLayout(e, name) {
+    debug('got options layout', e.nativeEvent.layout);
     this._menuRegistry.updateLayoutInfo(name, { optionsLayout: e.nativeEvent.layout });
     this._refresh(name);
   }
 
   _makeOptions({ options, triggerLayout, optionsLayout, name }, windowLayout) {
-    const { top, left, isVisible } = computeBestMenuPosition(windowLayout, triggerLayout, optionsLayout)
+    const { top, left, isVisible } = computeBestMenuPosition(windowLayout, triggerLayout, optionsLayout);
+    debug('got best size', { windowLayout, triggerLayout, optionsLayout }, { top, left, isVisible });
     const MenuComponent = isVisible ? AnimatedView : View;
     const { optionsContainerStyle, renderOptionsContainer } = options.props;
     const style = [ styles.optionsContainer, optionsContainerStyle, { top, left } ];
@@ -120,8 +128,10 @@ export default class MenuContext extends Component {
     }
     this._orientation = orientation;
     if (this.isMenuOpen()) {
+      debug('orientation has changed', orientation);
       const { openedMenu } = this.state;
       measure(openedMenu.trigger).then(triggerLayout => {
+        debug('got trigger measurements after orientation change', triggerLayout);
         this._menuRegistry.updateLayoutInfo(openedMenu.name, { triggerLayout });
         this.setState({
           openedMenu: this._menuRegistry.getMenu(openedMenu.name)

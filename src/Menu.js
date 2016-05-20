@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { MenuOptions, MenuTrigger } from './index';
 import { makeName } from './helpers';
+import { debug } from './logger';
 
 const isRegularComponent = c => c.type !== MenuOptions && c.type !== MenuTrigger;
 const isTrigger = c => c.type === MenuTrigger;
@@ -24,16 +25,23 @@ export default class Menu extends Component {
 
   componentDidMount() {
     this._name = this.props.name || makeName();
-    this._validateChildren() &&
-      this.context.menuRegistry.subscribe(this._name, this._buildMenuData());
+    if (!this._validateChildren()) {
+      return;
+    }
+    debug('subscribing menu', this._name);
+    this.context.menuRegistry.subscribe(this._name, this._buildMenuData());
   }
 
   componentDidUpdate() {
-    this._validateChildren() &&
-      this.context.menuRegistry.update(this._name, this._buildMenuData());
+    if (!this._validateChildren()) {
+      return;
+    }
+    debug('updating menu', this._name);
+    this.context.menuRegistry.update(this._name, this._buildMenuData());
   }
 
   componentWillUnmount() {
+    debug('unsubscribing menu', this._name);
     this.context.menuRegistry.unsubscribe(this._name);
   }
 
@@ -84,6 +92,7 @@ export default class Menu extends Component {
 
   _onSelect(value) {
     const shouldClose = this.props.onSelect(value) !== false;
+    debug('select option', value, shouldClose);
     if (shouldClose) {
         this.context.menuActions.closeMenu();
     }
@@ -99,6 +108,8 @@ export default class Menu extends Component {
   }
 
 }
+
+Menu.debug = false;
 
 Menu.propTypes = {
   name: React.PropTypes.string,

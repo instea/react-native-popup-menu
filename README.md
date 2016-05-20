@@ -82,6 +82,11 @@ Root menu component defining menu name and providing menu events.
 |`onOpen`||Triggered when menu is opened|
 |`onClose`||Triggered when menu is closed|
 
+#### Static Properties
+| Property name | Type | Opt/Required | Default | Note |
+|---|---|---|---|---|
+|`debug`|`Boolean`|Optional|`false`|This property enables debug logs|
+
 ### MenuTrigger
 
 It defines position where the popup menu will be rendered.
