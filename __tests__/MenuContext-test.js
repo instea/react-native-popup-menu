@@ -241,59 +241,6 @@ describe('MenuContext', () => {
     expect(output.props.children.length).toEqual(3);
     const backdrop = output.props.children[1];
     expect(backdrop.type).toEqual(Backdrop);
-    expect(backdrop.props.dimensions).toEqual(objectContaining({
-      width: any(Number),
-      height: any(Number)
-    }));
-  });
-
-  it('should render landscape backdrop', () => {
-    const { instance, renderer, output } = render(
-      <MenuContext />
-    );
-    const { menuRegistry, menuActions } = instance.getChildContext();
-    menuRegistry.subscribe(menu1);
-    menuActions.openMenu('menu1');
-    output.props.onLayout({
-      nativeEvent: {
-        layout: {
-          width: 600,
-          height: 400
-        }
-      }
-    });
-    const nextOutput = renderer.getRenderOutput();
-    const backdrop = nextOutput.props.children[1];
-    expect(backdrop.type).toEqual(Backdrop);
-    expect(backdrop.props.dimensions).toEqual(objectContaining({
-      width: 600,
-      height: 400
-    }));
-  });
-
-  it('should render portrait backdrop', () => {
-    const { instance, renderer, output } = render(
-      <MenuContext />
-    );
-    const { menuRegistry, menuActions } = instance.getChildContext();
-    menuRegistry.subscribe(menu1);
-    menuActions.openMenu('menu1');
-    expect(typeof output.props.onLayout).toEqual('function');
-    output.props.onLayout({
-      nativeEvent: {
-        layout: {
-          width: 400,
-          height: 600
-        }
-      }
-    });
-    const nextOutput = renderer.getRenderOutput();
-    const backdrop = nextOutput.props.children[1];
-    expect(backdrop.type).toEqual(Backdrop);
-    expect(backdrop.props.dimensions).toEqual(objectContaining({
-      width: 400,
-      height: 600
-    }));
   });
 
 });
