@@ -4,6 +4,8 @@ import AnimatedView from './AnimatedView';
 import makeMenuRegistry from './menuRegistry';
 import { measure, computeBestMenuPosition } from './helpers';
 
+const defaultOptionsContainerRenderer = options => options;
+
 export default class MenuContext extends Component {
 
   constructor(props) {
@@ -83,11 +85,13 @@ export default class MenuContext extends Component {
   _makeOptions({ options, triggerLayout, optionsLayout, name }, windowLayout) {
     const { top, left, isVisible } = computeBestMenuPosition(windowLayout, triggerLayout, optionsLayout)
     const MenuComponent = isVisible ? AnimatedView : View;
-    const style = [ styles.optionsContainer, options.props.optionsContainerStyle, { top, left } ];
+    const { optionsContainerStyle, renderOptionsContainer } = options.props;
+    const style = [ styles.optionsContainer, optionsContainerStyle, { top, left } ];
+    const renderer = renderOptionsContainer || defaultOptionsContainerRenderer;
     const onLayout = e => this._onOptionsLayout(e, name);
     const ref = 'menu-options';
     const collapsable = false;
-    return React.createElement(MenuComponent, { style, onLayout, ref, collapsable }, options);
+    return React.createElement(MenuComponent, { style, onLayout, ref, collapsable }, renderer(options));
   }
 
   _getWindowDimensions() {

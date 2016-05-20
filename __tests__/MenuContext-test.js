@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { render, normalizeStyle } from './helpers';
+import { MenuOptions, MenuTrigger } from '../src/index';
 const { objectContaining, createSpy, any } = jasmine;
 
 jest.dontMock('../src/MenuContext');
@@ -37,8 +38,8 @@ describe('MenuContext', () => {
 
   const menu1 = {
     name: 'menu1',
-    options: <View ref='options' />,
-    trigger: <View ref='trigger' />,
+    options: <MenuOptions />,
+    trigger: <MenuTrigger />,
     events: {
       onOpen: () => 0,
       onClose: () => 0
@@ -95,7 +96,7 @@ describe('MenuContext', () => {
     expect(components.type).toEqual(View);
     expect(backdrop.ref).toEqual('backdrop');
     expect(options.ref).toEqual('menu-options');
-    expect(options.props.children.ref).toEqual('options');
+    expect(options.props.children.type).toEqual(MenuOptions);
   });
 
   it('should close menu', () => {

@@ -11,6 +11,10 @@ class View extends React.Component {
   render() { return false; }
 }
 
+View.propTypes = {
+  style: () => null
+};
+
 class ListView extends React.Component {
   static DataSource() {
   }

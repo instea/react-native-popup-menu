@@ -12,6 +12,8 @@ const MenuOptions = props => (
 
 MenuOptions.propTypes = {
   onSelect: React.PropTypes.func,
+  renderOptionsContainer: React.PropTypes.func,
+  optionsContainerStyle: View.propTypes.style,
 };
 
 export default MenuOptions;
