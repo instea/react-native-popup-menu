@@ -31,15 +31,23 @@ const Animated = {
   View: View
 };
 
+const Text = () => "Text";
+const TouchableHighlight = () => false;
+const TouchableWithoutFeedback = () => false;
+const TouchableOpacity = () => false;
+const ToolbarAndroid = () => false;
+const Image = () => false;
+const ScrollView = () => false;
+
 ReactNative.View = View;
-ReactNative.ScrollView = View;
+ReactNative.ScrollView = ScrollView;
 ReactNative.ListView = ListView;
-ReactNative.Text = View;
-ReactNative.TouchableOpacity = View;
-ReactNative.TouchableHighlight = View;
-ReactNative.TouchableWithoutFeedback = View;
-ReactNative.ToolbarAndroid = View;
-ReactNative.Image = View;
+ReactNative.Text = Text;
+ReactNative.TouchableOpacity = TouchableOpacity;
+ReactNative.TouchableHighlight = TouchableHighlight;
+ReactNative.TouchableWithoutFeedback = TouchableWithoutFeedback;
+ReactNative.ToolbarAndroid = ToolbarAndroid;
+ReactNative.Image = Image;
 ReactNative.AppRegistry = AppRegistry;
 ReactNative.Animated = Animated;
 
