@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableWithoutFeedback, View } from 'react-native';
+import { TouchableWithoutFeedback, View, Text } from 'react-native';
 import { render } from './helpers';
 
 jest.dontMock('../src/MenuOption');
@@ -44,6 +44,18 @@ describe('MenuOption', () => {
     );
     output.props.onPress();
     expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('should render text passed in props', () => {
+    const { output } = render(
+      <MenuOption text='Hello world' />
+    );
+    expect(output.type).toEqual(TouchableWithoutFeedback);
+    expect(output.props.children.type).toEqual(View);
+    const text = output.props.children.props.children;
+    expect(text).toEqual(
+      <Text>Hello world</Text>
+    );
   });
 
 });

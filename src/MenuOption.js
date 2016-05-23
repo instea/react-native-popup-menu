@@ -1,16 +1,17 @@
 import React from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, Text } from 'react-native';
 
-const MenuOption = props => (
-  <TouchableWithoutFeedback onPress={() => !props.disabled && props.onPress(props.value)}>
-    <View style={[styles.option, props.style]}>
-      {props.children}
+const MenuOption = ({ text, disabled, children, onPress, value, style }) => (
+  <TouchableWithoutFeedback onPress={() => !disabled && onPress(value)}>
+    <View style={[styles.option, style]}>
+      {text ? <Text>{text}</Text> : children}
     </View>
   </TouchableWithoutFeedback>
 );
 
 MenuOption.propTypes = {
   disabled: React.PropTypes.bool,
+  text: React.PropTypes.string,
 };
 
 MenuOption.defaultProps = {

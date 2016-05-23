@@ -62,27 +62,13 @@ export default class Example extends Component {
                 <Text style={styles.triggerText}>Select number...</Text>
               </MenuTrigger>
               <MenuOptions>
-                <MenuOption value={1}>
-                  <Text>Option one</Text>
-                </MenuOption>
-                <MenuOption value={2}>
-                  <Text>Option two</Text>
-                </MenuOption>
-                <MenuOption value={3}>
-                  <Text>Option three</Text>
-                </MenuOption>
-                <MenuOption value={4}>
-                  <Text>Option four</Text>
-                </MenuOption>
-                <MenuOption value={5}>
-                  <Text>Option five</Text>
-                </MenuOption>
-                <MenuOption value={6}>
-                  <Text>Option six</Text>
-                </MenuOption>
-                <MenuOption value={7}>
-                  <Text>Option seven</Text>
-                </MenuOption>
+                <MenuOption value={1} text='Option one' />
+                <MenuOption value={2} text='Option two' />
+                <MenuOption value={3} text='Option three' />
+                <MenuOption value={4} text='Option four' />
+                <MenuOption value={5} text='Option five' />
+                <MenuOption value={6} text='Option six' />
+                <MenuOption value={7} text='Option seven' />
               </MenuOptions>
             </Menu>
             <View style={{flex:1}}></View>
@@ -91,19 +77,13 @@ export default class Example extends Component {
                 <Text style={styles.triggerText}>Select type...</Text>
               </MenuTrigger>
               <MenuOptions>
-                <MenuOption value="Normal">
-                  <Text>Normal</Text>
-                </MenuOption>
+                <MenuOption value="Normal" text='Normal' />
                 <MenuOption value="Disabled" disabled={true}>
                   <Text style={styles.disabled}>Disabled</Text>
                 </MenuOption>
-                <MenuOption value="Do not close">
-                  <Text>Do not close</Text>
-                </MenuOption>
+                <MenuOption value="Do not close" text='Do not close' />
                 <View style={styles.divider}/>
-                <MenuOption value={{ text: 'Hello world!' }}>
-                  <Text>Object as value</Text>
-                </MenuOption>
+                <MenuOption value={{ text: 'Hello world!' }} text='Object as value' />
               </MenuOptions>
             </Menu>
           </View>
@@ -121,12 +101,8 @@ export default class Example extends Component {
                       <Text>edit</Text>
                     </MenuTrigger>
                     <MenuOptions>
-                      <MenuOption value={() => this.toggleHighlight(l.id)}>
-                        <Text>{l.highlighted ? 'Unhighlight' : 'Highlight'}</Text>
-                      </MenuOption>
-                      <MenuOption value={() => this.deleteLogItem(l.id)}>
-                        <Text>Delete</Text>
-                      </MenuOption>
+                      <MenuOption value={() => this.toggleHighlight(l.id)} text={l.highlighted ? 'Unhighlight' : 'Highlight'} />
+                      <MenuOption value={() => this.deleteLogItem(l.id)} text='Delete' />
                     </MenuOptions>
                   </Menu>
                 </View>

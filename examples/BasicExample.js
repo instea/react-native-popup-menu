@@ -15,12 +15,8 @@ const BasicExample = () => (
         <Text>Select option...</Text>
       </MenuTrigger>
       <MenuOptions>
-        <MenuOption value={1}>
-          <Text>One</Text>
-        </MenuOption>
-        <MenuOption value={2}>
-          <Text>Two</Text>
-        </MenuOption>
+        <MenuOption value={1} text='One' />
+        <MenuOption value={2} text='Two' />
       </MenuOptions>
     </Menu>
   </MenuContext>
