@@ -97,9 +97,7 @@ export default class Example extends Component {
                   <Text style={textStyle}>{l.value}</Text>
                   <View style={{flex:1}}></View>
                   <Menu onSelect={action => action()}>
-                    <MenuTrigger>
-                      <Text>edit</Text>
-                    </MenuTrigger>
+                    <MenuTrigger text='edit' />
                     <MenuOptions>
                       <MenuOption value={() => this.toggleHighlight(l.id)} text={l.highlighted ? 'Unhighlight' : 'Highlight'} />
                       <MenuOption value={() => this.deleteLogItem(l.id)} text='Delete' />

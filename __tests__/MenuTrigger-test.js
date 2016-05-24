@@ -24,6 +24,17 @@ describe('MenuTrigger', () => {
     );
   });
 
+  it('should render component usin text property', () => {
+    const { output } = render(
+      <MenuTrigger events={defaultEvents} text='Trigger text' />
+    );
+    expect(output.type).toEqual(TouchableWithoutFeedback);
+    expect(output.props.children.type).toEqual(View);
+    expect(output.props.children.props.children).toEqual(
+      <Text>Trigger text</Text>
+    );
+  });
+
   it('should be enabled by default', () => {
     const { instance } = render(
       <MenuTrigger events={defaultEvents} />

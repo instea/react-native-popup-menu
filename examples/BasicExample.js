@@ -11,9 +11,7 @@ const BasicExample = () => (
   <MenuContext style={{flexDirection: 'column', padding: 30}}>
     <Text>Hello world!</Text>
     <Menu onSelect={value => alert(`Selected number: ${value}`)}>
-      <MenuTrigger>
-        <Text>Select option...</Text>
-      </MenuTrigger>
+      <MenuTrigger text='Select option' />
       <MenuOptions>
         <MenuOption value={1} text='One' />
         <MenuOption value={2} text='Two' />

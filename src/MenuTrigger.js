@@ -1,17 +1,21 @@
 import React from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableWithoutFeedback, Text } from 'react-native';
 import { View } from 'react-native';
 
-const MenuTrigger = props => (
-  <TouchableWithoutFeedback onPress={e => !props.disabled && props.events.onPress(e)}>
-    <View {...props} ref={props.events.onRef} collapsable={false}>
-      {props.children}
-    </View>
-  </TouchableWithoutFeedback>
-);
+const MenuTrigger = props => {
+  const { disabled, events, text, children } = props;
+  return (
+    <TouchableWithoutFeedback onPress={e => !disabled && events.onPress(e)}>
+      <View {...props} ref={events.onRef} collapsable={false}>
+        {text ? <Text>{text}</Text> : children}
+      </View>
+    </TouchableWithoutFeedback>
+  );
+};
 
 MenuTrigger.propTypes = {
   disabled: React.PropTypes.bool,
+  text: React.PropTypes.string,
 };
 
 MenuTrigger.defaultProps = {
