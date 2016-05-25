@@ -209,7 +209,7 @@ describe('Menu', () => {
     }));
   });
 
-  it('should trigger on select and close menu', () => {
+  it('should trigger on select', () => {
     const onSelectSpy = createSpy();
     const { instance } = render(
       <Menu name='menu1' onSelect={ onSelectSpy }>
@@ -217,9 +217,7 @@ describe('Menu', () => {
         <MenuOptions />
       </Menu>
     );
-    const menuActions = {
-      closeMenu: createSpy()
-    };
+    const menuActions = {};
     let subscribedOnSelect;
     const menuRegistry = {
       subscribe: (name, menu) => (subscribedOnSelect = menu.options.props.onSelect)
@@ -229,80 +227,6 @@ describe('Menu', () => {
     expect(typeof subscribedOnSelect).toEqual('function');
     subscribedOnSelect('value1');
     expect(onSelectSpy).toHaveBeenCalledWith('value1');
-    expect(menuActions.closeMenu).toHaveBeenCalled();
-  });
-
-  it('should trigger on select and let menu open', () => {
-    const onSelectSpy = createSpy().and.returnValue(false);
-    const { instance } = render(
-      <Menu name='menu1' onSelect={ onSelectSpy }>
-        <MenuTrigger />
-        <MenuOptions />
-      </Menu>
-    );
-    const menuActions = {
-      closeMenu: createSpy()
-    };
-    let subscribedOnSelect;
-    const menuRegistry = {
-      subscribe: (name, menu) => (subscribedOnSelect = menu.options.props.onSelect)
-    };
-    instance.context = { menuRegistry, menuActions };
-    instance.componentDidMount();
-    expect(typeof subscribedOnSelect).toEqual('function');
-    subscribedOnSelect('value1');
-    expect(onSelectSpy).toHaveBeenCalledWith('value1');
-    expect(menuActions.closeMenu).not.toHaveBeenCalled();
-  });
-
-  it('should trigger on select with custom onSelect handler', () => {
-    const onSelectSpy = createSpy();
-    const customOnSelectSpy = createSpy();
-    const { instance } = render(
-      <Menu name='menu1' onSelect={ onSelectSpy }>
-        <MenuTrigger />
-        <MenuOptions />
-      </Menu>
-    );
-    const menuActions = {
-      closeMenu: createSpy()
-    };
-    let subscribedOnSelect;
-    const menuRegistry = {
-      subscribe: (name, menu) => (subscribedOnSelect = menu.options.props.onSelect)
-    };
-    instance.context = { menuRegistry, menuActions };
-    instance.componentDidMount();
-    expect(typeof subscribedOnSelect).toEqual('function');
-    subscribedOnSelect('value1', customOnSelectSpy);
-    expect(customOnSelectSpy).toHaveBeenCalledWith('value1');
-    expect(onSelectSpy).not.toHaveBeenCalled();
-    expect(menuActions.closeMenu).toHaveBeenCalled();
-  });
-
-  it('should trigger on select with custom onSelect handler and let menu open', () => {
-    const onSelectSpy = createSpy();
-    const customOnSelectSpy = createSpy().and.returnValue(false);
-    const { instance } = render(
-      <Menu name='menu1' onSelect={ onSelectSpy }>
-        <MenuTrigger />
-        <MenuOptions />
-      </Menu>
-    );
-    const menuActions = {
-      closeMenu: createSpy()
-    };
-    let subscribedOnSelect;
-    const menuRegistry = {
-      subscribe: (name, menu) => (subscribedOnSelect = menu.options.props.onSelect)
-    };
-    instance.context = { menuRegistry, menuActions };
-    instance.componentDidMount();
-    expect(typeof subscribedOnSelect).toEqual('function');
-    subscribedOnSelect('value1', customOnSelectSpy);
-    expect(customOnSelectSpy).toHaveBeenCalledWith('value1');
-    expect(onSelectSpy).not.toHaveBeenCalled();
-    expect(menuActions.closeMenu).not.toHaveBeenCalled();
   });
 
   it('should open menu', () => {

@@ -4,6 +4,7 @@ import { render } from './helpers';
 
 jest.dontMock('../src/MenuOption');
 const MenuOption = require('../src/MenuOption').default;
+const { createSpy } = jasmine;
 
 describe('MenuOption', () => {
 
@@ -27,31 +28,49 @@ describe('MenuOption', () => {
     expect(instance.props.disabled).toBe(false);
   });
 
-  it('should trigger on press event with value', () => {
-    const spy = jasmine.createSpy();
-    const { output } = render(
-      <MenuOption onPress={spy} value='hello' />
+  it('should trigger on select event with value', () => {
+    const spy = createSpy();
+    const { instance, renderer } = render(
+      <MenuOption onSelect={spy} value='hello' />
     );
-    output.props.onPress();
-    expect(spy).toHaveBeenCalledWith('hello', undefined);
+    const menuActions = { closeMenu: createSpy() };
+    instance.context = { menuActions };
+    const touchable = renderer.getRenderOutput();
+    touchable.props.onPress();
+    expect(spy).toHaveBeenCalledWith('hello');
     expect(spy.calls.count()).toEqual(1);
   });
 
-  it('should trigger on press event with onSelect handler', () => {
-    const spy = jasmine.createSpy();
-    const onSelect = () => 1;
-    const { output } = render(
-      <MenuOption onPress={spy} value='some value' onSelect={onSelect} />
+  it('should close menu on select', () => {
+    const spy = createSpy();
+    const { instance, renderer } = render(
+      <MenuOption onSelect={spy} value='hello' />
     );
-    output.props.onPress();
-    expect(spy).toHaveBeenCalledWith('some value', onSelect);
-    expect(spy.calls.count()).toEqual(1);
+    const menuActions = { closeMenu: createSpy() };
+    instance.context = { menuActions };
+    const touchable = renderer.getRenderOutput();
+    touchable.props.onPress();
+    expect(spy).toHaveBeenCalled();
+    expect(menuActions.closeMenu).toHaveBeenCalled();
+  });
+
+  it('should close menu on select', () => {
+    const spy = createSpy().and.returnValue(false);
+    const { instance, renderer } = render(
+      <MenuOption onSelect={spy} value='hello' />
+    );
+    const menuActions = { closeMenu: createSpy() };
+    instance.context = { menuActions };
+    const touchable = renderer.getRenderOutput();
+    touchable.props.onPress();
+    expect(spy).toHaveBeenCalled();
+    expect(menuActions.closeMenu).not.toHaveBeenCalled();
   });
 
   it('should not trigger event when disabled', () => {
-    const spy = jasmine.createSpy();
+    const spy = createSpy();
     const { output } = render(
-      <MenuOption onPress={spy} disabled={true} />
+      <MenuOption onSelect={spy} disabled={true} />
     );
     output.props.onPress();
     expect(spy).not.toHaveBeenCalled();

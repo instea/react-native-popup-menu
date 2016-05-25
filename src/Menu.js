@@ -20,7 +20,6 @@ export default class Menu extends Component {
   constructor(props) {
     super(props);
     this._openMenu = this._openMenu.bind(this);
-    this._onSelect = this._onSelect.bind(this);
   }
 
   componentDidMount() {
@@ -90,19 +89,11 @@ export default class Menu extends Component {
     this.context.menuActions.openMenu(this._name);
   }
 
-  _onSelect(value, onSelect = this.props.onSelect) {
-    const shouldClose = onSelect(value) !== false;
-    debug('select option', value, shouldClose);
-    if (shouldClose) {
-        this.context.menuActions.closeMenu();
-    }
-  }
-
   _buildMenuData() {
-    const { children, onOpen, onClose } = this.props;
+    const { children, onOpen, onClose, onSelect } = this.props;
     const name = this._name;
     const optionsElem = normalizeChildren(children).find(isMenuOptions);
-    const options = React.cloneElement(optionsElem, { onSelect: this._onSelect });
+    const options = React.cloneElement(optionsElem, { onSelect });
     const trigger = this._trigger;
     return { name, options, trigger, events: { onOpen, onClose } };
   }

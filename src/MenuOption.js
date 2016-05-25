@@ -1,13 +1,33 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, Text } from 'react-native';
+import { debug } from './logger';
 
-const MenuOption = ({ text, disabled, children, onPress, onSelect, value, style }) => (
-  <TouchableWithoutFeedback onPress={() => !disabled && onPress(value, onSelect)}>
-    <View style={[styles.option, style]}>
-      {text ? <Text>{text}</Text> : children}
-    </View>
-  </TouchableWithoutFeedback>
-);
+export default class MenuOption extends Component {
+
+  _onSelect() {
+    const { value, onSelect } = this.props;
+    const shouldClose = onSelect(value) !== false;
+    debug('select option', value, shouldClose);
+    if (shouldClose) {
+        this.context.menuActions.closeMenu();
+    }
+  }
+
+  render() {
+    const { text, disabled, children, style  } = this.props;
+    return (
+      <TouchableWithoutFeedback onPress={() => !disabled && this._onSelect()}>
+        <View style={[styles.option, style]}>
+          {text ? <Text>{text}</Text> : children}
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  }
+}
+
+/*
+  */
+
 
 MenuOption.propTypes = {
   disabled: React.PropTypes.bool,
@@ -18,6 +38,10 @@ MenuOption.propTypes = {
 
 MenuOption.defaultProps = {
   disabled: false,
+};
+
+MenuOption.contextTypes = {
+  menuActions: React.PropTypes.object,
 };
 
 const styles = StyleSheet.create({

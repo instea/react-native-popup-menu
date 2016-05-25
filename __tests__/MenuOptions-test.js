@@ -22,8 +22,26 @@ describe('MenuOptions', () => {
     expect(children.length).toEqual(3);
     children.forEach(ch => {
       expect(ch.type).toBe(MenuOption);
-      expect(ch.props.onPress).toEqual(onSelect);
+      expect(ch.props.onSelect).toEqual(onSelect);
     });
+  });
+
+  it("should prioritize option's onSelect handler", () => {
+    const onSelect = () => 0;
+    const onSelectOption = () => 1;
+    const { output } = render(
+      <MenuOptions onSelect={onSelect}>
+        <MenuOption onSelect={onSelectOption} />
+        <MenuOption />
+      </MenuOptions>
+    );
+    expect(output.type).toEqual(View);
+    const children = output.props.children;
+    expect(children.length).toEqual(2);
+    expect(children[0].type).toBe(MenuOption);
+    expect(children[1].type).toBe(MenuOption);
+    expect(children[0].props.onSelect).toEqual(onSelectOption);
+    expect(children[1].props.onSelect).toEqual(onSelect);
   });
 
 });
