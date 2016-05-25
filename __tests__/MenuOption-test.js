@@ -54,7 +54,7 @@ describe('MenuOption', () => {
     expect(menuActions.closeMenu).toHaveBeenCalled();
   });
 
-  it('should close menu on select', () => {
+  it('should not close menu on select', () => {
     const spy = createSpy().and.returnValue(false);
     const { instance, renderer } = render(
       <MenuOption onSelect={spy} value='hello' />
