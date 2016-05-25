@@ -27,13 +27,24 @@ describe('MenuOption', () => {
     expect(instance.props.disabled).toBe(false);
   });
 
-  it('should trigger on press event', () => {
+  it('should trigger on press event with value', () => {
     const spy = jasmine.createSpy();
     const { output } = render(
-      <MenuOption onPress={spy} />
+      <MenuOption onPress={spy} value='hello' />
     );
     output.props.onPress();
-    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith('hello', undefined);
+    expect(spy.calls.count()).toEqual(1);
+  });
+
+  it('should trigger on press event with onSelect handler', () => {
+    const spy = jasmine.createSpy();
+    const onSelect = () => 1;
+    const { output } = render(
+      <MenuOption onPress={spy} value='some value' onSelect={onSelect} />
+    );
+    output.props.onPress();
+    expect(spy).toHaveBeenCalledWith('some value', onSelect);
     expect(spy.calls.count()).toEqual(1);
   });
 

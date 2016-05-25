@@ -96,11 +96,11 @@ export default class Example extends Component {
                 <View style={[styles.logItem, wrapperStyle]} key={l.id}>
                   <Text style={textStyle}>{l.value}</Text>
                   <View style={{flex:1}}></View>
-                  <Menu onSelect={action => action()}>
+                  <Menu>
                     <MenuTrigger text='edit' />
                     <MenuOptions>
-                      <MenuOption value={() => this.toggleHighlight(l.id)} text={l.highlighted ? 'Unhighlight' : 'Highlight'} />
-                      <MenuOption value={() => this.deleteLogItem(l.id)} text='Delete' />
+                      <MenuOption onSelect={() => this.toggleHighlight(l.id)} text={l.highlighted ? 'Unhighlight' : 'Highlight'} />
+                      <MenuOption onSelect={() => this.deleteLogItem(l.id)} text='Delete' />
                     </MenuOptions>
                   </Menu>
                 </View>

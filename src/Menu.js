@@ -90,8 +90,8 @@ export default class Menu extends Component {
     this.context.menuActions.openMenu(this._name);
   }
 
-  _onSelect(value) {
-    const shouldClose = this.props.onSelect(value) !== false;
+  _onSelect(value, onSelect = this.props.onSelect) {
+    const shouldClose = onSelect(value) !== false;
     debug('select option', value, shouldClose);
     if (shouldClose) {
         this.context.menuActions.closeMenu();
