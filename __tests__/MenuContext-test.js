@@ -1,9 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
-import { render, normalizeStyle } from './helpers';
+import { render } from './helpers';
 import { MenuOptions, MenuTrigger } from '../src/index';
 import Backdrop from '../src/Backdrop';
-const { objectContaining, createSpy, any } = jasmine;
+const { objectContaining, createSpy } = jasmine;
 
 jest.dontMock('../src/MenuContext');
 
@@ -159,7 +159,7 @@ describe('MenuContext', () => {
   });
 
   it('should not open menu if not initialized', () => {
-    const { output, instance, renderer } = render(
+    const { output, instance } = render(
       <MenuContext />
     );
     const { menuRegistry, menuActions } = instance.getChildContext();

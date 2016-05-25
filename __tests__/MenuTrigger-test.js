@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableWithoutFeedback, View } from 'react-native';
+import { TouchableWithoutFeedback, View, Text } from 'react-native';
 import { render } from './helpers';
 
 jest.dontMock('../src/MenuTrigger');
@@ -24,7 +24,7 @@ describe('MenuTrigger', () => {
     );
   });
 
-  it('should render component usin text property', () => {
+  it('should render component using text property', () => {
     const { output } = render(
       <MenuTrigger events={defaultEvents} text='Trigger text' />
     );

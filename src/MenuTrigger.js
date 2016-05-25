@@ -1,6 +1,5 @@
 import React from 'react';
-import { TouchableWithoutFeedback, Text } from 'react-native';
-import { View } from 'react-native';
+import { View, TouchableWithoutFeedback, Text } from 'react-native';
 
 const MenuTrigger = props => {
   const { disabled, events, text, children } = props;

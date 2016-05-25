@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableWithoutFeedback, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import AnimatedView from './AnimatedView';
 import makeMenuRegistry from './menuRegistry';
 import Backdrop from './Backdrop';
