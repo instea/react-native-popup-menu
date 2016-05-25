@@ -19,11 +19,10 @@ export default class Menu extends Component {
 
   constructor(props) {
     super(props);
-    this._openMenu = this._openMenu.bind(this);
+    this._name = this.props.name || makeName();
   }
 
   componentDidMount() {
-    this._name = this.props.name || makeName();
     if (!this._validateChildren()) {
       return;
     }
@@ -59,10 +58,8 @@ export default class Menu extends Component {
       if (isTrigger(child)) {
         r.push(React.cloneElement(child, {
           key: null,
-          events: {
-            onPress: this._openMenu,
-            onRef: t => this._trigger = t
-          }
+          menuName: this._name,
+          onRef: (t => this._trigger = t)
         }));
       }
       if (isRegularComponent(child)) {
@@ -83,10 +80,6 @@ export default class Menu extends Component {
       console.warn('Menu has to contain MenuTrigger component');
     }
     return options && trigger;
-  }
-
-  _openMenu() {
-    this.context.menuActions.openMenu(this._name);
   }
 
   _buildMenuData() {
@@ -117,5 +110,4 @@ Menu.defaultProps = {
 
 Menu.contextTypes = {
   menuRegistry: React.PropTypes.object,
-  menuActions: React.PropTypes.object,
 };

@@ -32,10 +32,7 @@ describe('Menu', () => {
     expect(output.props.children[1]).toEqual(objectContaining({
       type: MenuTrigger,
       props: objectContaining({
-        events: objectContaining({
-          onRef: any(Function),
-          onPress: any(Function)
-        })
+        onRef: any(Function)
       })
     }));
     expect(output.props.children[2]).toEqual(
@@ -201,7 +198,7 @@ describe('Menu', () => {
     instance.context = { menuRegistry };
     instance.componentDidMount();
     const [ trigger ] = output.props.children;
-    trigger.props.events.onRef('trigger_ref');
+    trigger.props.onRef('trigger_ref');
     instance.componentDidUpdate();
     expect(menuRegistry.update).toHaveBeenCalledWith('menu1', objectContaining({
       name: 'menu1',
@@ -209,45 +206,22 @@ describe('Menu', () => {
     }));
   });
 
-  it('should trigger on select', () => {
-    const onSelectSpy = createSpy();
+  it('should subscribe onSelect handler', () => {
+    const onSelect = () => 0;
     const { instance } = render(
-      <Menu name='menu1' onSelect={ onSelectSpy }>
+      <Menu name='menu1' onSelect={ onSelect }>
         <MenuTrigger />
         <MenuOptions />
       </Menu>
     );
-    const menuActions = {};
-    let subscribedOnSelect;
-    const menuRegistry = {
-      subscribe: (name, menu) => (subscribedOnSelect = menu.options.props.onSelect)
-    };
-    instance.context = { menuRegistry, menuActions };
+    const menuRegistry = { subscribe: createSpy() };
+    instance.context = { menuRegistry };
     instance.componentDidMount();
-    expect(typeof subscribedOnSelect).toEqual('function');
-    subscribedOnSelect('value1');
-    expect(onSelectSpy).toHaveBeenCalledWith('value1');
-  });
-
-  it('should open menu', () => {
-    const { output, instance } = render(
-      <Menu name='menu1'>
-        <MenuTrigger />
-        <MenuOptions />
-      </Menu>
-    );
-    const menuRegistry = {
-      subscribe: createSpy()
-    };
-    const menuActions = {
-      openMenu: createSpy()
-    };
-    instance.context = { menuRegistry, menuActions };
-    instance.componentDidMount();
-    const [ trigger ] = output.props.children;
-    expect(typeof trigger.props.events.onPress).toEqual('function');
-    trigger.props.events.onPress();
-    expect(menuActions.openMenu).toHaveBeenCalledWith('menu1');
+    expect(menuRegistry.subscribe).toHaveBeenCalledWith('menu1', objectContaining({
+      options: objectContaining({
+        props: objectContaining({ onSelect })
+      })
+    }));
   });
 
 });

@@ -4,16 +4,13 @@ import { render } from './helpers';
 
 jest.dontMock('../src/MenuTrigger');
 const MenuTrigger = require('../src/MenuTrigger').default;
+const { createSpy } = jasmine;
 
 describe('MenuTrigger', () => {
 
-  const onPress = () => 0;
-  const onRef = () => 0;
-  const defaultEvents = { onPress, onRef };
-
   it('should render component', () => {
     const { output } = render(
-      <MenuTrigger events={defaultEvents}>
+      <MenuTrigger>
         <Text>Trigger Button</Text>
       </MenuTrigger>
     );
@@ -26,7 +23,7 @@ describe('MenuTrigger', () => {
 
   it('should render component using text property', () => {
     const { output } = render(
-      <MenuTrigger events={defaultEvents} text='Trigger text' />
+      <MenuTrigger text='Trigger text' />
     );
     expect(output.type).toEqual(TouchableWithoutFeedback);
     expect(output.props.children.type).toEqual(View);
@@ -37,19 +34,15 @@ describe('MenuTrigger', () => {
 
   it('should be enabled by default', () => {
     const { instance } = render(
-      <MenuTrigger events={defaultEvents} />
+      <MenuTrigger />
     );
     expect(instance.props.disabled).toBe(false);
   });
 
   it('should trigger on ref event', () => {
-    const onRefSpy = jasmine.createSpy();
-    const events = {
-      onRef: onRefSpy,
-      onPress,
-    };
+    const onRefSpy = createSpy();
     const { output } = render(
-      <MenuTrigger events={events} />
+      <MenuTrigger onRef={onRefSpy} />
     );
     const view = output.props.children;
     expect(typeof view.ref).toEqual('function');
@@ -58,31 +51,25 @@ describe('MenuTrigger', () => {
     expect(onRefSpy.calls.count()).toEqual(1);
   });
 
-  it('should trigger on press event', () => {
-    const onPressSpy = jasmine.createSpy();
-    const events = {
-      onPress: onPressSpy,
-      onRef
-    };
-    const { output } = render(
-      <MenuTrigger events={events} />
+  it('should open menu', () => {
+    const { output, instance } = render(
+      <MenuTrigger menuName='menu1' />
     );
+    const menuActions = { openMenu: createSpy() };
+    instance.context = { menuActions };
     output.props.onPress();
-    expect(onPressSpy).toHaveBeenCalled();
-    expect(onPressSpy.calls.count()).toEqual(1);
+    expect(menuActions.openMenu).toHaveBeenCalledWith('menu1');
+    expect(menuActions.openMenu.calls.count()).toEqual(1);
   });
 
-  it('should not trigger event when disabled', () => {
-    const onPressSpy = jasmine.createSpy();
-    const events = {
-      onPress: onPressSpy,
-      onRef
-    };
-    const { output } = render(
-      <MenuTrigger events={events} disabled={true} />
+  it('should not open menu when disabled', () => {
+    const { output, instance } = render(
+      <MenuTrigger menuName='menu1' disabled={true} />
     );
+    const menuActions = { openMenu: createSpy() };
+    instance.context = { menuActions };
     output.props.onPress();
-    expect(onPressSpy).not.toHaveBeenCalled();
+    expect(menuActions.openMenu).not.toHaveBeenCalled();
   });
 
 });
