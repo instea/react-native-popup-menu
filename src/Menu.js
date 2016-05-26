@@ -27,20 +27,46 @@ export default class Menu extends Component {
       return;
     }
     debug('subscribing menu', this._name);
-    this.context.menuRegistry.subscribe(this._name, this._buildMenuData());
+    this.context.menuRegistry.subscribe(this);
   }
 
-  componentDidUpdate() {
-    if (!this._validateChildren()) {
-      return;
-    }
-    debug('updating menu', this._name);
-    this.context.menuRegistry.update(this._name, this._buildMenuData());
+  getName() {
+    return this._name;
+  }
+
+  isOpen() {
+    // TODO: declaratively check prop
+    return !!this._opened;
+  }
+
+  _getMenuData() {
+    return this._buildMenuData();
+  }
+
+  _open() {
+    this._opened = true;
+    this.props.onOpen();
+  }
+
+  _close() {
+    this._opened = false;
+    this.props.onClose();
+  }
+
+  _toggle() {
+    this._opened = !this._opened;
   }
 
   componentWillUnmount() {
     debug('unsubscribing menu', this._name);
-    this.context.menuRegistry.unsubscribe(this._name);
+    if (this.isOpen()) {
+      this._close();
+      this.context.menuActions.rerender().then(() => {
+        this.context.menuRegistry.unsubscribe(this);
+      });
+    } else {
+      this.context.menuRegistry.unsubscribe(this);
+    }
   }
 
   render() {
@@ -83,12 +109,11 @@ export default class Menu extends Component {
   }
 
   _buildMenuData() {
-    const { children, onOpen, onClose, onSelect } = this.props;
-    const name = this._name;
+    const { children, onSelect } = this.props;
     const optionsElem = normalizeChildren(children).find(isMenuOptions);
     const options = React.cloneElement(optionsElem, { onSelect });
     const trigger = this._trigger;
-    return { name, options, trigger, events: { onOpen, onClose } };
+    return { options, trigger };
   }
 
 }
@@ -110,4 +135,5 @@ Menu.defaultProps = {
 
 Menu.contextTypes = {
   menuRegistry: React.PropTypes.object,
+  menuActions: React.PropTypes.object,
 };

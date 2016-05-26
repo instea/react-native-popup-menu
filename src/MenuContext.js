@@ -24,56 +24,79 @@ export default class MenuContext extends Component {
       openMenu: name => this.openMenu(name),
       closeMenu: () => this.closeMenu(),
       toggleMenu: name => this.toggleMenu(name),
-      isMenuOpen: () => this.isMenuOpen()
+      isMenuOpen: () => this.isMenuOpen(),
+      rerender: () => this.rerender()
     };
     const menuRegistry = this._menuRegistry;
     return { menuRegistry, menuActions };
   }
 
   isMenuOpen() {
-    return !!this.state.openedMenu;
+    return this._menuRegistry.getAll().some(m => m.instance.isOpen());
   }
 
   openMenu(name) {
-    const openedMenu = this._menuRegistry.getMenu(name)
-    if (!openedMenu) {
+    const menu = this._menuRegistry.getMenu(name);
+    if (!menu) {
       return console.warn(`menu with name ${name} does not exist`);
     }
     debug('open menu', name);
-    measure(openedMenu.trigger).then(triggerLayout => {
+    const { trigger } = menu.instance._getMenuData();
+    measure(trigger).then(triggerLayout => {
       debug('got trigger measurements', triggerLayout);
-      openedMenu.events.onOpen();
+      menu.instance._open();
       this._menuRegistry.updateLayoutInfo(name, { triggerLayout });
-      this.setState({ openedMenu: this._menuRegistry.getMenu(name) });
+      this.setState({});
     });
   }
 
   closeMenu() {
-    debug('close menu', this.isMenuOpen(), this.isMenuOpen() && this.state.openedMenu.name);
-    this.isMenuOpen() && this.state.openedMenu.events.onClose();
-    this.setState({ openedMenu: null });
+    if (!this.isMenuOpen()) {
+      return;
+    }
+    debug('close menu');
+    this._menuRegistry.getAll().filter(m => m.instance.isOpen()).forEach(m => {
+      m.instance._close();
+    });
+    this.setState({});
   }
 
   toggleMenu(name) {
+    const menu = this._menuRegistry.getMenu(name);
+    if (!menu) {
+      return console.warn(`menu with name ${name} does not exist`);
+    }
     debug('toggle menu', name);
-    this.isMenuOpen() ? this.closeMenu() : this.openMenu(name);
+    menu.instance._toggle();
+    this.setState({});
+  }
+
+  rerender() {
+    return new Promise(resolve => {
+      this.setState({}, resolve);
+    });
   }
 
   render() {
-    debug('render menu', this.isMenuOpen(), this._ownLayout);
+    const isMenuOpen = this.isMenuOpen();
+    debug('render menu', isMenuOpen, this._ownLayout);
     return (
       <View style={{flex:1}} onLayout={e => this._onLayout(e)}>
         <View style={this.props.style}>
           { this.props.children }
         </View>
-        {this.isMenuOpen() && this._isInitialized() &&
+        {isMenuOpen && this._isInitialized() &&
           <Backdrop onPress={() => this.closeMenu()} />
         }
-        {this.isMenuOpen() && this._isInitialized() &&
-          this._makeOptions(this.state.openedMenu)
+        {isMenuOpen && this._isInitialized() &&
+          this._makeOptions(this._findOpenedMenu())
         }
       </View>
     );
+  }
+
+  _findOpenedMenu() {
+    return this._menuRegistry.getAll().find(m => m.instance.isOpen());
   }
 
   _isInitialized() {
@@ -81,9 +104,9 @@ export default class MenuContext extends Component {
   }
 
   _refresh(name) {
-    if (this.isMenuOpen() && name === this.state.openedMenu.name) {
-      const openedMenu = this._menuRegistry.getMenu(this.state.openedMenu.name);
-      this.setState({ openedMenu });
+    const menu = this._menuRegistry.getMenu(name);
+    if (menu && menu.instance.isOpen()) {
+      this.setState({});
     }
   }
 
@@ -93,7 +116,9 @@ export default class MenuContext extends Component {
     this._refresh(name);
   }
 
-  _makeOptions({ options, triggerLayout, optionsLayout, name }) {
+  _makeOptions({ instance, triggerLayout, optionsLayout }) {
+    const { options } = instance._getMenuData();
+    const name = instance.getName();
     const windowLayout = this._ownLayout;
     const { top, left, isVisible } = computeBestMenuPosition(windowLayout, triggerLayout, optionsLayout);
     debug('got best size', { windowLayout, triggerLayout, optionsLayout }, { top, left, isVisible });
@@ -116,13 +141,12 @@ export default class MenuContext extends Component {
     if (!this.isMenuOpen()) {
       return;
     }
-    const { openedMenu } = this.state;
-    measure(openedMenu.trigger).then(triggerLayout => {
+    const { instance } = this._findOpenedMenu();
+    const { trigger } = instance._getMenuData();
+    measure(trigger).then(triggerLayout => {
       debug('got trigger measurements after context layout change', triggerLayout);
-      this._menuRegistry.updateLayoutInfo(openedMenu.name, { triggerLayout });
-      this.setState({
-        openedMenu: this._menuRegistry.getMenu(openedMenu.name)
-      });
+      this._menuRegistry.updateLayoutInfo(instance.getName(), { triggerLayout });
+      this.setState({});
     });
   }
 

@@ -15,30 +15,24 @@ export default function makeMenuRegistry(menus = new Map()) {
   /**
    * Subscribes menu by name.
    */
-  function subscribe(name, menu) {
-    menus.set(name, menu);
+  function subscribe(instance) {
+    menus.set(instance.getName(), { instance });
   }
 
   /**
    * Unsubscribes menu by name.
    */
-  function unsubscribe(name) {
-    menus.delete(name);
-  }
-
-  /**
-   * Updates menu data excluding layout information.
-   */
-  function update(name, { options, events, trigger }) {
-    const menu = menus.get(name);
-    // does not update layouts
-    menus.set(name, Object.assign({}, menu, { options, events, trigger }));
+  function unsubscribe(instance) {
+    menus.delete(instance.getName());
   }
 
   /**
    * Updates layout infomration.
    */
   function updateLayoutInfo(name, { triggerLayout, optionsLayout }) {
+    if (!menus.has(name)) {
+      return;
+    }
     const menu = Object.assign({}, menus.get(name));
     triggerLayout && (menu.triggerLayout = triggerLayout);
     optionsLayout && (menu.optionsLayout = optionsLayout);
@@ -52,6 +46,10 @@ export default function makeMenuRegistry(menus = new Map()) {
     return menus.get(name);
   }
 
-  return { subscribe, unsubscribe, update, updateLayoutInfo, getMenu };
+  function getAll() {
+    return [...menus.values()];
+  }
+
+  return { subscribe, unsubscribe, updateLayoutInfo, getMenu, getAll };
 }
 
