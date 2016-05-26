@@ -25,10 +25,6 @@ export default class MenuOption extends Component {
   }
 }
 
-/*
-  */
-
-
 MenuOption.propTypes = {
   disabled: React.PropTypes.bool,
   onSelect: React.PropTypes.func,
@@ -51,5 +47,3 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 });
-
-export default MenuOption;

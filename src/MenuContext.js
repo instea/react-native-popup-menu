@@ -40,6 +40,7 @@ export default class MenuContext extends Component {
     if (!menu) {
       return console.warn(`menu with name ${name} does not exist`);
     }
+    debug('open menu', name);
     menu.instance._setOpened(true);
     this._notify();
   }
@@ -48,6 +49,7 @@ export default class MenuContext extends Component {
     this._menuRegistry.getAll().forEach(menu => {
       menu.instance._getOpened() && menu.instance._setOpened(false);
     });
+    debug('close menu');
     this._notify();
   }
 
@@ -56,6 +58,7 @@ export default class MenuContext extends Component {
     if (!menu) {
       return console.warn(`menu with name ${name} does not exist`);
     }
+    debug('toggle menu', name);
     menu.instance._setOpened(!menu.instance._getOpened());
   }
 
@@ -63,8 +66,10 @@ export default class MenuContext extends Component {
     const prev = this.state.openedMenu;
     const next = this._menuRegistry.getAll().find(menu => menu.instance._isOpen());
     if (prev === next) {
+      debug('notify: skipping - no update needed');
       return;
     }
+    debug('notify: next menu:', !!next, next ? next.name : undefined);
     if (!prev && next) {
       return this._initOpen(next).then(() => {
         next.instance.props.onOpen();
@@ -105,6 +110,7 @@ export default class MenuContext extends Component {
   _onBackdropPress() {
     this.state.openedMenu.instance.props.onBackdropPress();
     this.closeMenu();
+    debug('on backdrop press');
   }
 
   _isInitialized() {
