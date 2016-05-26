@@ -5,11 +5,13 @@ import Menu from 'react-native-popup-menu';
 import Example from './Example';
 import BasicExample from './BasicExample';
 import OriginalExample from './OriginalExample';
+import ControlledExample from './ControlledExample';
 
 const demos = [
   { Component: BasicExample, name: 'Basic example' },
   { Component: Example, name: 'Advanced example' },
   { Component: OriginalExample, name: 'Original example' },
+  { Component: ControlledExample, name: 'Controlled example' },
 ];
 
 // show debug messages for demos.

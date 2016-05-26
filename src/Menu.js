@@ -32,8 +32,8 @@ export default class Menu extends Component {
     this.context.menuActions._notify();
   }
 
-  getName() {
-    return this._name;
+  componentDidUpdate() {
+    this.context.menuActions._notify();
   }
 
   componentWillUnmount() {
@@ -43,6 +43,10 @@ export default class Menu extends Component {
       this.context.menuActions._notify();
     }
     this.context.menuRegistry.unsubscribe(this);
+  }
+
+  getName() {
+    return this._name;
   }
 
   render() {
@@ -118,12 +122,15 @@ Menu.propTypes = {
   onSelect: React.PropTypes.func,
   onOpen: React.PropTypes.func,
   onClose: React.PropTypes.func,
+  opened: React.PropTypes.bool,
+  onBackdropPress: React.PropTypes.func,
 };
 
 Menu.defaultProps = {
   onSelect: () => {},
   onOpen: () => {},
   onClose: () => {},
+  onBackdropPress: () => {},
 };
 
 Menu.contextTypes = {

@@ -93,13 +93,18 @@ export default class MenuContext extends Component {
           { this.props.children }
         </View>
         {shouldRenderMenu &&
-          <Backdrop onPress={() => this.closeMenu()} />
+          <Backdrop onPress={() => this._onBackdropPress()} />
         }
         {shouldRenderMenu &&
           this._makeOptions(this.state.openedMenu)
         }
       </View>
     );
+  }
+
+  _onBackdropPress() {
+    this.state.openedMenu.instance.props.onBackdropPress();
+    this.closeMenu();
   }
 
   _isInitialized() {

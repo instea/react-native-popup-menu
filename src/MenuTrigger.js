@@ -3,14 +3,18 @@ import { View, TouchableWithoutFeedback, Text } from 'react-native';
 
 export default class MenuTrigger extends Component {
 
-  _openMenu() {
+  _onPress() {
+    if (this.props.onPress) {
+      return this.props.onPress();
+    }
     this.context.menuActions.openMenu(this.props.menuName);
   }
 
   render() {
     const { disabled, onRef, text, children } = this.props;
+    // TODO: omit props
     return (
-      <TouchableWithoutFeedback onPress={() => !disabled && this._openMenu()}>
+      <TouchableWithoutFeedback onPress={() => !disabled && this._onPress()}>
         <View {...this.props} ref={onRef} collapsable={false}>
           {text ? <Text>{text}</Text> : children}
         </View>
@@ -23,6 +27,7 @@ export default class MenuTrigger extends Component {
 MenuTrigger.propTypes = {
   disabled: React.PropTypes.bool,
   text: React.PropTypes.string,
+  onPress: React.PropTypes.func,
 };
 
 MenuTrigger.defaultProps = {
