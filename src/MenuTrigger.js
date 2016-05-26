@@ -6,9 +6,7 @@ export default class MenuTrigger extends Component {
 
   _onPress() {
     debug('trigger onPress');
-    if (this.props.onPress) {
-      return this.props.onPress();
-    }
+    this.props.onPress && this.props.onPress();
     this.context.menuActions.openMenu(this.props.menuName);
   }
 
