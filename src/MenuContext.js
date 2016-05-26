@@ -46,10 +46,10 @@ export default class MenuContext extends Component {
   }
 
   closeMenu() {
+    debug('close menu');
     this._menuRegistry.getAll().forEach(menu => {
       menu.instance._getOpened() && menu.instance._setOpened(false);
     });
-    debug('close menu');
     this._notify();
   }
 
@@ -60,6 +60,7 @@ export default class MenuContext extends Component {
     }
     debug('toggle menu', name);
     menu.instance._setOpened(!menu.instance._getOpened());
+    this._notify();
   }
 
   _notify() {
