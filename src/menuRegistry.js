@@ -16,7 +16,7 @@ export default function makeMenuRegistry(menus = new Map()) {
    * Subscribes menu by name.
    */
   function subscribe(instance) {
-    menus.set(instance.getName(), { instance });
+    menus.set(instance.getName(), { instance, name: instance.getName() });
   }
 
   /**

@@ -20,6 +20,7 @@ export default class Menu extends Component {
   constructor(props) {
     super(props);
     this._name = this.props.name || makeName();
+    this._forceClose = false;
   }
 
   componentDidMount() {
@@ -28,45 +29,20 @@ export default class Menu extends Component {
     }
     debug('subscribing menu', this._name);
     this.context.menuRegistry.subscribe(this);
+    this.context.menuActions._notify();
   }
 
   getName() {
     return this._name;
   }
 
-  isOpen() {
-    // TODO: declaratively check prop
-    return !!this._opened;
-  }
-
-  _getMenuData() {
-    return this._buildMenuData();
-  }
-
-  _open() {
-    this._opened = true;
-    this.props.onOpen();
-  }
-
-  _close() {
-    this._opened = false;
-    this.props.onClose();
-  }
-
-  _toggle() {
-    this._opened = !this._opened;
-  }
-
   componentWillUnmount() {
     debug('unsubscribing menu', this._name);
-    if (this.isOpen()) {
-      this._close();
-      this.context.menuActions.rerender().then(() => {
-        this.context.menuRegistry.unsubscribe(this);
-      });
-    } else {
-      this.context.menuRegistry.unsubscribe(this);
+    if (this._isOpen()) {
+      this._forceClose = true;
+      this.context.menuActions._notify();
     }
+    this.context.menuRegistry.unsubscribe(this);
   }
 
   render() {
@@ -95,6 +71,31 @@ export default class Menu extends Component {
     }, []);
   }
 
+  _isOpen() {
+    if (this._forceClose) {
+      return false;
+    }
+    return this.props.hasOwnProperty('opened') ? this.props.opened : this._opened;
+  }
+
+  _getTrigger() {
+    return this._trigger;
+  }
+
+  _getOptions() {
+    const { children, onSelect } = this.props;
+    const optionsElem = normalizeChildren(children).find(isMenuOptions);
+    return React.cloneElement(optionsElem, { onSelect });
+  }
+
+  _getOpened() {
+    return this._opened;
+  }
+
+  _setOpened(opened) {
+    this._opened = opened;
+  }
+
   _validateChildren() {
     const children = normalizeChildren(this.props.children);
     const options = children.find(isMenuOptions);
@@ -106,14 +107,6 @@ export default class Menu extends Component {
       console.warn('Menu has to contain MenuTrigger component');
     }
     return options && trigger;
-  }
-
-  _buildMenuData() {
-    const { children, onSelect } = this.props;
-    const optionsElem = normalizeChildren(children).find(isMenuOptions);
-    const options = React.cloneElement(optionsElem, { onSelect });
-    const trigger = this._trigger;
-    return { options, trigger };
   }
 
 }
