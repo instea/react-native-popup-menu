@@ -64,30 +64,22 @@ export default class MenuContext extends Component {
   }
 
   _notify() {
-    const prev = this.state.openedMenu;
-    const next = this._menuRegistry.getAll().find(menu => menu.instance._isOpen());
+    const NULL = {};
+    const prev = this.state.openedMenu || NULL;
+    const next = this._menuRegistry.getAll().find(menu => menu.instance._isOpen()) || NULL;
     if (prev === next) {
       debug('notify: skipping - no update needed');
       return;
     }
-    debug('notify: next menu:', !!next, next ? next.name : undefined);
-    if (!prev && next) {
-      return this._initOpen(next).then(() => {
+    debug('notify: next menu:', next.name);
+    if (prev.name !== next.name) {
+      prev.instance && prev.instance.props.onClose();
+      if (next.name) {
         next.instance.props.onOpen();
-        this.setState({ openedMenu: next });
-      });
+        this._initOpen(next);
+      }
     }
-    if (prev && next && prev.name !== next.name) {
-      return this._initOpen(next).then(() => {
-        prev.instance.props.onClose();
-        next.instance.props.onOpen();
-        this.setState({ openedMenu: next });
-      });
-    }
-    if (prev && !next) {
-      prev.instance.props.onClose();
-    }
-    this.setState({ openedMenu: next });
+    this.setState({ openedMenu: next === NULL ? undefined : next });
   }
 
   render() {
@@ -120,11 +112,11 @@ export default class MenuContext extends Component {
 
   _initOpen(menu) {
     const trigger = menu.instance._getTrigger();
-    return new Promise(resolve => measure(trigger).then(triggerLayout => {
+    measure(trigger).then(triggerLayout => {
       debug('got trigger measurements', triggerLayout);
       this._menuRegistry.updateLayoutInfo(menu.name, { triggerLayout });
-      resolve();
-    }));
+      this._notify();
+    });
   }
 
   _onOptionsLayout(e, name) {
