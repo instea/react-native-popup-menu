@@ -103,7 +103,6 @@ describe('MenuContext', () => {
     menuActions.openMenu('menu1');
     expect(menuActions.isMenuOpen()).toEqual(true);
     expect(menu1._getOpened()).toEqual(true);
-    expect(menu1.props.onOpen).toHaveBeenCalled()
     initOutput.props.onLayout(defaultLayout);
     // next render will start rendering open menu
     const output = renderer.getRenderOutput();
@@ -113,6 +112,8 @@ describe('MenuContext', () => {
     expect(backdrop.type).toEqual(Backdrop);
     expect(options.ref).toEqual('menu-options');
     expect(options.props.children.type).toEqual(MenuOptions);
+    // on open was called only once
+    expect(menu1.props.onOpen.calls.count()).toEqual(1);
   });
 
   it('should close menu', () => {

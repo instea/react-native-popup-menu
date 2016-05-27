@@ -33,6 +33,7 @@ export default class Menu extends Component {
   }
 
   componentDidUpdate() {
+    debug('component did update', this._name);
     this.context.menuActions._notify();
   }
 

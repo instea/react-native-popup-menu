@@ -65,12 +65,14 @@ export default class MenuContext extends Component {
 
   _notify() {
     const NULL = {};
-    const prev = this.state.openedMenu || NULL;
+    const prev = this.openedMenu || NULL;
     const next = this._menuRegistry.getAll().find(menu => menu.instance._isOpen()) || NULL;
     if (prev === next) {
       return debug('notify: skipping - no update needed');
     }
-    debug('notify: next menu:', next.name);
+    debug('notify: next menu:', next.name, ' prev menu:', prev.name);
+    // set newly opened menu before any callbacks are called
+    this.openedMenu = next === NULL ? undefined : next;
     let afterSetState = undefined;
     if (prev.name !== next.name) {
       prev.instance && prev.instance.props.onClose();
@@ -79,7 +81,8 @@ export default class MenuContext extends Component {
         afterSetState = () => this._initOpen(next);
       }
     }
-    this.setState({ openedMenu: next === NULL ? undefined : next }, afterSetState);
+    this.setState({ openedMenu: this.openedMenu }, afterSetState);
+    debug('notify ended');
   }
 
   render() {
@@ -111,6 +114,7 @@ export default class MenuContext extends Component {
   }
 
   _initOpen(menu) {
+    debug('opening', menu.name);
     const trigger = menu.instance._getTrigger();
     measure(trigger).then(triggerLayout => {
       debug('got trigger measurements', triggerLayout);

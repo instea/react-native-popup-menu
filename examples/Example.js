@@ -17,23 +17,22 @@ export default class Example extends Component {
   }
 
   selectNumber(value) {
-    this.setState({
-      log: [...this.state.log, {
-        value: `selecting number: ${value}`,
-        id: ++unique
-      }]
-    });
+    this.addLog(`selecting number: ${value}`);
   }
 
   selectOptionType(value) {
     const v = typeof value === 'object' ? JSON.stringify(value) : value;
+    this.addLog(`selecting type: ${v}`);
+    return value !== 'Do not close';
+  }
+
+  addLog(value) {
     this.setState({
       log: [...this.state.log, {
-        value: `selecting type: ${v}`,
+        value,
         id: ++unique
       }]
     });
-    return value !== 'Do not close';
   }
 
   toggleHighlight(id) {
@@ -72,7 +71,11 @@ export default class Example extends Component {
               </MenuOptions>
             </Menu>
             <View style={{flex:1}}></View>
-            <Menu name="types" onSelect={value => this.selectOptionType(value)}>
+            <Menu name="types" onSelect={value => this.selectOptionType(value)}
+              onBackdropPress={() => this.addLog('menu will be closed by backdrop')}
+              onOpen={() => this.addLog('menu is opening')}
+              onClose={() => this.addLog('menu is closing')}
+              >
               <MenuTrigger style={styles.trigger}>
                 <Text style={styles.triggerText}>Select type...</Text>
               </MenuTrigger>
