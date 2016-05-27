@@ -12,9 +12,11 @@ npm install react-native-popup-menu --save
 
 ## Demo
 
-<img src="./android.demo.gif" style="border: 1px solid silver" />
+![](./android.demo.gif)
 
 ## Basic Usage
+
+### Uncontrolled example
 
 ```js
 import React from 'react';
@@ -27,97 +29,59 @@ import Menu, {
 } from 'react-native-popup-menu';
 
 export const App = () => (
-  <MenuContext style={{flexDirection: 'column'}}>
+  <MenuContext style={{flexDirection: 'column', padding: 30}}>
     <Text>Hello world!</Text>
     <Menu onSelect={value => alert(`Selected number: ${value}`)}>
-      <MenuTrigger>
-        <Text>Select option</Text>
-      </MenuTrigger>
+      <MenuTrigger text='Select option' />
       <MenuOptions>
-        <MenuOption value={1}>
-          <Text>One</Text>
-        </MenuOption>
-        <MenuOption value={2}>
-          <Text>Two</Text>
-        </MenuOption>
+        <MenuOption value={1} text='One' />
+        <MenuOption value={2} text='Two' />
       </MenuOptions>
     </Menu>
   </MenuContext>
 );
-
-AppRegistry.registerComponent('examples', () => App);
 ```
 
-## API
+### Controlled example
 
-### MenuContext
+```js
+export default class ControlledExample extends Component {
 
-It provides methods to handle popup menus imperatively.  The same methods are exposed to the child context with name `menuActions`.
+  constructor(props, ctx) {
+    super(props, ctx);
+    this.state = { opened: true };
+  }
 
-#### Methods, `menuActions` context
+  onOptionSelect(value) {
+    alert(`Selected number: ${value}`);
+    this.setState({ opened: false });
+  }
 
-| Method Name | Arguments | Notes
-|---|---|---|
-|`openMenu`|`name`|Opens menu by name|
-|`toggleMenu`|`name`|Toggle menu by name|
-|`closeMenu`||Closes currently opened menu|
-|`isMenuOpen`||Returns `true` if any menu is open|
+  render() {
+    return (
+      <MenuContext
+        style={{flexDirection: 'column', padding: 30}}>
+        <Text>Hello world!</Text>
+        <Menu
+          opened={this.state.opened}
+          onBackdropPress={() => this.setState({ opened: false })}
+          onSelect={value => this.onOptionSelect(value)}>
+          <MenuTrigger
+            onPress={() => this.setState({ opened: true })}
+            text='Select option'/>
+          <MenuOptions>
+            <MenuOption value={1} text='One' />
+            <MenuOption value={2} text='Two' />
+          </MenuOptions>
+        </Menu>
+      </MenuContext>
+    );
+  }
 
-**Note:** It is important that `<MenuContext />` is on the top of the component hierarchy and wrap all `<Menu />` components.
-This is needed in order to solve z-index issues.
+}
+```
 
-### Menu
+## Documentation
 
-Root menu component defining menu name and providing menu events.
-
-#### Options
-| Option | Type | Opt/Required | Default | Note |
-|---|---|---|---|---|
-|`name`|`String`|Optional|`auto-generated`|Unique name of menu|
-
-#### Events
-| Event Name | Returns | Notes |
-|---|---|---|
-|`onSelect`|`optionValue`|Triggered when menu option is selected.<br>When handler returns `false`, the popup menu remains open|
-|`onOpen`||Triggered when menu is opened|
-|`onClose`||Triggered when menu is closed|
-
-#### Static Properties
-| Property name | Type | Opt/Required | Default | Note |
-|---|---|---|---|---|
-|`debug`|`Boolean`|Optional|`false`|This property enables debug logs|
-
-### MenuTrigger
-
-It defines position where the popup menu will be rendered.
-Menu can by opened by clicking on `<MenuTrigger />` or by calling context methods.
-
-#### Options
-| Option | Type | Opt/Required | Default | Note |
-|---|---|---|---|---|
-|`disabled`|`Boolean`|Optional|`false`|Indicates if trigger can be pressed|
-
-**Note:** It is necessary that `<MenuTrigger />` is a direct child of `<Menu />`.
-
-### MenuOptions
-
-This component wrapps all menu options.
-
-**Note:** It is necessary that `<MenuOptions />` is a direct child of `<Menu />`.
-
-#### Options
-| Option | Type | Opt/Required | Default | Note |
-|---|---|---|---|---|
-|`optionsContainerStyle`|`Style`|Optional||Custom styles for options container|
-|`renderOptionsContainer`|`Func`|Optional|`options => options`|Custom render function for `<MenuOptions />`. It takes options component as argument and returns component. E.g.: `options => <SomeCustomContainer>{options}</SomeCustomContainer>`|
-
-### MenuOption
-
-Wrapper component of menu option.
-
-| Option | Type | Opt/Required | Default | Note |
-|---|---|---|---|---|
-|`disabled`|`Boolean`|Optional|`false`|Indicates if option can be pressed|
-
-
-
+[API](doc/api.md)
+[Examples](examples/)
