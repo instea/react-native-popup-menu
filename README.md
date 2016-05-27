@@ -83,6 +83,5 @@ export default class ControlledExample extends Component {
 
 ## Documentation
 
-[API](doc/api.md)
-
-[Examples](examples/)
+- [API](doc/api.md)
+- [Examples](examples/)
