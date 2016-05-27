@@ -73,6 +73,7 @@ This component wrapps all menu options.
 
 Wrapper component of menu option.
 
+### Options
 | Option | Type | Opt/Required | Default | Note |
 |---|---|---|---|---|
 |`value`|`Any`|Optional||Value of option|
