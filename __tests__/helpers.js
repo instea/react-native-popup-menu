@@ -20,3 +20,14 @@ export function normalizeStyle(styles) {
   }
   return styles;
 }
+
+/**
+Enable debug logs
+*/
+export function showDebug() {
+  jest.mock('../src/logger', ()=> ({
+    debug : (...args) => {
+      console.log('test-debug', ...args);
+    },
+  }));
+}

@@ -15,6 +15,18 @@ const { objectContaining, createSpy, any } = jasmine;
 
 describe('Menu', () => {
 
+  function createMockContext() {
+    return {
+      menuRegistry : {
+        subscribe: createSpy(),
+        unsubscribe: createSpy(),
+      },
+      menuActions: {
+        _notify: createSpy(),
+      }
+    }
+  }
+
   it('should render component and preserve children order', () => {
     const { output } = render(
       <Menu>
@@ -40,37 +52,31 @@ describe('Menu', () => {
     );
   });
 
-  it('should subscribe menu', () => {
+  it('should subscribe menu and notify context', () => {
     const { instance } = render(
-      <Menu name='menu1'>
+      <Menu>
         <MenuTrigger />
         <MenuOptions />
       </Menu>
     );
-    const menuRegistry = {
-      subscribe: createSpy()
-    };
-    instance.context = { menuRegistry };
+    const ctx = createMockContext();
+    instance.context = ctx;
     instance.componentDidMount();
-    expect(menuRegistry.subscribe).toHaveBeenCalledWith('menu1', objectContaining({
-      name: 'menu1',
-      options: any(Object)
-    }));
+    expect(ctx.menuRegistry.subscribe).toHaveBeenCalledWith(instance);
+    expect(ctx.menuActions._notify).toHaveBeenCalled();
   });
 
   it('should not subscribe menu because of missing options', () => {
     const { instance, renderer } = render(
-      <Menu name='menu1'>
+      <Menu>
         <MenuTrigger />
         <Text>Some text</Text>
       </Menu>
     );
-    const menuRegistry = {
-      subscribe: createSpy()
-    };
-    instance.context = { menuRegistry };
+    const ctx = createMockContext();
+    instance.context = ctx;
     instance.componentDidMount();
-    expect(menuRegistry.subscribe).not.toHaveBeenCalled();
+    expect(ctx.menuRegistry.subscribe).not.toHaveBeenCalled();
     const output = renderer.getRenderOutput();
     expect(output.type).toEqual(View);
     expect(output.props.children).toEqual([
@@ -83,48 +89,28 @@ describe('Menu', () => {
 
   it('should not subscribe menu because of missing trigger', () => {
     const { instance, renderer } = render(
-      <Menu name='menu1'>
+      <Menu>
         <Text>Some text</Text>
         <MenuOptions />
       </Menu>
     );
-    const menuRegistry = {
-      subscribe: createSpy()
-    };
-    instance.context = { menuRegistry };
+    const ctx = createMockContext();
+    instance.context = ctx;
     instance.componentDidMount();
-    expect(menuRegistry.subscribe).not.toHaveBeenCalled();
+    expect(ctx.menuRegistry.subscribe).not.toHaveBeenCalled();
     const output = renderer.getRenderOutput();
     expect(output.type).toEqual(View);
     expect(output.props.children).toEqual([
       <Text>Some text</Text>
     ]);
-  });
-
-  it('should not fail without MenuOptions and MenuTrigger', () => {
-    const { instance, renderer } = render(
-      <Menu name='menu1'>
-        <Text>Some text</Text>
-      </Menu>
-    );
-    const menuRegistry = { subscribe: createSpy(), unsubscribe: createSpy() };
-    instance.context = { menuRegistry };
-    instance.componentDidMount();
-    const output = renderer.getRenderOutput();
-    expect(output.type).toEqual(View);
-    expect(output.props.children).toEqual([
-      <Text>Some text</Text>
-    ]);
-    instance.componentWillUnmount();
   });
 
   it('should not fail without any children', () => {
     const { instance, renderer } = render(
-      <Menu>
-      </Menu>
+      <Menu/>
     );
-    const menuRegistry = { subscribe: createSpy(), unsubscribe: createSpy() };
-    instance.context = { menuRegistry };
+    const ctx = createMockContext();
+    instance.context = ctx;
     instance.componentDidMount();
     const output = renderer.getRenderOutput();
     expect(output.type).toEqual(View);
@@ -132,96 +118,102 @@ describe('Menu', () => {
     instance.componentWillUnmount();
   });
 
-  it('should subscribe events', () => {
-    const onOpen = () => 1, onClose = () => 2;
+  it('should autogenerate name if not provided', () => {
     const { instance } = render(
-      <Menu onOpen={ onOpen } onClose={ onClose } name='menu1'>
-        <MenuTrigger />
-        <MenuOptions />
-      </Menu>
+      <Menu/>
     );
-    const menuRegistry = {
-      subscribe: createSpy()
-    };
-    instance.context = { menuRegistry };
-    instance.componentDidMount();
-    expect(menuRegistry.subscribe).toHaveBeenCalledWith('menu1', objectContaining({
-      name: 'menu1',
-      events: objectContaining({ onOpen, onClose })
-    }));
+    expect(instance.getName()).toEqual('generated-name');
   });
 
-  it('should subscribe menu with auto-generated name', () => {
+  it('should use name from props if provided', () => {
+    const { instance } = render(
+      <Menu name='prop-name'/>
+    );
+    expect(instance.getName()).toEqual('prop-name');
+  });
+
+  it('should unsubscribe menu', () => {
     const { instance } = render(
       <Menu>
         <MenuTrigger />
         <MenuOptions />
       </Menu>
     );
-    const menuRegistry = {
-      subscribe: createSpy()
-    };
-    instance.context = { menuRegistry };
-    instance.componentDidMount();
-    expect(menuRegistry.subscribe).toHaveBeenCalledWith('generated-name', any(Object));
-  });
-
-  it('should unsubscribe menu', () => {
-    const { instance } = render(
-      <Menu name='menu1'>
-        <MenuTrigger />
-        <MenuOptions />
-      </Menu>
-    );
-    const menuRegistry = {
-      subscribe: createSpy(),
-      unsubscribe: createSpy()
-    };
-    instance.context = { menuRegistry };
-    instance.componentDidMount();
-    expect(menuRegistry.subscribe).toHaveBeenCalledWith('menu1', any(Object));
+    const ctx = createMockContext();
+    instance.context = ctx;
     instance.componentWillUnmount();
-    expect(menuRegistry.unsubscribe).toHaveBeenCalledWith('menu1');
+    expect(ctx.menuRegistry.unsubscribe).toHaveBeenCalledWith(instance);
   });
 
-  it('should update menu', () => {
-    const { instance, output } = render(
-      <Menu name='menu1'>
+  it('should notify context if updated', () => {
+    const { instance } = render(
+      <Menu>
         <MenuTrigger />
         <MenuOptions />
       </Menu>
     );
-    const menuRegistry = {
-      subscribe: createSpy(),
-      update: createSpy()
-    };
-    instance.context = { menuRegistry };
-    instance.componentDidMount();
-    const [ trigger ] = output.props.children;
-    trigger.props.onRef('trigger_ref');
+    const ctx = createMockContext();
+    instance.context = ctx;
     instance.componentDidUpdate();
-    expect(menuRegistry.update).toHaveBeenCalledWith('menu1', objectContaining({
-      name: 'menu1',
-      trigger: 'trigger_ref',
-    }));
+    expect(ctx.menuActions._notify).toHaveBeenCalled();
   });
 
-  it('should subscribe onSelect handler', () => {
+  it('should forward on select handler to menu options', () => {
     const onSelect = () => 0;
     const { instance } = render(
-      <Menu name='menu1' onSelect={ onSelect }>
+      <Menu onSelect={ onSelect }>
         <MenuTrigger />
         <MenuOptions />
       </Menu>
     );
-    const menuRegistry = { subscribe: createSpy() };
-    instance.context = { menuRegistry };
-    instance.componentDidMount();
-    expect(menuRegistry.subscribe).toHaveBeenCalledWith('menu1', objectContaining({
-      options: objectContaining({
-        props: objectContaining({ onSelect })
-      })
-    }));
+    const options = instance._getOptions();
+    expect(options.type).toEqual(MenuOptions);
+    expect(options.props.onSelect).toEqual(onSelect);
   });
+
+  it('declarative opened takes precedence over imperative', () => {
+    const { instance } = render(
+      <Menu opened={false}/>
+    );
+    instance._setOpened(true);
+    expect(instance._isOpen()).toEqual(false);
+    expect(instance._getOpened()).toEqual(true);
+  });
+
+  it('imperative opened is used if no declarative', () => {
+    const { instance } = render(
+      <Menu/>
+    );
+    instance._setOpened(true);
+    expect(instance._isOpen()).toEqual(true);
+  });
+
+  it('should be considered closed after unmount', () => {
+    const { instance } = render(
+      <Menu opened={true}>
+        <MenuTrigger />
+        <MenuOptions />
+      </Menu>
+    );
+    const ctx = createMockContext();
+    instance.context = ctx;
+    expect(instance._isOpen()).toEqual(true);
+    instance.componentWillUnmount();
+    expect(instance._isOpen()).toEqual(false);
+    expect(ctx.menuActions._notify).toHaveBeenCalled();
+  });
+
+  it('should know its trigger reference', () => {
+    const triggerRef = 9;
+    const { instance, output } = render(
+      <Menu>
+        <MenuTrigger />
+        <MenuOptions />
+      </Menu>
+    );
+    output.props.children[0].props.onRef(triggerRef);
+    expect(instance._getTrigger()).toEqual(triggerRef);
+  });
+
 
 });

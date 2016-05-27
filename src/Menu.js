@@ -8,7 +8,7 @@ const isRegularComponent = c => c.type !== MenuOptions && c.type !== MenuTrigger
 const isTrigger = c => c.type === MenuTrigger;
 const isMenuOptions = c => c.type === MenuOptions;
 
-const normalizeChildren = children => {
+const childrenToArray = children => {
   if (children) {
     return Array.isArray(children) ? children : [ children ];
   }
@@ -60,7 +60,7 @@ export default class Menu extends Component {
   }
 
   _reduceChildren() {
-    return normalizeChildren(this.props.children).reduce((r, child) => {
+    return childrenToArray(this.props.children).reduce((r, child) => {
       if (isTrigger(child)) {
         r.push(React.cloneElement(child, {
           key: null,
@@ -88,7 +88,7 @@ export default class Menu extends Component {
 
   _getOptions() {
     const { children, onSelect } = this.props;
-    const optionsElem = normalizeChildren(children).find(isMenuOptions);
+    const optionsElem = childrenToArray(children).find(isMenuOptions);
     return React.cloneElement(optionsElem, { onSelect });
   }
 
@@ -101,7 +101,7 @@ export default class Menu extends Component {
   }
 
   _validateChildren() {
-    const children = normalizeChildren(this.props.children);
+    const children = childrenToArray(this.props.children);
     const options = children.find(isMenuOptions);
     if (!options) {
       console.warn('Menu has to contain MenuOptions component');

@@ -2,25 +2,22 @@
  * Registry to subscribe, unsubscribe and update data of menus.
  *
  * menu data: {
- *   name: String
- *   options: React.Element
- *   events: Object
- *   trigger: Object
- *   triggerLayout: Object
- *   optionsLayout: Object
+ *   instance: react instance
+ *   triggerLayout: Object - layout of menu trigger if known
+ *   optionsLayout: Object - layout of menu options if known
  * }
 */
 export default function makeMenuRegistry(menus = new Map()) {
 
   /**
-   * Subscribes menu by name.
+   * Subscribes menu instance.
    */
   function subscribe(instance) {
-    menus.set(instance.getName(), { instance, name: instance.getName() });
+    menus.set(instance.getName(), { name: instance.getName(), instance });
   }
 
   /**
-   * Unsubscribes menu by name.
+   * Unsubscribes menu instance.
    */
   function unsubscribe(instance) {
     menus.delete(instance.getName());
@@ -40,16 +37,18 @@ export default function makeMenuRegistry(menus = new Map()) {
   }
 
   /**
-   * Get menu by name.
+   * Get `menu data` by name.
    */
   function getMenu(name) {
     return menus.get(name);
   }
 
+  /**
+   * Returns all subscribed menus as array of `menu data`
+   */
   function getAll() {
     return [...menus.values()];
   }
 
   return { subscribe, unsubscribe, updateLayoutInfo, getMenu, getAll };
 }
-

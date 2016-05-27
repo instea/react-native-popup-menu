@@ -6,17 +6,11 @@ const makeMenuRegistry = require('../src/menuRegistry').default;
 describe('menuRegistry tests', () => {
 
   const menu1 = {
-    name: 'menu1',
-    options: [ 1, 2, 3, 4 ],
-    trigger: 'trigger1',
-    events: { onClick: 5 }
+    getName : () => 'menu1',
   };
 
   const menu2 = {
-    name: 'menu2',
-    options: [ 6, 7 ],
-    trigger: 'trigger2',
-    events: { onClick: 8 }
+    getName : () => 'menu2',
   };
 
   it('should export function', () => {
@@ -30,93 +24,84 @@ describe('menuRegistry tests', () => {
   describe('getMenu', () => {
     it('should return menu', () => {
       const menus = new Map([
-        [menu1.name, menu1]
+        ['menu1', {instance: menu1}]
       ]);
       const registry = makeMenuRegistry(menus);
-      expect(registry.getMenu(menu1.name)).to.eql(menu1);
+      expect(registry.getMenu('menu1').instance).to.eql(menu1);
     });
   });
 
   describe('subscribe', () => {
     it('should subscribe menu', () => {
       const registry = makeMenuRegistry();
-      registry.subscribe(menu1.name, menu1);
-      expect(registry.getMenu(menu1.name)).to.eql(menu1);
+      registry.subscribe(menu1);
+      expect(registry.getMenu('menu1')).to.eql({name: 'menu1', instance: menu1});
     });
   });
 
   describe('unsubscribe', () => {
     it('should unsubscribe menu', () => {
       const menus = new Map([
-        [menu1.name, menu1],
-        [menu2.name, menu2]
+        ['menu1', {name:'menu1', instance: menu1}],
+        ['menu2', {name:'menu2', instance: menu2}]
       ]);
       const registry = makeMenuRegistry(menus);
-      registry.unsubscribe(menu1.name);
-      expect(registry.getMenu(menu1.name)).to.be.undefined;
-      expect(registry.getMenu(menu2.name)).to.eql(menu2);
-    });
-  });
-
-  describe('update', () => {
-    it('should update subscription', () => {
-      const menus = new Map([['menu3', {
-        name: 'menu3',
-        options: [1, 2],
-        trigger: 'trigger3',
-        events: { onClick: 3 },
-        triggerLayout: 5,
-        optionsLayout: 6
-      }]]);
-      const registry = makeMenuRegistry(menus);
-      registry.update('menu3', {
-        options: [7, 8],
-        trigger: 'trigger3x',
-        events: { onClick: 9 }
-      });
-      expect(registry.getMenu('menu3')).to.eql({
-        name: 'menu3',
-        options: [7, 8],
-        trigger: 'trigger3x',
-        events: { onClick: 9 },
-        triggerLayout: 5,
-        optionsLayout: 6
-      });
+      registry.unsubscribe(menu1);
+      expect(registry.getMenu('menu1')).to.be.undefined;
+      expect(registry.getMenu('menu2')).to.eql({name:'menu2', instance: menu2});
     });
   });
 
   describe('updateLayoutInfo', () => {
 
     it('should update only optionsLayout', () => {
-      const menus = new Map([['menu3', {
-        name: 'menu3',
+      const menus = new Map([['menu1', {
+        name: 'menu1',
+        instance: menu1,
         triggerLayout: 5,
-        optionsLayout: 6
+        optionsLayout: 6,
       }]]);
       const registry = makeMenuRegistry(menus);
-      registry.updateLayoutInfo('menu3', { optionsLayout: 7 });
-      expect(registry.getMenu('menu3')).to.eql({
-        name: 'menu3',
+      registry.updateLayoutInfo('menu1', { optionsLayout: 7 });
+      expect(registry.getMenu('menu1')).to.eql({
+        name: 'menu1',
+        instance: menu1,
         triggerLayout: 5,
-        optionsLayout: 7
+        optionsLayout: 7,
       });
     });
 
     it('should update only triggerLayout', () => {
-      const menus = new Map([['menu3', {
-        name: 'menu3',
+      const menus = new Map([['menu1', {
+        name: 'menu1',
+        instance: menu1,
         triggerLayout: 5,
-        optionsLayout: 6
+        optionsLayout: 6,
       }]]);
       const registry = makeMenuRegistry(menus);
-      registry.updateLayoutInfo('menu3', { triggerLayout: 7 });
-      expect(registry.getMenu('menu3')).to.eql({
-        name: 'menu3',
+      registry.updateLayoutInfo('menu1', { triggerLayout: 7 });
+      expect(registry.getMenu('menu1')).to.eql({
+        name: 'menu1',
+        instance: menu1,
         triggerLayout: 7,
-        optionsLayout: 6
+        optionsLayout: 6,
       });
     });
 
+  });
+
+  describe('getAll', () => {
+    it('should return all registered menus with its associated data', () => {
+      const menus = new Map([
+        ['menu1', {name: 'menu1', instance: menu1}],
+        ['menu2', {name: 'menu2', instance: menu2, triggerLayout: 5}]
+      ]);
+      const registry = makeMenuRegistry(menus);
+      const allMenus = registry.getAll();
+      expect(allMenus.length).to.eql(2);
+      expect(allMenus).to.contain({name: 'menu1', instance: menu1});
+      expect(allMenus).to.contain({name: 'menu2', instance: menu2, triggerLayout: 5});
+    });
   });
 
 });

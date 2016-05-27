@@ -68,18 +68,18 @@ export default class MenuContext extends Component {
     const prev = this.state.openedMenu || NULL;
     const next = this._menuRegistry.getAll().find(menu => menu.instance._isOpen()) || NULL;
     if (prev === next) {
-      debug('notify: skipping - no update needed');
-      return;
+      return debug('notify: skipping - no update needed');
     }
     debug('notify: next menu:', next.name);
+    let afterSetState = undefined;
     if (prev.name !== next.name) {
       prev.instance && prev.instance.props.onClose();
       if (next.name) {
         next.instance.props.onOpen();
-        this._initOpen(next);
+        afterSetState = () => this._initOpen(next);
       }
     }
-    this.setState({ openedMenu: next === NULL ? undefined : next });
+    this.setState({ openedMenu: next === NULL ? undefined : next }, afterSetState);
   }
 
   render() {
@@ -101,9 +101,9 @@ export default class MenuContext extends Component {
   }
 
   _onBackdropPress() {
+    debug('on backdrop press');
     this.state.openedMenu.instance.props.onBackdropPress();
     this.closeMenu();
-    debug('on backdrop press');
   }
 
   _isInitialized() {

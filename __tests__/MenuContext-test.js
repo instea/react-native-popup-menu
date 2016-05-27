@@ -6,18 +6,7 @@ import Backdrop from '../src/Backdrop';
 const { objectContaining, createSpy } = jasmine;
 
 jest.dontMock('../src/MenuContext');
-
-jest.mock('../src/menuRegistry', () => () => {
-  let menu = {};
-  const subscribe = m => (menu = m);
-  const unsubscribe = () => (menu = {});
-  const getMenu = name => name === menu.name ? menu : undefined;
-  const updateLayoutInfo = (name, info) => {
-    menu = name === menu.name ? Object.assign({}, menu, info) : menu;
-  };
-  const update = () => 0;
-  return { getMenu, updateLayoutInfo, subscribe, unsubscribe, update };
-});
+jest.dontMock('../src/menuRegistry');
 
 jest.mock('../src/helpers', () => ({
   measure: () => ({
@@ -37,15 +26,25 @@ const MenuContext = require('../src/MenuContext').default;
 
 describe('MenuContext', () => {
 
-  const menu1 = {
-    name: 'menu1',
-    options: <MenuOptions />,
-    trigger: <MenuTrigger />,
-    events: {
-      onOpen: () => 0,
-      onClose: () => 0
+  /* eslint-disable react/display-name */
+  function makeMenuStub(name) {
+    let opened = false;
+    return {
+      getName: ()=>name,
+      _getOpened: ()=>opened,
+      _setOpened: (value)=>opened=value,
+      _isOpen: ()=>opened,
+      _getTrigger: ()=>(<MenuTrigger/>),
+      _getOptions: ()=>(<MenuOptions/>),
+      props : {
+        onOpen: createSpy(),
+        onClose: createSpy(),
+        onBackdropPress: createSpy(),
+      },
     }
-  };
+  }
+
+  const menu1 = makeMenuStub('menu1')
 
   const defaultLayout = {
     nativeEvent: {
@@ -71,6 +70,8 @@ describe('MenuContext', () => {
     expect(typeof menuActions.closeMenu).toEqual('function');
     expect(typeof menuActions.toggleMenu).toEqual('function');
     expect(typeof menuActions.isMenuOpen).toEqual('function');
+    // plus internal methods
+    expect(typeof menuActions._notify).toEqual('function');
   });
 
   it('should render child components', () => {
@@ -101,7 +102,10 @@ describe('MenuContext', () => {
     menuRegistry.subscribe(menu1);
     menuActions.openMenu('menu1');
     expect(menuActions.isMenuOpen()).toEqual(true);
+    expect(menu1._getOpened()).toEqual(true);
+    expect(menu1.props.onOpen).toHaveBeenCalled()
     initOutput.props.onLayout(defaultLayout);
+    // next render will start rendering open menu
     const output = renderer.getRenderOutput();
     expect(output.props.children.length).toEqual(3);
     const [ components, backdrop, options ] = output.props.children;
@@ -121,6 +125,7 @@ describe('MenuContext', () => {
     menuActions.openMenu('menu1');
     menuActions.closeMenu();
     expect(menuActions.isMenuOpen()).toEqual(false);
+    expect(menu1.props.onClose).toHaveBeenCalled()
     const output = renderer.getRenderOutput();
     const [ components, backdrop, options ] = output.props.children;
     expect(components.type).toEqual(View);
@@ -136,13 +141,15 @@ describe('MenuContext', () => {
     menuRegistry.subscribe(menu1);
     menuActions.toggleMenu('menu1');
     expect(menuActions.isMenuOpen()).toEqual(true);
+    expect(menu1._isOpen()).toEqual(true);
     menuActions.toggleMenu('menu1');
     expect(menuActions.isMenuOpen()).toEqual(false);
+    expect(menu1._isOpen()).toEqual(false);
     menuActions.toggleMenu('menu1');
     expect(menuActions.isMenuOpen()).toEqual(true);
   });
 
-  it('should not open menu', () => {
+  it('should not open non existing menu', () => {
     const { output: initOutput, instance, renderer } = render(
       <MenuContext />
     );
@@ -173,34 +180,6 @@ describe('MenuContext', () => {
     expect(options).toBeFalsy();
   });
 
-  it('should trigger events', () => {
-    const { instance } = render(
-      <MenuContext />
-    );
-    const onOpenSpy = createSpy();
-    const onCloseSpy = createSpy();
-    const menu = Object.assign({}, menu1, {
-      events: {
-        onOpen: onOpenSpy,
-        onClose: onCloseSpy
-      }
-    });
-    const { menuRegistry, menuActions } = instance.getChildContext();
-    menuRegistry.subscribe(menu);
-    menuActions.openMenu('menu1');
-    expect(onOpenSpy.calls.count()).toEqual(1);
-    expect(onCloseSpy.calls.count()).toEqual(0);
-    menuActions.closeMenu('menu1');
-    expect(onOpenSpy.calls.count()).toEqual(1);
-    expect(onCloseSpy.calls.count()).toEqual(1);
-    menuActions.toggleMenu('menu1');
-    expect(onOpenSpy.calls.count()).toEqual(2);
-    expect(onCloseSpy.calls.count()).toEqual(1);
-    menuActions.toggleMenu('menu1');
-    expect(onOpenSpy.calls.count()).toEqual(2);
-    expect(onCloseSpy.calls.count()).toEqual(2);
-  });
-
   it('should update options layout', () => {
     const { output: initOutput, instance, renderer } = render(
       <MenuContext />
@@ -229,7 +208,7 @@ describe('MenuContext', () => {
     }));
   });
 
-  it('should render backdrop', () => {
+  it('should render backdrop that will trigger onBackdropPress', () => {
     const { output: initOutput, instance, renderer } = render(
       <MenuContext />
     );
@@ -241,6 +220,8 @@ describe('MenuContext', () => {
     expect(output.props.children.length).toEqual(3);
     const backdrop = output.props.children[1];
     expect(backdrop.type).toEqual(Backdrop);
+    backdrop.props.onPress();
+    expect(menu1.props.onBackdropPress).toHaveBeenCalled();
   });
 
 });
