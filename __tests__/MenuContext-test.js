@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { render } from './helpers';
 import { MenuOptions, MenuTrigger } from '../src/index';
+import { MenuOutsideOfTheScreen } from '../src/renderers';
 import Backdrop from '../src/Backdrop';
 const { objectContaining, createSpy } = jasmine;
 
@@ -17,8 +18,11 @@ jest.mock('../src/helpers', () => ({
       height: 50
     })
   }),
-  computeBestMenuPosition: () => ({
-    top: 50, left: 0, isVisible: true
+  computeContextMenuPosition: () => ({
+    top: 50, left: 0
+  }),
+  computePositionOutside: () => ({
+    top: 500, left: 500
   })
 }));
 
@@ -110,8 +114,7 @@ describe('MenuContext', () => {
     const [ components, backdrop, options ] = output.props.children;
     expect(components.type).toEqual(View);
     expect(backdrop.type).toEqual(Backdrop);
-    expect(options.ref).toEqual('menu-options');
-    expect(options.props.children.type).toEqual(MenuOptions);
+    expect(options.type).toEqual(MenuOutsideOfTheScreen);
     // on open was called only once
     expect(menu1.props.onOpen.calls.count()).toEqual(1);
   });

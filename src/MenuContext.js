@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import AnimatedView from './AnimatedView';
 import makeMenuRegistry from './menuRegistry';
 import Backdrop from './Backdrop';
-import { measure, computeBestMenuPosition } from './helpers';
+import { measure } from './helpers';
 import { debug } from './logger.js';
+import { ContextMenu, MenuOutsideOfTheScreen } from './renderers';
 
 const defaultOptionsContainerRenderer = options => options;
 const layoutsEqual = (a, b) => (
@@ -133,16 +133,17 @@ export default class MenuContext extends Component {
     const options = instance._getOptions();
     const name = instance.getName();
     const windowLayout = this._ownLayout;
-    const { top, left, isVisible } = computeBestMenuPosition(windowLayout, triggerLayout, optionsLayout);
-    debug('got best size', { windowLayout, triggerLayout, optionsLayout }, { top, left, isVisible });
-    const MenuComponent = isVisible ? AnimatedView : View;
     const { optionsContainerStyle, renderOptionsContainer } = options.props;
-    const style = [ styles.optionsContainer, optionsContainerStyle, { top, left } ];
     const renderer = renderOptionsContainer || defaultOptionsContainerRenderer;
     const onLayout = e => this._onOptionsLayout(e, name);
-    const ref = 'menu-options';
-    const collapsable = false;
-    return React.createElement(MenuComponent, { style, onLayout, ref, collapsable }, renderer(options));
+    const style = [ styles.optionsContainer, optionsContainerStyle ];
+    const layouts = { windowLayout, triggerLayout, optionsLayout };
+    const props = { children: renderer(options), style, onLayout, layouts };
+    if (windowLayout && triggerLayout && optionsLayout) {
+      return <ContextMenu {...props} />
+    } else {
+      return <MenuOutsideOfTheScreen {...props} />
+    }
   }
 
   _onLayout({ nativeEvent: { layout } }) {

@@ -1,7 +1,12 @@
 import { expect } from 'chai';
 
 jest.dontMock('../src/helpers');
-const { measure, makeName, computeBestMenuPosition } = require('../src/helpers');
+const {
+  measure,
+  makeName,
+  computeContextMenuPosition,
+  computePositionOutside
+} = require('../src/helpers');
 
 describe('helpers test', () => {
 
@@ -42,30 +47,14 @@ describe('helpers test', () => {
 
   });
 
-  describe('computeBestMenuPosition', () => {
-
-    it('should returns position outside of screen (undefined triggerLayout)', () => {
-      const window = { width: 400, height: 600 };
-      const options = { width: 50, height: 50 };
-      expect(computeBestMenuPosition(window, undefined, options)).to.eql({
-        top: 600, left: 400, isVisible: false
-      });
-    });
-
-    it('should returns position outside of screen (undefined optionsLayout)', () => {
-      const window = { width: 400, height: 600 };
-      const trigger = { width: 50, height: 50, x: 100, y: 100 };
-      expect(computeBestMenuPosition(window, trigger)).to.eql({
-        top: 600, left: 400, isVisible: false
-      });
-    });
+  describe('computeContextMenuPosition', () => {
 
     it('should returns default-top-left position', () => {
       const window = { width: 400, height: 600 };
       const trigger = { width: 50, height: 50, x: 100, y: 100 };
       const options = { width: 50, height: 50 };
-      expect(computeBestMenuPosition(window, trigger, options)).to.eql({
-        top: 100, left: 100, isVisible: true
+      expect(computeContextMenuPosition(window, trigger, options)).to.eql({
+        top: 100, left: 100
       });
     });
 
@@ -73,8 +62,8 @@ describe('helpers test', () => {
       const window = { width: 400, height: 600 };
       const trigger = { width: 50, height: 50, x: 10, y: 10 };
       const options = { width: 50, height: 50 };
-      expect(computeBestMenuPosition(window, trigger, options)).to.eql({
-        top: 10, left: 10, isVisible: true
+      expect(computeContextMenuPosition(window, trigger, options)).to.eql({
+        top: 10, left: 10
       });
     });
 
@@ -82,8 +71,8 @@ describe('helpers test', () => {
       const window = { width: 400, height: 600 };
       const trigger = { width: 100, height: 50, x: 300, y: 0 };
       const options = { width: 150, height: 100 };
-      expect(computeBestMenuPosition(window, trigger, options)).to.eql({
-        top: 0, left: 250, isVisible: true
+      expect(computeContextMenuPosition(window, trigger, options)).to.eql({
+        top: 0, left: 250
       });
     });
 
@@ -91,8 +80,8 @@ describe('helpers test', () => {
       const window = { width: 400, height: 600 };
       const trigger = { width: 100, height: 100, x: 10, y: 500 };
       const options = { width: 150, height: 150 };
-      expect(computeBestMenuPosition(window, trigger, options)).to.eql({
-        top: 450, left: 10, isVisible: true
+      expect(computeContextMenuPosition(window, trigger, options)).to.eql({
+        top: 450, left: 10
       });
     });
 
@@ -100,11 +89,20 @@ describe('helpers test', () => {
       const window = { width: 400, height: 600 };
       const trigger = { width: 100, height: 100, x: 300, y: 500 };
       const options = { width: 150, height: 150 };
-      expect(computeBestMenuPosition(window, trigger, options)).to.eql({
-        top: 450, left: 250, isVisible: true
+      expect(computeContextMenuPosition(window, trigger, options)).to.eql({
+        top: 450, left: 250
       });
     });
 
+  });
+
+  describe('computePositionOutside', () => {
+    it('should compute position outside of the screen', () => {
+      const window = { width: 400, height: 600 };
+      expect(computePositionOutside(window)).to.eql({
+        top: 600, left: 400
+      });
+    });
   });
 
 });
