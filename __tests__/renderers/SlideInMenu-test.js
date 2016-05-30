@@ -13,7 +13,10 @@ const { objectContaining } = jasmine;
 
 describe('SlideInMenu', () => {
 
-  const layouts = { windowLayout: { width: 400, height: 600 } };
+  const layouts = {
+    windowLayout: { width: 400, height: 600 },
+    optionsLayout: { width: 50, height: 100 },
+  };
 
   it('should render component', () => {
     const { output } = render(

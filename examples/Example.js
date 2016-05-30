@@ -56,7 +56,7 @@ export default class Example extends Component {
         <View style={styles.container}>
 
           <View style={styles.topbar}>
-            <Menu name="numbers" onSelect={value => this.selectNumber(value)}>
+            <Menu name="numbers" type="slide" onSelect={value => this.selectNumber(value)}>
               <MenuTrigger style={styles.trigger}>
                 <Text style={styles.triggerText}>Select number...</Text>
               </MenuTrigger>

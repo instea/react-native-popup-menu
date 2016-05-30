@@ -27,7 +27,7 @@ class AppRegistry {
 
 const Animated = {
   timing: () => ({ start: () => undefined }),
-  Value: class {},
+  Value: () => ({ interpolate: () => false }),
   View: View
 };
 
