@@ -15,6 +15,9 @@ const BasicExample = () => (
       <MenuOptions>
         <MenuOption value={1} text='One' />
         <MenuOption value={2} text='Two' />
+        <MenuOption value={3} disabled={true}>
+          <Text style={{color: '#ccc'}}>Three</Text>
+        </MenuOption>
       </MenuOptions>
     </Menu>
   </MenuContext>

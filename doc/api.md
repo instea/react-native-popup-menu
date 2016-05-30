@@ -27,7 +27,7 @@ Root menu component defining menu name and providing menu events.
 |`opened`|`Boolean`|Optional||Declaratively states if menu is opened. When this prop is provided, menu is controlled and imperative API won't work.|
 
 ### Events
-| Event Name | Returns | Notes |
+| Event Name | Arguments | Notes |
 |---|---|---|
 |`onSelect`|`optionValue`|Triggered when menu option is selected. When event handler returns `false`, the popup menu remains open|
 |`onOpen`||Triggered when menu is opened|
@@ -51,7 +51,7 @@ Menu can by opened by clicking on `<MenuTrigger />` or by calling context method
 |`text`|`String`|Optional||Text to be rendered. When this prop is provided, trigger's children won't be rendered|
 
 ### Events
-| Event Name | Returns | Notes |
+| Event Name | Arguments | Notes |
 |---|---|---|
 |`onPress`||Triggered when trigger is pressed|
 
@@ -81,7 +81,7 @@ Wrapper component of menu option.
 |`disabled`|`Boolean`|Optional|`false`|Indicates if option can be pressed|
 
 ### Events
-| Event Name | Returns | Notes |
+| Event Name | Arguments | Notes |
 |---|---|---|
 |`onSelect`||Triggered when option is selected. When event handler returns `false`, the popup menu remains open. Note: If this event handler is defined, it suppress `onSelect` handler of `<Menu />`|
 
