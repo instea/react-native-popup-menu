@@ -120,6 +120,7 @@ Menu.debug = false;
 
 Menu.propTypes = {
   name: React.PropTypes.string,
+  type: React.PropTypes.string,
   onSelect: React.PropTypes.func,
   onOpen: React.PropTypes.func,
   onClose: React.PropTypes.func,
@@ -128,6 +129,7 @@ Menu.propTypes = {
 };
 
 Menu.defaultProps = {
+  type: 'context',
   onSelect: () => {},
   onOpen: () => {},
   onClose: () => {},

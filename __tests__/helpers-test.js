@@ -50,46 +50,51 @@ describe('helpers test', () => {
   describe('computeContextMenuPosition', () => {
 
     it('should returns default-top-left position', () => {
-      const window = { width: 400, height: 600 };
-      const trigger = { width: 50, height: 50, x: 100, y: 100 };
-      const options = { width: 50, height: 50 };
-      expect(computeContextMenuPosition(window, trigger, options)).to.eql({
+      const windowLayout = { width: 400, height: 600 };
+      const triggerLayout = { width: 50, height: 50, x: 100, y: 100 };
+      const optionsLayout = { width: 50, height: 50 };
+      const layouts = { windowLayout, triggerLayout, optionsLayout };
+      expect(computeContextMenuPosition(layouts)).to.eql({
         top: 100, left: 100
       });
     });
 
     it('should returns top-left position', () => {
-      const window = { width: 400, height: 600 };
-      const trigger = { width: 50, height: 50, x: 10, y: 10 };
-      const options = { width: 50, height: 50 };
-      expect(computeContextMenuPosition(window, trigger, options)).to.eql({
+      const windowLayout = { width: 400, height: 600 };
+      const triggerLayout = { width: 50, height: 50, x: 10, y: 10 };
+      const optionsLayout = { width: 50, height: 50 };
+      const layouts = { windowLayout, triggerLayout, optionsLayout };
+      expect(computeContextMenuPosition(layouts)).to.eql({
         top: 10, left: 10
       });
     });
 
     it('should returns top-right position', () => {
-      const window = { width: 400, height: 600 };
-      const trigger = { width: 100, height: 50, x: 300, y: 0 };
-      const options = { width: 150, height: 100 };
-      expect(computeContextMenuPosition(window, trigger, options)).to.eql({
+      const windowLayout = { width: 400, height: 600 };
+      const triggerLayout = { width: 100, height: 50, x: 300, y: 0 };
+      const optionsLayout = { width: 150, height: 100 };
+      const layouts = { windowLayout, triggerLayout, optionsLayout };
+      expect(computeContextMenuPosition(layouts)).to.eql({
         top: 0, left: 250
       });
     });
 
     it('should returns bottom-left position', () => {
-      const window = { width: 400, height: 600 };
-      const trigger = { width: 100, height: 100, x: 10, y: 500 };
-      const options = { width: 150, height: 150 };
-      expect(computeContextMenuPosition(window, trigger, options)).to.eql({
+      const windowLayout = { width: 400, height: 600 };
+      const triggerLayout = { width: 100, height: 100, x: 10, y: 500 };
+      const optionsLayout = { width: 150, height: 150 };
+      const layouts = { windowLayout, triggerLayout, optionsLayout };
+      expect(computeContextMenuPosition(layouts)).to.eql({
         top: 450, left: 10
       });
     });
 
     it('should returns bottom-right position', () => {
-      const window = { width: 400, height: 600 };
-      const trigger = { width: 100, height: 100, x: 300, y: 500 };
-      const options = { width: 150, height: 150 };
-      expect(computeContextMenuPosition(window, trigger, options)).to.eql({
+      const windowLayout = { width: 400, height: 600 };
+      const triggerLayout = { width: 100, height: 100, x: 300, y: 500 };
+      const optionsLayout = { width: 150, height: 150 };
+      const layouts = { windowLayout, triggerLayout, optionsLayout };
+      expect(computeContextMenuPosition(layouts)).to.eql({
         top: 450, left: 250
       });
     });
@@ -98,8 +103,9 @@ describe('helpers test', () => {
 
   describe('computePositionOutside', () => {
     it('should compute position outside of the screen', () => {
-      const window = { width: 400, height: 600 };
-      expect(computePositionOutside(window)).to.eql({
+      const windowLayout = { width: 400, height: 600 };
+      const layouts = { windowLayout };
+      expect(computePositionOutside(layouts)).to.eql({
         top: 600, left: 400
       });
     });

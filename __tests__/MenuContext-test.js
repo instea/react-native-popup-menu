@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { render } from './helpers';
 import { MenuOptions, MenuTrigger } from '../src/index';
-import { MenuOutsideOfTheScreen } from '../src/renderers';
+import MenuOutside from '../src/renderers/MenuOutside';
 import Backdrop from '../src/Backdrop';
 const { objectContaining, createSpy } = jasmine;
 
@@ -44,6 +44,7 @@ describe('MenuContext', () => {
         onOpen: createSpy(),
         onClose: createSpy(),
         onBackdropPress: createSpy(),
+        type: 'context',
       },
     }
   }
@@ -114,7 +115,7 @@ describe('MenuContext', () => {
     const [ components, backdrop, options ] = output.props.children;
     expect(components.type).toEqual(View);
     expect(backdrop.type).toEqual(Backdrop);
-    expect(options.type).toEqual(MenuOutsideOfTheScreen);
+    expect(options.type).toEqual(MenuOutside);
     // on open was called only once
     expect(menu1.props.onOpen.calls.count()).toEqual(1);
   });

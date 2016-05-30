@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import makeMenuRegistry from './menuRegistry';
 import Backdrop from './Backdrop';
 import { measure } from './helpers';
 import { debug } from './logger.js';
-import { ContextMenu, MenuOutsideOfTheScreen } from './renderers';
+import ContextMenu from './renderers/ContextMenu';
+import SlideInMenu from './renderers/SlideInMenu';
+import MenuOutside from './renderers/MenuOutside';
 
 const defaultOptionsContainerRenderer = options => options;
 const layoutsEqual = (a, b) => (
@@ -132,18 +134,24 @@ export default class MenuContext extends Component {
   _makeOptions({ instance, triggerLayout, optionsLayout }) {
     const options = instance._getOptions();
     const name = instance.getName();
+    const type = instance.props.type;
     const windowLayout = this._ownLayout;
     const { optionsContainerStyle, renderOptionsContainer } = options.props;
     const renderer = renderOptionsContainer || defaultOptionsContainerRenderer;
     const onLayout = e => this._onOptionsLayout(e, name);
-    const style = [ styles.optionsContainer, optionsContainerStyle ];
+    const style = optionsContainerStyle;
     const layouts = { windowLayout, triggerLayout, optionsLayout };
     const props = { children: renderer(options), style, onLayout, layouts };
-    if (windowLayout && triggerLayout && optionsLayout) {
-      return <ContextMenu {...props} />
-    } else {
-      return <MenuOutsideOfTheScreen {...props} />
+    if (!triggerLayout || !optionsLayout) {
+      return <MenuOutside {...props} />
     }
+    if (type === 'slide') {
+      return <SlideInMenu {...props} />
+    }
+    if (type === 'context') {
+      return <ContextMenu {...props} />
+    }
+    throw new Error('Unknown menu type: ' + type);
   }
 
   _onLayout({ nativeEvent: { layout } }) {
@@ -171,20 +179,3 @@ MenuContext.childContextTypes = {
   menuActions: React.PropTypes.object,
 };
 
-const styles = StyleSheet.create({
-  optionsContainer: {
-    position: 'absolute',
-    borderRadius: 2,
-    backgroundColor: 'white',
-    width: 200,
-
-    // Shadow only works on iOS.
-    shadowColor: 'black',
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 3, height: 3 },
-    shadowRadius: 4,
-
-    // This will elevate the view on Android, causing shadow to be drawn.
-    elevation: 5,
-  },
-});

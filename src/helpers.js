@@ -19,10 +19,18 @@ export const makeName = (function() {
 })();
 
 /**
+ * Computes position outside of the screen.
+ */
+export const computePositionOutside = ({ windowLayout }) => ({
+  top: windowLayout.height,
+  left: windowLayout.width
+});
+
+/**
  * Computes best position for context menu options according to
  * window boundary and trigger positon.
  */
-export const computeContextMenuPosition = (windowLayout, triggerLayout, optionsLayout) => {
+export const computeContextMenuPosition = ({ windowLayout, triggerLayout, optionsLayout }) => {
   const { width: wWidth, height: wHeight } = windowLayout;
   // TODO: scroll bar for big menus
   const { x: tX, y: tY, height: tHeight, width: tWidth } = triggerLayout;
@@ -33,6 +41,12 @@ export const computeContextMenuPosition = (windowLayout, triggerLayout, optionsL
 }
 
 /**
- * Computes position outside of the screen.
+ * Computes best position for slide-in menu.
  */
-export const computePositionOutside = w => ({ top: w.height, left: w.width });
+export const computeSlideInMenuPosition = ({ windowLayout, triggerLayout, optionsLayout }) => {
+  const { height: wHeight } = windowLayout;
+  const { height: oHeight } = optionsLayout;
+  const top  = wHeight - oHeight;
+  const left = 0;
+  return { top, left };
+}
