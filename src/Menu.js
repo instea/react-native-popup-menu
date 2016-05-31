@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { MenuOptions, MenuTrigger } from './index';
+import ContextMenu from './renderers/ContextMenu';
 import { makeName } from './helpers';
 import { debug } from './logger';
 
@@ -120,6 +121,7 @@ Menu.debug = false;
 
 Menu.propTypes = {
   name: React.PropTypes.string,
+  renderer: React.PropTypes.func,
   onSelect: React.PropTypes.func,
   onOpen: React.PropTypes.func,
   onClose: React.PropTypes.func,
@@ -128,6 +130,7 @@ Menu.propTypes = {
 };
 
 Menu.defaultProps = {
+  renderer: ContextMenu,
   onSelect: () => {},
   onOpen: () => {},
   onClose: () => {},

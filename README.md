@@ -16,7 +16,7 @@ npm install react-native-popup-menu --save
 
 ## Basic Usage
 
-### Uncontrolled example
+### Context menu - uncontrolled
 
 ```js
 import React from 'react';
@@ -25,7 +25,7 @@ import Menu, {
   MenuContext,
   MenuOptions,
   MenuOption,
-  MenuTrigger
+  MenuTrigger,
 } from 'react-native-popup-menu';
 
 export const App = () => (
@@ -45,7 +45,7 @@ export const App = () => (
 );
 ```
 
-### Controlled example
+### Context menu - controlled
 
 ```js
 export default class ControlledExample extends Component {
@@ -85,6 +85,26 @@ export default class ControlledExample extends Component {
   }
 
 }
+```
+
+### Slide-in menu
+
+```js
+import { ..., renderers} from 'react-native-popup-menu';
+
+// NOTE: `onSelect` handler can be also passed to `MenuOption`'s props
+export const App = () => (
+  <MenuContext style={{flexDirection: 'column', padding: 30}}>
+    <Text>Hello world!</Text>
+    <Menu renderer={renderers.SlideInMenu}>
+      <MenuTrigger text='Select option' />
+      <MenuOptions>
+        <MenuOption onSelect={() => alert('option one')} text='One' />
+        <MenuOption onSelect={() => alert('option two')} text='Two' />
+      </MenuOptions>
+    </Menu>
+  </MenuContext>
+);
 ```
 
 ## Documentation

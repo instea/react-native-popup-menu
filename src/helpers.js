@@ -18,24 +18,3 @@ export const makeName = (function() {
   return () => `menu-${nextID++}`;
 })();
 
-/**
- * Computes best position for menu options according to
- * window boundary and trigger positon.
- */
-export const computeBestMenuPosition = (windowLayout, triggerLayout, optionsLayout) => {
-  const { width: wWidth, height: wHeight } = windowLayout;
-  if (!triggerLayout || !optionsLayout) {
-    // render outside of the screen
-    return {
-      top: wHeight,
-      left: wWidth,
-      isVisible: false
-    };
-  }
-  // TODO: scroll bar for big menus
-  const { x: tX, y: tY, height: tHeight, width: tWidth } = triggerLayout;
-  const { height: oHeight, width: oWidth } = optionsLayout;
-  const top  = (tY + oHeight > wHeight) ? tY + tHeight - oHeight : tY;
-  const left = (tX + oWidth > wWidth) ? tX - oWidth + tWidth : tX;
-  return { top, left, isVisible: true };
-}

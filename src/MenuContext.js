@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import AnimatedView from './AnimatedView';
+import { View } from 'react-native';
 import makeMenuRegistry from './menuRegistry';
 import Backdrop from './Backdrop';
-import { measure, computeBestMenuPosition } from './helpers';
+import { measure } from './helpers';
 import { debug } from './logger.js';
+import MenuOutside from './renderers/MenuOutside';
 
 const defaultOptionsContainerRenderer = options => options;
 const layoutsEqual = (a, b) => (
@@ -131,18 +131,18 @@ export default class MenuContext extends Component {
 
   _makeOptions({ instance, triggerLayout, optionsLayout }) {
     const options = instance._getOptions();
-    const name = instance.getName();
+    const { renderer } = instance.props;
     const windowLayout = this._ownLayout;
-    const { top, left, isVisible } = computeBestMenuPosition(windowLayout, triggerLayout, optionsLayout);
-    debug('got best size', { windowLayout, triggerLayout, optionsLayout }, { top, left, isVisible });
-    const MenuComponent = isVisible ? AnimatedView : View;
     const { optionsContainerStyle, renderOptionsContainer } = options.props;
-    const style = [ styles.optionsContainer, optionsContainerStyle, { top, left } ];
-    const renderer = renderOptionsContainer || defaultOptionsContainerRenderer;
-    const onLayout = e => this._onOptionsLayout(e, name);
-    const ref = 'menu-options';
-    const collapsable = false;
-    return React.createElement(MenuComponent, { style, onLayout, ref, collapsable }, renderer(options));
+    const optionsRenderer = renderOptionsContainer || defaultOptionsContainerRenderer;
+    const onLayout = e => this._onOptionsLayout(e, instance.getName());
+    const style = optionsContainerStyle;
+    const layouts = { windowLayout, triggerLayout, optionsLayout };
+    const props = { style, onLayout, layouts };
+    if (!triggerLayout || !optionsLayout) {
+      return React.createElement(MenuOutside, props, optionsRenderer(options));
+    }
+    return React.createElement(renderer, props, optionsRenderer(options));
   }
 
   _onLayout({ nativeEvent: { layout } }) {
@@ -170,20 +170,3 @@ MenuContext.childContextTypes = {
   menuActions: React.PropTypes.object,
 };
 
-const styles = StyleSheet.create({
-  optionsContainer: {
-    position: 'absolute',
-    borderRadius: 2,
-    backgroundColor: 'white',
-    width: 200,
-
-    // Shadow only works on iOS.
-    shadowColor: 'black',
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 3, height: 3 },
-    shadowRadius: 4,
-
-    // This will elevate the view on Android, causing shadow to be drawn.
-    elevation: 5,
-  },
-});
