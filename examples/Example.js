@@ -58,7 +58,7 @@ export default class Example extends Component {
           <View style={styles.topbar}>
             <Menu name="numbers" type="slide" onSelect={value => this.selectNumber(value)}>
               <MenuTrigger style={styles.trigger}>
-                <Text style={styles.triggerText}>Select number...</Text>
+                <Text style={styles.triggerText}>Slide-in menu...</Text>
               </MenuTrigger>
               <MenuOptions>
                 <MenuOption value={1} text='Option one' />
@@ -66,8 +66,6 @@ export default class Example extends Component {
                 <MenuOption value={3} text='Option three' />
                 <MenuOption value={4} text='Option four' />
                 <MenuOption value={5} text='Option five' />
-                <MenuOption value={6} text='Option six' />
-                <MenuOption value={7} text='Option seven' />
               </MenuOptions>
             </Menu>
             <View style={{flex:1}}></View>
@@ -77,7 +75,7 @@ export default class Example extends Component {
               onClose={() => this.addLog('menu is closing')}
               >
               <MenuTrigger style={styles.trigger}>
-                <Text style={styles.triggerText}>Select type...</Text>
+                <Text style={styles.triggerText}>Context menu...</Text>
               </MenuTrigger>
               <MenuOptions>
                 <MenuOption value="Normal" text='Normal' />
@@ -121,6 +119,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    backgroundColor: 'lightgray',
   },
   topbar: {
     flexDirection: 'row',
