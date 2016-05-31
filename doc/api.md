@@ -25,7 +25,7 @@ Root menu component defining menu name and providing menu events.
 |---|---|---|---|---|
 |`name`|`String`|Optional|`auto-generated`|Unique name of menu|
 |`opened`|`Boolean`|Optional||Declaratively states if menu is opened. When this prop is provided, menu is controlled and imperative API won't work.|
-|`renderer`|`Function`|Optional|`ContextMenu`|Defines position, animation and basic menu styles (currently available renderers are `ContextMenu` and `SlideInMenu`)|
+|`renderer`|`Function`|Optional|`ContextMenu`|Defines position, animation and basic menu styles (currently available renderers are `ContextMenu` and `SlideInMenu`). See [renderers section](#renderers) for more details|
 
 ### Events
 | Event Name | Arguments | Notes |
@@ -93,4 +93,3 @@ In `renderers` module there are already provided two renderers - `ContextMenu` (
 It is possible to extend menu and use custom renderer (see implementation of existing renderers).
 
 NOTE: If you only need to add styles or wrap `MenuOptions` with your own component, use `optionsContainerStyle` or `renderOptionsContainer` option of `MenuOptions` instead.
-

@@ -26,7 +26,6 @@ import Menu, {
   MenuOptions,
   MenuOption,
   MenuTrigger,
-  renderers
 } from 'react-native-popup-menu';
 
 export const App = () => (
@@ -91,6 +90,8 @@ export default class ControlledExample extends Component {
 ### Slide-in menu
 
 ```js
+import { ..., renderers} from 'react-native-popup-menu';
+
 // NOTE: `onSelect` handler can be also passed to `MenuOption`'s props
 export const App = () => (
   <MenuContext style={{flexDirection: 'column', padding: 30}}>
