@@ -22,7 +22,7 @@ const optionsRenderer = (options) => (
     {options}
   </SomeCustomContainer>
 );
-const menu = (props) (
+const menu = (props) => (
   <Menu>
     <MenuTrigger />
     <MenuOptions renderOptionsContainer={optionsRenderer} />
