@@ -6,12 +6,14 @@ import Example from './Example';
 import BasicExample from './BasicExample';
 import OriginalExample from './OriginalExample';
 import ControlledExample from './ControlledExample';
+import ExtensionExample from './ExtensionExample';
 
 const demos = [
   { Component: BasicExample, name: 'Basic example' },
   { Component: Example, name: 'Advanced example' },
   { Component: OriginalExample, name: 'Original example' },
   { Component: ControlledExample, name: 'Controlled example' },
+  { Component: ExtensionExample, name: 'Extensions example' },
 ];
 
 // show debug messages for demos.

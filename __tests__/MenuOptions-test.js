@@ -44,4 +44,21 @@ describe('MenuOptions', () => {
     expect(children[1].props.onSelect).toEqual(onSelect);
   });
 
+  it('should work with user defined options', () => {
+    const UserOption = () => <MenuOption text='user-defined' />;
+
+    const onSelect = () => 0;
+    const { output } = render(
+      <MenuOptions onSelect={onSelect}>
+        <UserOption />
+      </MenuOptions>
+    );
+    expect(output.type).toEqual(View);
+    const children = output.props.children;
+    expect(children.length).toEqual(1);
+    const ch = children[0];
+    expect(ch.type).toBe(UserOption);
+    expect(ch.props.onSelect).toEqual(onSelect);
+  });
+
 });
