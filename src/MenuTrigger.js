@@ -11,11 +11,10 @@ export default class MenuTrigger extends Component {
   }
 
   render() {
-    const { disabled, onRef, text, children } = this.props;
-    // TODO: omit props
+    const { disabled, onRef, text, children, ...other } = this.props;
     return (
       <TouchableWithoutFeedback onPress={() => !disabled && this._onPress()}>
-        <View {...this.props} ref={onRef} collapsable={false}>
+        <View {...other} ref={onRef} collapsable={false}>
           {text ? <Text>{text}</Text> : children}
         </View>
       </TouchableWithoutFeedback>
