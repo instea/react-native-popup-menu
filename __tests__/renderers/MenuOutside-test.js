@@ -1,48 +1,42 @@
 import React from 'react';
 import { View } from 'react-native';
-import { render, normalizeStyle } from '../helpers';
-
-jest.mock('../../src/helpers', () => ({
-  computePositionOutside: () => ({ top: 500, left: 500 })
-}));
+import { render } from '../helpers';
 
 jest.dontMock('../../src/renderers/MenuOutside');
-const MenuOutside = require('../../src/renderers/MenuOutside').default;
-
-const { objectContaining, createSpy } = jasmine;
+const { default: MenuOutside, computePosition } = require('../../src/renderers/MenuOutside');
 
 describe('MenuOutside', () => {
 
-  it('should render component', () => {
-    const { output } = render(
-      <MenuOutside>
-        <Text>Some text</Text>
+  const defaultLayouts = {
+    windowLayout: { width: 400, height: 600 },
+    triggerLayout: { width: 50, height: 50, x: 10, y: 10 },
+    optionsLayout: { width: 200, height: 100 },
+  };
+
+  describe('renderer', () => {
+    it('should render component', () => {
+      const { output } = render(
+        <MenuOutside layouts={defaultLayouts}>
+          <Text>Some text</Text>
+          <Text>Other text</Text>
+        </MenuOutside>
+      );
+      expect(output.type).toEqual(View);
+      expect(output.props.children).toEqual([
+        <Text>Some text</Text>,
         <Text>Other text</Text>
-      </MenuOutside>
-    );
-    expect(output.type).toEqual(View);
-    expect(output.props.children).toEqual([
-      <Text>Some text</Text>,
-      <Text>Other text</Text>
-    ]);
+      ]);
+    });
   });
 
-  it('should position component', () => {
-    const { output } = render(
-      <MenuOutside />
-    );
-    expect(normalizeStyle(output.props.style)).toEqual(objectContaining({
-      top: 500,
-      left: 500,
-    }));
-  });
-
-  it('should have onLayout event handler', () => {
-    const onLayoutSpy = createSpy();
-    const { instance } = render(
-      <MenuOutside onLayout={onLayoutSpy} />
-    );
-    expect(instance.props.onLayout).toBe(onLayoutSpy);
+  describe('computePosition', () => {
+    it('should compute position outside of the screen', () => {
+      const windowLayout = { width: 400, height: 600 };
+      const layouts = { windowLayout };
+      expect(computePosition(layouts)).toEqual({
+        top: 600, left: 400
+      });
+    });
   });
 
 });

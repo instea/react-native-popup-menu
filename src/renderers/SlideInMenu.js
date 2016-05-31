@@ -1,6 +1,13 @@
 import React from 'react';
 import { Animated, StyleSheet } from 'react-native';
-import { computeSlideInMenuPosition } from '../helpers';
+
+export const computePosition = ({ windowLayout, optionsLayout }) => {
+  const { height: wHeight } = windowLayout;
+  const { height: oHeight } = optionsLayout;
+  const top  = wHeight - oHeight;
+  const left = 0;
+  return { top, left };
+}
 
 export default class ContextMenu extends React.Component {
 
@@ -30,7 +37,7 @@ export default class ContextMenu extends React.Component {
         }),
       }]
     };
-    const position = computeSlideInMenuPosition(layouts);
+    const position = computePosition(layouts);
     return (
       <Animated.View style={[styles.options, { width }, style, animation, position]} {...other}>
         {children}

@@ -4,8 +4,6 @@ import makeMenuRegistry from './menuRegistry';
 import Backdrop from './Backdrop';
 import { measure } from './helpers';
 import { debug } from './logger.js';
-import ContextMenu from './renderers/ContextMenu';
-import SlideInMenu from './renderers/SlideInMenu';
 import MenuOutside from './renderers/MenuOutside';
 
 const defaultOptionsContainerRenderer = options => options;
@@ -133,25 +131,18 @@ export default class MenuContext extends Component {
 
   _makeOptions({ instance, triggerLayout, optionsLayout }) {
     const options = instance._getOptions();
-    const name = instance.getName();
-    const type = instance.props.type;
+    const { renderer } = instance.props;
     const windowLayout = this._ownLayout;
     const { optionsContainerStyle, renderOptionsContainer } = options.props;
-    const renderer = renderOptionsContainer || defaultOptionsContainerRenderer;
-    const onLayout = e => this._onOptionsLayout(e, name);
+    const optionsRenderer = renderOptionsContainer || defaultOptionsContainerRenderer;
+    const onLayout = e => this._onOptionsLayout(e, instance.getName());
     const style = optionsContainerStyle;
     const layouts = { windowLayout, triggerLayout, optionsLayout };
-    const props = { children: renderer(options), style, onLayout, layouts };
+    const props = { style, onLayout, layouts };
     if (!triggerLayout || !optionsLayout) {
-      return <MenuOutside {...props} />
+      return React.createElement(MenuOutside, props, optionsRenderer(options));
     }
-    if (type === 'slide') {
-      return <SlideInMenu {...props} />
-    }
-    if (type === 'context') {
-      return <ContextMenu {...props} />
-    }
-    throw new Error('Unknown menu type: ' + type);
+    return React.createElement(renderer, props, optionsRenderer(options));
   }
 
   _onLayout({ nativeEvent: { layout } }) {

@@ -4,10 +4,12 @@ import Menu, {
   MenuContext,
   MenuTrigger,
   MenuOptions,
-  MenuOption
+  MenuOption,
+  renderers
 } from 'react-native-popup-menu';
 
 let unique = 0;
+const { SlideInMenu } = renderers;
 
 export default class Example extends Component {
 
@@ -56,7 +58,7 @@ export default class Example extends Component {
         <View style={styles.container}>
 
           <View style={styles.topbar}>
-            <Menu name="numbers" type="slide" onSelect={value => this.selectNumber(value)}>
+            <Menu name="numbers" renderer={SlideInMenu} onSelect={value => this.selectNumber(value)}>
               <MenuTrigger style={styles.trigger}>
                 <Text style={styles.triggerText}>Slide-in menu...</Text>
               </MenuTrigger>

@@ -18,12 +18,6 @@ jest.mock('../src/helpers', () => ({
       height: 50
     })
   }),
-  computeContextMenuPosition: () => ({
-    top: 50, left: 0
-  }),
-  computePositionOutside: () => ({
-    top: 500, left: 500
-  })
 }));
 
 const MenuContext = require('../src/MenuContext').default;

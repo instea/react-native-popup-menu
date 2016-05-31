@@ -1,6 +1,16 @@
 import React from 'react';
 import { Animated, StyleSheet } from 'react-native';
-import { computeContextMenuPosition } from '../helpers';
+
+export const computePosition = ({ windowLayout, triggerLayout, optionsLayout }) => {
+  const { width: wWidth, height: wHeight } = windowLayout;
+  // TODO: scroll bar for big menus
+  const { x: tX, y: tY, height: tHeight, width: tWidth } = triggerLayout;
+  const { height: oHeight, width: oWidth } = optionsLayout;
+  const top  = (tY + oHeight > wHeight) ? tY + tHeight - oHeight : tY;
+  const left = (tX + oWidth > wWidth) ? tX - oWidth + tWidth : tX;
+  return { top, left };
+}
+
 
 export default class ContextMenu extends React.Component {
 
@@ -23,7 +33,7 @@ export default class ContextMenu extends React.Component {
     const animation = {
       transform: [ { scale: this.state.scaleAnim } ]
     };
-    const position = computeContextMenuPosition(layouts);
+    const position = computePosition(layouts);
     return (
       <Animated.View {...other} style={[styles.options, style, animation, position]}>
         {children}
@@ -50,4 +60,3 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 });
-

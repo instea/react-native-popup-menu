@@ -1,26 +1,20 @@
 import React from 'react';
 import { Animated } from 'react-native';
-import { render, normalizeStyle } from '../helpers';
-
-jest.mock('../../src/helpers', () => ({
-  computeSlideInMenuPosition: () => ({ top: 55, left: 10 })
-}));
+import { render } from '../helpers';
 
 jest.dontMock('../../src/renderers/SlideInMenu');
-const SlideInMenu = require('../../src/renderers/SlideInMenu').default;
-
-const { objectContaining } = jasmine;
+const { default: SlideInMenu, computePosition } = require('../../src/renderers/SlideInMenu');
 
 describe('SlideInMenu', () => {
 
-  const layouts = {
+  const defaultLayouts = {
     windowLayout: { width: 400, height: 600 },
     optionsLayout: { width: 50, height: 100 },
   };
 
   it('should render component', () => {
     const { output } = render(
-      <SlideInMenu layouts={layouts}>
+      <SlideInMenu layouts={defaultLayouts}>
         <Text>Some text</Text>
         <Text>Other text</Text>
       </SlideInMenu>
@@ -32,15 +26,15 @@ describe('SlideInMenu', () => {
     ]);
   });
 
-  it('should position component', () => {
-    const { output } = render(
-      <SlideInMenu layouts={layouts} />
-    );
-    expect(normalizeStyle(output.props.style)).toEqual(objectContaining({
-      top: 55,
-      left: 10,
-      width: 400,
-    }));
+  describe('computePosition', () => {
+    it('should compute position at the bottom', () => {
+      const windowLayout = { width: 400, height: 600 };
+      const optionsLayout = { width: 400, height: 100 };
+      const layouts = { windowLayout, optionsLayout };
+      expect(computePosition(layouts)).toEqual({
+        top: 500, left: 0
+      });
+    });
   });
 
 });

@@ -1,10 +1,15 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { computePositionOutside } from '../helpers';
+
+export const computePosition = ({ windowLayout }) => ({
+  top: windowLayout.height,
+  left: windowLayout.width
+});
+
 
 const MenuOutside = props => {
   const { style, children, layouts, ...other } = props;
-  const position = computePositionOutside(layouts);
+  const position = computePosition(layouts);
   return (
     <View {...other} style={[styles.options, style, position]} collapsable={false}>
       {children}
