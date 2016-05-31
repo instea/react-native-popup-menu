@@ -9,7 +9,7 @@ export const computePosition = ({ windowLayout, optionsLayout }) => {
   return { top, left };
 }
 
-export default class ContextMenu extends React.Component {
+export default class SlideInMenu extends React.Component {
 
   constructor(props) {
     super(props);
