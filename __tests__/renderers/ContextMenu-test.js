@@ -79,6 +79,46 @@ describe('ContextMenu', () => {
         top: 450, left: 250
       });
     });
+
+    it('should return horizontal middle position', () => {
+      const windowLayout = { width: 400, height: 600 };
+      const triggerLayout = { width: 100, height: 20, x: 10, y: 290 };
+      const optionsLayout = { width: 150, height: 500 };
+      const layouts = { windowLayout, triggerLayout, optionsLayout };
+      expect(computePosition(layouts)).toEqual({
+        top: 50, left: 10
+      });
+    });
+
+    it('should return vertical middle position', () => {
+      const windowLayout = { width: 400, height: 600 };
+      const triggerLayout = { width: 100, height: 20, x: 150, y: 10 };
+      const optionsLayout = { width: 300, height: 100 };
+      const layouts = { windowLayout, triggerLayout, optionsLayout };
+      expect(computePosition(layouts)).toEqual({
+        top: 10, left: 50
+      });
+    });
+
+    it('should return zero top position for big menus', () => {
+      const windowLayout = { width: 400, height: 600 };
+      const triggerLayout = { width: 100, height: 20, x: 10, y: 290 };
+      const optionsLayout = { width: 150, height: 700 };
+      const layouts = { windowLayout, triggerLayout, optionsLayout };
+      expect(computePosition(layouts)).toEqual({
+        top: 0, left: 10
+      });
+    });
+
+    it('should return zero left position for big menus', () => {
+      const windowLayout = { width: 400, height: 600 };
+      const triggerLayout = { width: 100, height: 20, x: 150, y: 10 };
+      const optionsLayout = { width: 500, height: 100 };
+      const layouts = { windowLayout, triggerLayout, optionsLayout };
+      expect(computePosition(layouts)).toEqual({
+        top: 10, left: 0
+      });
+    });
   });
 
 });
