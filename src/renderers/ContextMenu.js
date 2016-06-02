@@ -1,30 +1,41 @@
 import React from 'react';
 import { Animated, StyleSheet } from 'react-native';
 
+const axisPosition = (oDim, wDim, tPos, tDim) => {
+  // if options are bigger than window dimension, then render at 0
+  if (oDim > wDim) {
+    return 0;
+  }
+  // render at trigger position if possible
+  if (tPos + oDim <= wDim) {
+    return tPos;
+  }
+  // aligned to the trigger from the bottom (right)
+  if (tPos + tDim - oDim >= 0) {
+    return tPos + tDim - oDim;
+  }
+  // compute center position
+  let pos = Math.round(tPos + (tDim / 2) - (oDim / 2));
+  // check top boundary
+  if (pos < 0) {
+    return 0;
+  }
+  // check bottom boundary
+  if (pos + oDim > wDim) {
+    return wDim - oDim;
+  }
+  // if everything ok, render in center position
+  return pos;
+};
+
 export const computePosition = ({ windowLayout, triggerLayout, optionsLayout }) => {
   const { width: wWidth, height: wHeight } = windowLayout;
-  // TODO: scroll bar for big menus
   const { x: tX, y: tY, height: tHeight, width: tWidth } = triggerLayout;
   const { height: oHeight, width: oWidth } = optionsLayout;
-  let top, left;
-  if (oHeight > wHeight) {
-    top = 0;
-  } else {
-    top  = (tY + oHeight > wHeight) ? tY + tHeight - oHeight : tY;
-  }
-  if (top < 0) {
-    top = Math.round(tY + (tHeight / 2) - (oHeight / 2));
-  }
-  if (oWidth > wWidth) {
-    left = 0;
-  } else {
-    left = (tX + oWidth > wWidth) ? tX - oWidth + tWidth : tX;
-  }
-  if (left < 0) {
-    left = Math.round(tX + (tWidth / 2) - (oWidth / 2));
-  }
+  const top = axisPosition(oHeight, wHeight, tY, tHeight);
+  const left = axisPosition(oWidth, wWidth, tX, tWidth);
   return { top, left };
-}
+};
 
 
 export default class ContextMenu extends React.Component {

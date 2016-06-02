@@ -119,6 +119,36 @@ describe('ContextMenu', () => {
         top: 10, left: 0
       });
     });
+
+    it('should return zero top because of overlaping cener position', () => {
+      const windowLayout = { width: 400, height: 600 };
+      const triggerLayout = { width: 100, height: 20, x: 10, y: 200 };
+      const optionsLayout = { width: 150, height: 500 };
+      const layouts = { windowLayout, triggerLayout, optionsLayout };
+      expect(computePosition(layouts)).toEqual({
+        top: 0, left: 10
+      });
+    });
+
+    it('should return zero bottom because of overlaping cener position', () => {
+      const windowLayout = { width: 400, height: 600 };
+      const triggerLayout = { width: 100, height: 20, x: 10, y: 450 };
+      const optionsLayout = { width: 150, height: 500 };
+      const layouts = { windowLayout, triggerLayout, optionsLayout };
+      expect(computePosition(layouts)).toEqual({
+        top: 100, left: 10
+      });
+    });
+
+    it('should return zero left because of overlaping cener position', () => {
+      const windowLayout = { width: 400, height: 600 };
+      const triggerLayout = { width: 1, height: 20, x: 100, y: 10 };
+      const optionsLayout = { width: 350, height: 50 };
+      const layouts = { windowLayout, triggerLayout, optionsLayout };
+      expect(computePosition(layouts)).toEqual({
+        top: 10, left: 0
+      });
+    });
   });
 
 });
