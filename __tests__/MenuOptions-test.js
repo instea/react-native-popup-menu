@@ -65,7 +65,7 @@ describe('MenuOptions', () => {
   it('should render options with custom styles', () => {
     const onSelect = () => 0;
     const styles = {
-      optionsContainer: { backgroundColor: 'red' },
+      optionsWrapper: { backgroundColor: 'red' },
       optionText: { color: 'blue' },
     };
     const customOptionStyles = {
@@ -79,7 +79,7 @@ describe('MenuOptions', () => {
       </MenuOptions>
     );
     expect(normalizeStyle(output.props.style))
-      .toEqual(objectContaining(styles.optionsContainer));
+      .toEqual(objectContaining(styles.optionsWrapper));
     const options = output.props.children;
     expect(options[0].props.styles).toEqual(styles);
     expect(options[1].props.styles).toEqual(customOptionStyles);

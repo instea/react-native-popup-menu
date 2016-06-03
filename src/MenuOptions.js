@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 const MenuOptions = ({ style, children, onSelect, styles }) => (
-  <View style={[styles.optionsContainer, style]}>
+  <View style={[styles.optionsWrapper, style]}>
     {
       React.Children.map(children, c => React.cloneElement(c, {
          onSelect: c.props.onSelect || onSelect,
