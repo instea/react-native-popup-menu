@@ -1,10 +1,10 @@
 import React from 'react';
 import { TouchableWithoutFeedback, View, Text } from 'react-native';
-import { render } from './helpers';
+import { render, normalizeStyle } from './helpers';
 
 jest.dontMock('../src/MenuOption');
 const MenuOption = require('../src/MenuOption').default;
-const { createSpy } = jasmine;
+const { createSpy, objectContaining } = jasmine;
 
 describe('MenuOption', () => {
 
@@ -86,6 +86,26 @@ describe('MenuOption', () => {
     expect(text).toEqual(
       <Text>Hello world</Text>
     );
+  });
+
+  it('should render component with custom styles', () => {
+    const styles = {
+      optionWrapper: { backgroundColor: 'red' },
+      optionText: { color: 'blue' },
+      optionTouchable: { backgroundColor: 'green' },
+    };
+    const { output } = render(
+      <MenuOption text='some text' styles={styles} />
+    );
+    const touchable = output;
+    const wrapper = touchable.props.children;
+    const text = wrapper.props.children;
+    expect(normalizeStyle(touchable.props.style))
+      .toEqual(objectContaining(styles.optionTouchable));
+    expect(normalizeStyle(wrapper.props.style))
+      .toEqual(objectContaining(styles.optionWrapper));
+    expect(normalizeStyle(text.props.style))
+      .toEqual(objectContaining(styles.optionText));
   });
 
 });

@@ -1,10 +1,10 @@
 import React from 'react';
 import { TouchableWithoutFeedback, View, Text } from 'react-native';
-import { render } from './helpers';
+import { render, normalizeStyle } from './helpers';
 
 jest.dontMock('../src/MenuTrigger');
 const MenuTrigger = require('../src/MenuTrigger').default;
-const { createSpy } = jasmine;
+const { createSpy, objectContaining } = jasmine;
 
 describe('MenuTrigger', () => {
 
@@ -70,6 +70,26 @@ describe('MenuTrigger', () => {
     instance.context = { menuActions };
     output.props.onPress();
     expect(menuActions.openMenu).not.toHaveBeenCalled();
+  });
+
+  it('should render trigger with custom styles', () => {
+    const styles = {
+      triggerWrapper: { backgroundColor: 'red' },
+      triggerText: { color: 'blue' },
+      triggerTouchable: { backgroundColor: 'green' },
+    };
+    const { output } = render(
+      <MenuTrigger menuName='menu1' text='some text' styles={styles} />
+    );
+    const touchable = output;
+    const wrapper = touchable.props.children;
+    const text = wrapper.props.children;
+    expect(normalizeStyle(touchable.props.style))
+      .toEqual(objectContaining(styles.triggerTouchable));
+    expect(normalizeStyle(wrapper.props.style))
+      .toEqual(objectContaining(styles.triggerWrapper));
+    expect(normalizeStyle(text.props.style))
+      .toEqual(objectContaining(styles.triggerText));
   });
 
 });

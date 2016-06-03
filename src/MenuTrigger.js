@@ -11,11 +11,12 @@ export default class MenuTrigger extends Component {
   }
 
   render() {
-    const { disabled, onRef, text, children, ...other } = this.props;
+    const { disabled, onRef, text, children, style, styles, ...other } = this.props;
+    const onPress = () => !disabled && this._onPress();
     return (
-      <TouchableWithoutFeedback onPress={() => !disabled && this._onPress()}>
-        <View {...other} ref={onRef} collapsable={false}>
-          {text ? <Text>{text}</Text> : children}
+      <TouchableWithoutFeedback onPress={onPress} style={styles.triggerTouchable}>
+        <View {...other} style={[styles.triggerWrapper, style]} ref={onRef} collapsable={false}>
+          {text ? <Text style={styles.triggerText}>{text}</Text> : children}
         </View>
       </TouchableWithoutFeedback>
     );
@@ -27,10 +28,12 @@ MenuTrigger.propTypes = {
   disabled: React.PropTypes.bool,
   text: React.PropTypes.string,
   onPress: React.PropTypes.func,
+  styles: React.PropTypes.object,
 };
 
 MenuTrigger.defaultProps = {
   disabled: false,
+  styles: {},
 };
 
 MenuTrigger.contextTypes = {

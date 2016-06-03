@@ -14,11 +14,12 @@ export default class MenuOption extends Component {
   }
 
   render() {
-    const { text, disabled, children, style  } = this.props;
+    const { text, disabled, children, style, styles } = this.props;
+    const onPress = () => !disabled && this._onSelect();
     return (
-      <TouchableWithoutFeedback onPress={() => !disabled && this._onSelect()}>
-        <View style={[styles.option, style]}>
-          {text ? <Text>{text}</Text> : children}
+      <TouchableWithoutFeedback onPress={onPress} style={styles.optionTouchable}>
+        <View style={[defaultStyles.option, styles.optionWrapper, style]}>
+          {text ? <Text style={styles.optionText}>{text}</Text> : children}
         </View>
       </TouchableWithoutFeedback>
     );
@@ -30,17 +31,19 @@ MenuOption.propTypes = {
   onSelect: React.PropTypes.func,
   text: React.PropTypes.string,
   value: React.PropTypes.any,
+  styles: React.PropTypes.object,
 };
 
 MenuOption.defaultProps = {
   disabled: false,
+  styles: {},
 };
 
 MenuOption.contextTypes = {
   menuActions: React.PropTypes.object,
 };
 
-const styles = StyleSheet.create({
+const defaultStyles = StyleSheet.create({
   option: {
     padding: 5,
     backgroundColor: 'transparent',

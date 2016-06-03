@@ -1,10 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
-import { render } from './helpers';
+import { render, normalizeStyle } from './helpers';
 import MenuOption from '../src/MenuOption';
 
 jest.dontMock('../src/MenuOptions');
 const MenuOptions = require('../src/MenuOptions').default;
+const { objectContaining } = jasmine;
 
 describe('MenuOptions', () => {
 
@@ -59,6 +60,30 @@ describe('MenuOptions', () => {
     const ch = children[0];
     expect(ch.type).toBe(UserOption);
     expect(ch.props.onSelect).toEqual(onSelect);
+  });
+
+  it('should render options with custom styles', () => {
+    const onSelect = () => 0;
+    const styles = {
+      optionsContainer: { backgroundColor: 'red' },
+      optionText: { color: 'blue' },
+    };
+    const customOptionStyles = {
+      optionText: { color: 'pink' },
+    };
+    const { output } = render(
+      <MenuOptions onSelect={onSelect} styles={styles}>
+        <MenuOption />
+        <MenuOption styles={customOptionStyles} />
+        <MenuOption />
+      </MenuOptions>
+    );
+    expect(normalizeStyle(output.props.style))
+      .toEqual(objectContaining(styles.optionsContainer));
+    const options = output.props.children;
+    expect(options[0].props.styles).toEqual(styles);
+    expect(options[1].props.styles).toEqual(customOptionStyles);
+    expect(options[2].props.styles).toEqual(styles);
   });
 
 });
