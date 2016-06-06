@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableWithoutFeedback, Text } from 'react-native';
+import { View, TouchableHighlight, Text } from 'react-native';
 import { debug } from './logger.js';
 
 export default class MenuTrigger extends Component {
@@ -14,11 +14,13 @@ export default class MenuTrigger extends Component {
     const { disabled, onRef, text, children, style, styles, ...other } = this.props;
     const onPress = () => !disabled && this._onPress();
     return (
-      <TouchableWithoutFeedback onPress={onPress} style={styles.triggerTouchable}>
-        <View {...other} style={[styles.triggerWrapper, style]} ref={onRef} collapsable={false}>
-          {text ? <Text style={styles.triggerText}>{text}</Text> : children}
-        </View>
-      </TouchableWithoutFeedback>
+      <View ref={onRef} collapsable={false}>
+        <TouchableHighlight onPress={onPress} {...styles.triggerTouchable} style={[styles.triggerWrapper, style]}>
+          <View {...other}>
+            {text ? <Text style={styles.triggerText}>{text}</Text> : children}
+          </View>
+        </TouchableHighlight>
+      </View>
     );
   }
 

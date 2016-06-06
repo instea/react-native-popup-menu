@@ -45,10 +45,12 @@ const triggerStyles = {
     color: 'white',
   },
   triggerWrapper: {
-    backgroundColor: 'blue',
     padding: 5,
+    backgroundColor: 'blue',
   },
   triggerTouchable: {
+    underlayColor: 'darkblue',
+    activeOpacity: 70,
   },
 };
 
@@ -60,11 +62,13 @@ const optionsStyles = {
   optionsWrapper: {
     backgroundColor: 'purple',
   },
-  optionTouchable: {
-  },
   optionWrapper: {
     backgroundColor: 'yellow',
     margin: 5,
+  },
+  optionTouchable: {
+    underlayColor: 'gold',
+    activeOpacity: 70,
   },
   optionText: {
     color: 'brown',
@@ -73,6 +77,8 @@ const optionsStyles = {
 
 const optionStyles = {
   optionTouchable: {
+    underlayColor: 'red',
+    activeOpacity: 40,
   },
   optionWrapper: {
     backgroundColor: 'pink',

@@ -1,6 +1,6 @@
 import React from 'react';
-import { TouchableWithoutFeedback, View, Text } from 'react-native';
-import { render, normalizeStyle } from './helpers';
+import { TouchableHighlight, View, Text } from 'react-native';
+import { render, normalizeStyle, nthChild } from './helpers';
 
 jest.dontMock('../src/MenuOption');
 const MenuOption = require('../src/MenuOption').default;
@@ -14,9 +14,9 @@ describe('MenuOption', () => {
         <Text>Option 1</Text>
       </MenuOption>
     );
-    expect(output.type).toEqual(TouchableWithoutFeedback);
-    expect(output.props.children.type).toEqual(View);
-    expect(output.props.children.props.children).toEqual(
+    expect(output.type).toEqual(TouchableHighlight);
+    expect(nthChild(output, 1).type).toEqual(View);
+    expect(nthChild(output, 2)).toEqual(
       <Text>Option 1</Text>
     );
   });
@@ -80,7 +80,7 @@ describe('MenuOption', () => {
     const { output } = render(
       <MenuOption text='Hello world' />
     );
-    expect(output.type).toEqual(TouchableWithoutFeedback);
+    expect(output.type).toEqual(TouchableHighlight);
     expect(output.props.children.type).toEqual(View);
     const text = output.props.children.props.children;
     expect(text).toEqual(
@@ -92,17 +92,16 @@ describe('MenuOption', () => {
     const styles = {
       optionWrapper: { backgroundColor: 'red' },
       optionText: { color: 'blue' },
-      optionTouchable: { backgroundColor: 'green' },
+      optionTouchable: { underlayColor: 'green' },
     };
     const { output } = render(
       <MenuOption text='some text' styles={styles} />
     );
     const touchable = output;
-    const wrapper = touchable.props.children;
-    const text = wrapper.props.children;
+    const text = nthChild(output, 2);
+    expect(normalizeStyle(touchable.props))
+      .toEqual(objectContaining({ underlayColor: 'green' }));
     expect(normalizeStyle(touchable.props.style))
-      .toEqual(objectContaining(styles.optionTouchable));
-    expect(normalizeStyle(wrapper.props.style))
       .toEqual(objectContaining(styles.optionWrapper));
     expect(normalizeStyle(text.props.style))
       .toEqual(objectContaining(styles.optionText));

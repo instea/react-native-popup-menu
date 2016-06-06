@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, Text } from 'react-native';
+import { View, StyleSheet, TouchableHighlight, Text } from 'react-native';
 import { debug } from './logger';
 
 export default class MenuOption extends Component {
@@ -17,11 +17,13 @@ export default class MenuOption extends Component {
     const { text, disabled, children, style, styles } = this.props;
     const onPress = () => !disabled && this._onSelect();
     return (
-      <TouchableWithoutFeedback onPress={onPress} style={styles.optionTouchable}>
-        <View style={[defaultStyles.option, styles.optionWrapper, style]}>
+      <TouchableHighlight onPress={onPress}
+        style={[defaultStyles.option, styles.optionWrapper, style]}
+        {...styles.optionTouchable}>
+        <View>
           {text ? <Text style={styles.optionText}>{text}</Text> : children}
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableHighlight>
     );
   }
 }

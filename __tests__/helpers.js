@@ -31,3 +31,7 @@ export function showDebug() {
     },
   }));
 }
+
+export function nthChild(node, n) {
+  return n === 0 ? node : nthChild(node.props.children, n - 1);
+}

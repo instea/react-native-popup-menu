@@ -1,6 +1,6 @@
 import React from 'react';
-import { TouchableWithoutFeedback, View, Text } from 'react-native';
-import { render, normalizeStyle } from './helpers';
+import { TouchableHighlight, View, Text } from 'react-native';
+import { render, normalizeStyle, nthChild } from './helpers';
 
 jest.dontMock('../src/MenuTrigger');
 const MenuTrigger = require('../src/MenuTrigger').default;
@@ -14,9 +14,10 @@ describe('MenuTrigger', () => {
         <Text>Trigger Button</Text>
       </MenuTrigger>
     );
-    expect(output.type).toEqual(TouchableWithoutFeedback);
-    expect(output.props.children.type).toEqual(View);
-    expect(output.props.children.props.children).toEqual(
+    expect(output.type).toEqual(View);
+    expect(nthChild(output, 1).type).toEqual(TouchableHighlight);
+    expect(nthChild(output, 2).type).toEqual(View);
+    expect(nthChild(output, 3)).toEqual(
       <Text>Trigger Button</Text>
     );
   });
@@ -25,9 +26,9 @@ describe('MenuTrigger', () => {
     const { output } = render(
       <MenuTrigger text='Trigger text' />
     );
-    expect(output.type).toEqual(TouchableWithoutFeedback);
-    expect(output.props.children.type).toEqual(View);
-    expect(output.props.children.props.children).toEqual(
+    expect(nthChild(output, 1).type).toEqual(TouchableHighlight);
+    expect(nthChild(output, 2).type).toEqual(View);
+    expect(nthChild(output, 3)).toEqual(
       <Text>Trigger text</Text>
     );
   });
@@ -44,9 +45,8 @@ describe('MenuTrigger', () => {
     const { output } = render(
       <MenuTrigger onRef={onRefSpy} />
     );
-    const view = output.props.children;
-    expect(typeof view.ref).toEqual('function');
-    view.ref();
+    expect(typeof output.ref).toEqual('function');
+    output.ref();
     expect(onRefSpy).toHaveBeenCalled();
     expect(onRefSpy.calls.count()).toEqual(1);
   });
@@ -57,7 +57,7 @@ describe('MenuTrigger', () => {
     );
     const menuActions = { openMenu: createSpy() };
     instance.context = { menuActions };
-    output.props.onPress();
+    nthChild(output, 1).props.onPress();
     expect(menuActions.openMenu).toHaveBeenCalledWith('menu1');
     expect(menuActions.openMenu.calls.count()).toEqual(1);
   });
@@ -68,7 +68,7 @@ describe('MenuTrigger', () => {
     );
     const menuActions = { openMenu: createSpy() };
     instance.context = { menuActions };
-    output.props.onPress();
+    nthChild(output, 1).props.onPress();
     expect(menuActions.openMenu).not.toHaveBeenCalled();
   });
 
@@ -76,17 +76,16 @@ describe('MenuTrigger', () => {
     const styles = {
       triggerWrapper: { backgroundColor: 'red' },
       triggerText: { color: 'blue' },
-      triggerTouchable: { backgroundColor: 'green' },
+      triggerTouchable: { underlayColor: 'green' },
     };
     const { output } = render(
       <MenuTrigger menuName='menu1' text='some text' styles={styles} />
     );
-    const touchable = output;
-    const wrapper = touchable.props.children;
-    const text = wrapper.props.children;
+    const touchable = nthChild(output, 1);
+    const text = nthChild(output, 3);
+    expect(normalizeStyle(touchable.props))
+      .toEqual(objectContaining({ underlayColor: 'green' }));
     expect(normalizeStyle(touchable.props.style))
-      .toEqual(objectContaining(styles.triggerTouchable));
-    expect(normalizeStyle(wrapper.props.style))
       .toEqual(objectContaining(styles.triggerWrapper));
     expect(normalizeStyle(text.props.style))
       .toEqual(objectContaining(styles.triggerText));
