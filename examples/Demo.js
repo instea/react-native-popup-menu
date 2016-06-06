@@ -8,6 +8,7 @@ import OriginalExample from './OriginalExample';
 import ControlledExample from './ControlledExample';
 import ExtensionExample from './ExtensionExample';
 import ModalExample from './ModalExample';
+import StylingExample from './StylingExample';
 
 const demos = [
   { Component: BasicExample, name: 'Basic example' },
@@ -16,6 +17,7 @@ const demos = [
   { Component: ControlledExample, name: 'Controlled example' },
   { Component: ExtensionExample, name: 'Extensions example' },
   { Component: ModalExample, name: 'Modal example' },
+  { Component: StylingExample, name: 'Styling example' },
 ];
 
 // show debug messages for demos.
