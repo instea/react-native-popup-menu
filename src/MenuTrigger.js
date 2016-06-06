@@ -15,7 +15,8 @@ export default class MenuTrigger extends Component {
     const onPress = () => !disabled && this._onPress();
     return (
       <View ref={onRef} collapsable={false}>
-        <TouchableHighlight onPress={onPress} {...customStyles.triggerTouchable} style={[customStyles.triggerWrapper, style]}>
+        <TouchableHighlight onPress={onPress} style={[customStyles.triggerWrapper, style]}
+          {...defaultTouchableStyles} {...customStyles.triggerTouchable}>
           <View {...other}>
             {text ? <Text style={customStyles.triggerText}>{text}</Text> : children}
           </View>
@@ -40,6 +41,10 @@ MenuTrigger.defaultProps = {
 
 MenuTrigger.contextTypes = {
   menuActions: React.PropTypes.object,
+};
+
+const defaultTouchableStyles = {
+  underlayColor: 'rgba(0, 0, 0, 0.1)',
 };
 
 export default MenuTrigger;

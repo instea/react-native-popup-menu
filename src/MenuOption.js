@@ -19,7 +19,7 @@ export default class MenuOption extends Component {
     return (
       <TouchableHighlight onPress={onPress}
         style={[defaultStyles.option, customStyles.optionWrapper, style]}
-        {...customStyles.optionTouchable}>
+        {...defaultTouchableStyles} {...customStyles.optionTouchable}>
         <View>
           {text ? <Text style={customStyles.optionText}>{text}</Text> : children}
         </View>
@@ -52,3 +52,7 @@ const defaultStyles = StyleSheet.create({
     flex: 1,
   }
 });
+
+const defaultTouchableStyles = {
+  underlayColor: 'rgba(0, 0, 0, 0.1)',
+};
