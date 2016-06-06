@@ -69,7 +69,7 @@ To style `<MenuTrigger />` component you can pass `customStyles` object prop wit
 |`triggerTouchable`|`Object`|Style props of `TouchableHighlight`. Supported keys: `activeOpacity`, `underlayColor`|
 |`triggerText`|`Object`|Style of `Text` component (used when `text` shorthand option is defined)|
 
-See more in custom styling [example](examples/StylingExample.js).
+See more in custom styling [example](../examples/StylingExample.js).
 
 ## MenuOptions
 
@@ -98,7 +98,7 @@ To style `<MenuOptions />` and it's `<MenuOption />` components you can pass `cu
 
 **Note:** `optionWrapper`, `optionTouchable` and `optionText` styles of particular menu option can be overriden by `customStyles` prop of `<MenuOption />` component.
 
-See more in custom styling [example](examples/StylingExample.js).
+See more in custom styling [example](../examples/StylingExample.js).
 
 ## MenuOption
 
@@ -127,7 +127,7 @@ To style `<MenuOption />` component you can pass `customStyles` object prop with
 |`optionTouchable`|`Object`|Style props of `TouchableHighlight`. Supported keys: `activeOpacity`, `underlayColor`|
 |`optionText`|`Object`|Style of `Text` component (when `text` shorthand option is defined)|
 
-See more in custom styling [example](examples/StylingExample.js).
+See more in custom styling [example](../examples/StylingExample.js).
 
 ## renderers
 
@@ -135,4 +135,4 @@ Renderers are react components which wraps `MenuOptions` and are responsible for
 In `renderers` module there are already provided two renderers - `ContextMenu` (default) and `SlideInMenu`.
 It is possible to extend menu and use custom renderer (see implementation of existing renderers).
 
-NOTE: If you only need to add styles or wrap `MenuOptions` with your own component, use `optionsContainerStyle` or `renderOptionsContainer` option of `MenuOptions` instead.
+NOTE: If you only need to add styles or wrap `MenuOptions` with your own component, use `customStyles` or `renderOptionsContainer` options of `MenuOptions` instead.
