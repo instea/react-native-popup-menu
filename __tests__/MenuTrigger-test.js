@@ -73,22 +73,22 @@ describe('MenuTrigger', () => {
   });
 
   it('should render trigger with custom styles', () => {
-    const styles = {
+    const customStyles = {
       triggerWrapper: { backgroundColor: 'red' },
       triggerText: { color: 'blue' },
       triggerTouchable: { underlayColor: 'green' },
     };
     const { output } = render(
-      <MenuTrigger menuName='menu1' text='some text' styles={styles} />
+      <MenuTrigger menuName='menu1' text='some text' customStyles={customStyles} />
     );
     const touchable = nthChild(output, 1);
     const text = nthChild(output, 3);
     expect(normalizeStyle(touchable.props))
       .toEqual(objectContaining({ underlayColor: 'green' }));
     expect(normalizeStyle(touchable.props.style))
-      .toEqual(objectContaining(styles.triggerWrapper));
+      .toEqual(objectContaining(customStyles.triggerWrapper));
     expect(normalizeStyle(text.props.style))
-      .toEqual(objectContaining(styles.triggerText));
+      .toEqual(objectContaining(customStyles.triggerText));
   });
 
 });

@@ -89,22 +89,22 @@ describe('MenuOption', () => {
   });
 
   it('should render component with custom styles', () => {
-    const styles = {
+    const customStyles = {
       optionWrapper: { backgroundColor: 'red' },
       optionText: { color: 'blue' },
       optionTouchable: { underlayColor: 'green' },
     };
     const { output } = render(
-      <MenuOption text='some text' styles={styles} />
+      <MenuOption text='some text' customStyles={customStyles} />
     );
     const touchable = output;
     const text = nthChild(output, 2);
     expect(normalizeStyle(touchable.props))
       .toEqual(objectContaining({ underlayColor: 'green' }));
     expect(normalizeStyle(touchable.props.style))
-      .toEqual(objectContaining(styles.optionWrapper));
+      .toEqual(objectContaining(customStyles.optionWrapper));
     expect(normalizeStyle(text.props.style))
-      .toEqual(objectContaining(styles.optionText));
+      .toEqual(objectContaining(customStyles.optionText));
   });
 
 });

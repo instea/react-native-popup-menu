@@ -14,14 +14,14 @@ export default class MenuOption extends Component {
   }
 
   render() {
-    const { text, disabled, children, style, styles } = this.props;
+    const { text, disabled, children, style, customStyles } = this.props;
     const onPress = () => !disabled && this._onSelect();
     return (
       <TouchableHighlight onPress={onPress}
-        style={[defaultStyles.option, styles.optionWrapper, style]}
-        {...styles.optionTouchable}>
+        style={[defaultStyles.option, customStyles.optionWrapper, style]}
+        {...customStyles.optionTouchable}>
         <View>
-          {text ? <Text style={styles.optionText}>{text}</Text> : children}
+          {text ? <Text style={customStyles.optionText}>{text}</Text> : children}
         </View>
       </TouchableHighlight>
     );
@@ -33,12 +33,12 @@ MenuOption.propTypes = {
   onSelect: React.PropTypes.func,
   text: React.PropTypes.string,
   value: React.PropTypes.any,
-  styles: React.PropTypes.object,
+  customStyles: React.PropTypes.object,
 };
 
 MenuOption.defaultProps = {
   disabled: false,
-  styles: {},
+  customStyles: {},
 };
 
 MenuOption.contextTypes = {

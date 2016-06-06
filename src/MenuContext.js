@@ -133,10 +133,10 @@ export default class MenuContext extends Component {
     const options = instance._getOptions();
     const { renderer } = instance.props;
     const windowLayout = this._ownLayout;
-    const { optionsContainerStyle, renderOptionsContainer, styles } = options.props;
+    const { optionsContainerStyle, renderOptionsContainer, customStyles } = options.props;
     const optionsRenderer = renderOptionsContainer || defaultOptionsContainerRenderer;
     const onLayout = e => this._onOptionsLayout(e, instance.getName());
-    const style = [optionsContainerStyle, styles.optionsContainer];
+    const style = [optionsContainerStyle, customStyles.optionsContainer];
     const layouts = { windowLayout, triggerLayout, optionsLayout };
     const props = { style, onLayout, layouts };
     if (!triggerLayout || !optionsLayout) {

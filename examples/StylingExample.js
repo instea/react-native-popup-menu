@@ -21,13 +21,13 @@ export default class BasicExample extends Component {
     return (
       <MenuContext style={styles.container}>
         <Menu renderer={this.state.renderer}>
-          <MenuTrigger text='Select option' styles={triggerStyles} />
-          <MenuOptions styles={optionsStyles}>
+          <MenuTrigger text='Select option' customStyles={triggerStyles} />
+          <MenuOptions customStyles={optionsStyles}>
             <MenuOption text='Context Menu'
               onSelect={() => this.setState({renderer: ContextMenu})}/>
             <MenuOption text='Slide-in Menu'
               onSelect={() => this.setState({renderer: SlideInMenu})}/>
-            <MenuOption text='Three (custom)' styles={optionStyles}
+            <MenuOption text='Three (custom)' customStyles={optionStyles}
               onSelect={() => alert('Selected custom styled option')} />
             <MenuOption disabled={true}>
               <Text style={{color: '#ccc'}}>Four (disabled)</Text>

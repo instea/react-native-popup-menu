@@ -11,13 +11,13 @@ export default class MenuTrigger extends Component {
   }
 
   render() {
-    const { disabled, onRef, text, children, style, styles, ...other } = this.props;
+    const { disabled, onRef, text, children, style, customStyles, ...other } = this.props;
     const onPress = () => !disabled && this._onPress();
     return (
       <View ref={onRef} collapsable={false}>
-        <TouchableHighlight onPress={onPress} {...styles.triggerTouchable} style={[styles.triggerWrapper, style]}>
+        <TouchableHighlight onPress={onPress} {...customStyles.triggerTouchable} style={[customStyles.triggerWrapper, style]}>
           <View {...other}>
-            {text ? <Text style={styles.triggerText}>{text}</Text> : children}
+            {text ? <Text style={customStyles.triggerText}>{text}</Text> : children}
           </View>
         </TouchableHighlight>
       </View>
@@ -30,12 +30,12 @@ MenuTrigger.propTypes = {
   disabled: React.PropTypes.bool,
   text: React.PropTypes.string,
   onPress: React.PropTypes.func,
-  styles: React.PropTypes.object,
+  customStyles: React.PropTypes.object,
 };
 
 MenuTrigger.defaultProps = {
   disabled: false,
-  styles: {},
+  customStyles: {},
 };
 
 MenuTrigger.contextTypes = {

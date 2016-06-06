@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { render, normalizeStyle } from './helpers';
-import MenuOption from '../src/MenuOption';
+import { MenuOption } from '../src/index';
 
 jest.dontMock('../src/MenuOptions');
 const MenuOptions = require('../src/MenuOptions').default;
@@ -64,7 +64,7 @@ describe('MenuOptions', () => {
 
   it('should render options with custom styles', () => {
     const onSelect = () => 0;
-    const styles = {
+    const customStyles = {
       optionsWrapper: { backgroundColor: 'red' },
       optionText: { color: 'blue' },
     };
@@ -72,18 +72,18 @@ describe('MenuOptions', () => {
       optionText: { color: 'pink' },
     };
     const { output } = render(
-      <MenuOptions onSelect={onSelect} styles={styles}>
+      <MenuOptions onSelect={onSelect} customStyles={customStyles}>
         <MenuOption />
-        <MenuOption styles={customOptionStyles} />
+        <MenuOption customStyles={customOptionStyles} />
         <MenuOption />
       </MenuOptions>
     );
     expect(normalizeStyle(output.props.style))
-      .toEqual(objectContaining(styles.optionsWrapper));
+      .toEqual(objectContaining(customStyles.optionsWrapper));
     const options = output.props.children;
-    expect(options[0].props.styles).toEqual(styles);
-    expect(options[1].props.styles).toEqual(customOptionStyles);
-    expect(options[2].props.styles).toEqual(styles);
+    expect(options[0].props.customStyles).toEqual(customStyles);
+    expect(options[1].props.customStyles).toEqual(customOptionStyles);
+    expect(options[2].props.customStyles).toEqual(customStyles);
   });
 
 });
