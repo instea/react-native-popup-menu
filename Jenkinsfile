@@ -6,4 +6,5 @@ node {
     stage 'Run tests'
     sh 'npm test || true'
     step([$class: 'JUnitResultArchiver', testResults: 'target/*.xml'])
+    step([$class: 'ArtifactArchiver', artifacts: 'coverage/**/*', fingerprint: true])
 }
