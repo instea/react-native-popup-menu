@@ -46,8 +46,7 @@ describe('MenuOptions', () => {
   });
 
   it('should work with user defined options', () => {
-    const UserOption = () => <MenuOption text='user-defined' />;
-
+    const UserOption = (props) => <MenuOption {...props} text='user-defined' />;
     const onSelect = () => 0;
     const { output } = render(
       <MenuOptions onSelect={onSelect}>

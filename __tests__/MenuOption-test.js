@@ -72,8 +72,8 @@ describe('MenuOption', () => {
     const { output } = render(
       <MenuOption onSelect={spy} disabled={true} />
     );
-    output.props.onPress();
-    expect(spy).not.toHaveBeenCalled();
+    expect(output.type).toBe(View);
+    expect(output.props.onPress).toBeUndefined();
   });
 
   it('should render text passed in props', () => {

@@ -15,9 +15,16 @@ export default class MenuOption extends Component {
 
   render() {
     const { text, disabled, children, style, customStyles } = this.props;
-    const onPress = () => !disabled && this._onSelect();
+    if (disabled) {
+      const disabledStyles = [defaultStyles.optionTextDisabled, customStyles.optionText];
+      return (
+        <View style={[defaultStyles.option, customStyles.optionWrapper, style]}>
+          {text ? <Text style={disabledStyles}>{text}</Text> : children}
+        </View>
+      );
+    }
     return (
-      <TouchableHighlight onPress={onPress}
+      <TouchableHighlight onPress={() => this._onSelect()}
         style={[defaultStyles.option, customStyles.optionWrapper, style]}
         {...defaultTouchableStyles} {...customStyles.optionTouchable}>
         <View>
@@ -50,7 +57,10 @@ const defaultStyles = StyleSheet.create({
     padding: 5,
     backgroundColor: 'transparent',
     flex: 1,
-  }
+  },
+  optionTextDisabled: {
+    color: '#ccc',
+  },
 });
 
 const defaultTouchableStyles = {

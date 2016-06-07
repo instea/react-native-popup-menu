@@ -81,9 +81,7 @@ export default class Example extends Component {
               </MenuTrigger>
               <MenuOptions>
                 <MenuOption value="Normal" text='Normal' />
-                <MenuOption value="Disabled" disabled={true}>
-                  <Text style={styles.disabled}>Disabled</Text>
-                </MenuOption>
+                <MenuOption value="Disabled" disabled={true} text='Disabled' />
                 <MenuOption value="Do not close" text='Do not close' />
                 <View style={styles.divider}/>
                 <MenuOption value={{ text: 'Hello world!' }} text='Object as value' />
