@@ -4,7 +4,12 @@ node {
     stage 'Install dependencies'
     sh 'npm install'
     stage 'Run tests'
-    sh 'npm test || true'
-    step([$class: 'JUnitResultArchiver', testResults: 'target/*.xml'])
-    step([$class: 'ArtifactArchiver', artifacts: 'coverage/**/*', fingerprint: true])
+    try {
+      sh 'npm test'
+    } catch(Exception ex) {
+      echo ex
+    } finally {
+      step([$class: 'JUnitResultArchiver', testResults: 'target/*.xml'])
+      step([$class: 'ArtifactArchiver', artifacts: 'coverage/**/*', fingerprint: true])
+    }
 }
