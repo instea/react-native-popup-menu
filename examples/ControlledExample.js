@@ -41,10 +41,10 @@ export default class ControlledExample extends Component {
             text='Select option'/>
           <MenuOptions>
             <MenuOption value={1} text='One' />
-            <MenuOption value={2} text='Two' />
-            <MenuOption value={3} disabled={true}>
-              <Text style={{color: '#ccc'}}>Three</Text>
+            <MenuOption value={2}>
+              <Text style={{color: 'red'}}>Two</Text>
             </MenuOption>
+            <MenuOption value={3} disabled={true} text='Three' />
           </MenuOptions>
         </Menu>
       </MenuContext>
