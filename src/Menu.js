@@ -18,10 +18,13 @@ const childrenToArray = children => {
 
 export default class Menu extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor(props, ctx) {
+    super(props, ctx);
     this._name = this.props.name || makeName();
     this._forceClose = false;
+    if(!(ctx && ctx.menuActions)) {
+      throw new Error("Menu component must be ancestor of MenuContext");
+    }
   }
 
   componentDidMount() {
