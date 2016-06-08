@@ -4,6 +4,7 @@ import { render } from './helpers';
 import { MenuOptions, MenuTrigger } from '../src/index';
 import MenuOutside from '../src/renderers/MenuOutside';
 import Backdrop from '../src/Backdrop';
+import ContextMenu from '../src/renderers/ContextMenu';
 const { objectContaining, createSpy } = jasmine;
 
 jest.dontMock('../src/MenuContext');
@@ -39,6 +40,7 @@ describe('MenuContext', () => {
         onClose: createSpy(),
         onBackdropPress: createSpy(),
         type: 'context',
+        renderer: ContextMenu,
       },
     }
   }
