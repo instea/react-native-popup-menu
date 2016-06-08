@@ -15,6 +15,13 @@ const { objectContaining, createSpy, any } = jasmine;
 
 describe('Menu', () => {
 
+  function renderMenu(element) {
+    const ctx = createMockContext();
+    const result = render(element, ctx);
+    result.ctx = ctx;
+    return result;
+  }
+
   function createMockContext() {
     return {
       menuRegistry : {
@@ -28,7 +35,7 @@ describe('Menu', () => {
   }
 
   it('should render component and preserve children order', () => {
-    const { output } = render(
+    const { output } = renderMenu(
       <Menu>
         <Text>Some text</Text>
         <MenuTrigger />
@@ -53,28 +60,24 @@ describe('Menu', () => {
   });
 
   it('should subscribe menu and notify context', () => {
-    const { instance } = render(
+    const { ctx, instance } = renderMenu(
       <Menu>
         <MenuTrigger />
         <MenuOptions />
       </Menu>
     );
-    const ctx = createMockContext();
-    instance.context = ctx;
     instance.componentDidMount();
     expect(ctx.menuRegistry.subscribe).toHaveBeenCalledWith(instance);
     expect(ctx.menuActions._notify).toHaveBeenCalled();
   });
 
   it('should not subscribe menu because of missing options', () => {
-    const { instance, renderer } = render(
+    const { instance, renderer, ctx } = renderMenu(
       <Menu>
         <MenuTrigger />
         <Text>Some text</Text>
       </Menu>
     );
-    const ctx = createMockContext();
-    instance.context = ctx;
     instance.componentDidMount();
     expect(ctx.menuRegistry.subscribe).not.toHaveBeenCalled();
     const output = renderer.getRenderOutput();
@@ -88,14 +91,12 @@ describe('Menu', () => {
   });
 
   it('should not subscribe menu because of missing trigger', () => {
-    const { instance, renderer } = render(
+    const { instance, renderer, ctx } = renderMenu(
       <Menu>
         <Text>Some text</Text>
         <MenuOptions />
       </Menu>
     );
-    const ctx = createMockContext();
-    instance.context = ctx;
     instance.componentDidMount();
     expect(ctx.menuRegistry.subscribe).not.toHaveBeenCalled();
     const output = renderer.getRenderOutput();
@@ -106,11 +107,9 @@ describe('Menu', () => {
   });
 
   it('should not fail without any children', () => {
-    const { instance, renderer } = render(
+    const { instance, renderer } = renderMenu(
       <Menu/>
     );
-    const ctx = createMockContext();
-    instance.context = ctx;
     instance.componentDidMount();
     const output = renderer.getRenderOutput();
     expect(output.type).toEqual(View);
@@ -119,48 +118,44 @@ describe('Menu', () => {
   });
 
   it('should autogenerate name if not provided', () => {
-    const { instance } = render(
+    const { instance } = renderMenu(
       <Menu/>
     );
     expect(instance.getName()).toEqual('generated-name');
   });
 
   it('should use name from props if provided', () => {
-    const { instance } = render(
+    const { instance } = renderMenu(
       <Menu name='prop-name'/>
     );
     expect(instance.getName()).toEqual('prop-name');
   });
 
   it('should unsubscribe menu', () => {
-    const { instance } = render(
+    const { instance, ctx } = renderMenu(
       <Menu>
         <MenuTrigger />
         <MenuOptions />
       </Menu>
     );
-    const ctx = createMockContext();
-    instance.context = ctx;
     instance.componentWillUnmount();
     expect(ctx.menuRegistry.unsubscribe).toHaveBeenCalledWith(instance);
   });
 
   it('should notify context if updated', () => {
-    const { instance } = render(
+    const { instance, ctx } = renderMenu(
       <Menu>
         <MenuTrigger />
         <MenuOptions />
       </Menu>
     );
-    const ctx = createMockContext();
-    instance.context = ctx;
     instance.componentDidUpdate();
     expect(ctx.menuActions._notify).toHaveBeenCalled();
   });
 
   it('should forward on select handler to menu options', () => {
     const onSelect = () => 0;
-    const { instance } = render(
+    const { instance } = renderMenu(
       <Menu onSelect={ onSelect }>
         <MenuTrigger />
         <MenuOptions />
@@ -172,7 +167,7 @@ describe('Menu', () => {
   });
 
   it('declarative opened takes precedence over imperative', () => {
-    const { instance } = render(
+    const { instance } = renderMenu(
       <Menu opened={false}/>
     );
     instance._setOpened(true);
@@ -181,7 +176,7 @@ describe('Menu', () => {
   });
 
   it('imperative opened is used if no declarative', () => {
-    const { instance } = render(
+    const { instance } = renderMenu(
       <Menu/>
     );
     instance._setOpened(true);
@@ -189,14 +184,12 @@ describe('Menu', () => {
   });
 
   it('should be considered closed after unmount', () => {
-    const { instance } = render(
+    const { instance, ctx } = renderMenu(
       <Menu opened={true}>
         <MenuTrigger />
         <MenuOptions />
       </Menu>
     );
-    const ctx = createMockContext();
-    instance.context = ctx;
     expect(instance._isOpen()).toEqual(true);
     instance.componentWillUnmount();
     expect(instance._isOpen()).toEqual(false);
@@ -205,7 +198,7 @@ describe('Menu', () => {
 
   it('should know its trigger reference', () => {
     const triggerRef = 9;
-    const { instance, output } = render(
+    const { instance, output } = renderMenu(
       <Menu>
         <MenuTrigger />
         <MenuOptions />
