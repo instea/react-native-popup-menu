@@ -11,5 +11,6 @@ node {
     } finally {
       step([$class: 'JUnitResultArchiver', testResults: 'target/*.xml'])
       step([$class: 'ArtifactArchiver', artifacts: 'coverage/**/*', fingerprint: true])
+      step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: '', sendToIndividuals: true])
     }
 }
