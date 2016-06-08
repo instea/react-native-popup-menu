@@ -6,11 +6,9 @@ node {
     stage 'Run tests'
     try {
       sh 'npm test'
-    } catch(Exception ex) {
-      echo ex
     } finally {
       step([$class: 'JUnitResultArchiver', testResults: 'target/*.xml'])
       step([$class: 'ArtifactArchiver', artifacts: 'coverage/**/*', fingerprint: true])
-      step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: '', sendToIndividuals: true])
+      step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "${env.DEV_MAIL}", sendToIndividuals: true])
     }
 }
