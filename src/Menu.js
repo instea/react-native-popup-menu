@@ -121,6 +121,9 @@ export default class Menu extends Component {
 }
 
 Menu.debug = false;
+Menu.setDefaultRenderer = (renderer) => {
+  Menu.defaultProps.renderer = renderer;
+}
 
 Menu.propTypes = {
   name: React.PropTypes.string,

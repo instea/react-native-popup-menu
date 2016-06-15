@@ -31,7 +31,7 @@ const menu = (props) => (
 ```
 
 ## Custom renderer
-It is possible to use different renderer to display menu. There are already two predefined renderers: `ContextMenu` and `SlideInMenu` (from the `renderers` module). To use it you need to pass it to the `<Menu />` props:
+It is possible to use different renderer to display menu. There are already few predefined renderers: e.g. `ContextMenu` and `SlideInMenu` (from the `renderers` module). To use it you need to pass it to the `<Menu />` props:
 
 ```
 import { ..., renderers } from 'react-native-popup-menu';
@@ -58,7 +58,7 @@ const CustomMenu = (props) => {
 
 To compute your own menu position you can use `layouts` property which has properties:
 
-* `triggerLayout` constains dimensions and position of `<Trigger />` component (width, height, x, y).
+* `triggerLayout` contains dimensions and position of `<Trigger />` component (width, height, x, y).
 * `optionsLayout` contains dimensions of `<Options />` component (width, height);
 * `windowLayout` contains dimensions of the device window (width, height);
 

@@ -69,7 +69,10 @@ export default class ContextMenu extends React.Component {
 
 }
 
-const styles = StyleSheet.create({
+// public exports
+ContextMenu.computePosition = computePosition;
+
+export const styles = StyleSheet.create({
   options: {
     position: 'absolute',
     borderRadius: 2,

@@ -30,6 +30,10 @@ describe('ContextMenu', () => {
   });
 
   describe('computePosition', () => {
+    it('should be exported', () => {
+        expect(typeof ContextMenu.computePosition).toEqual('function');
+    });
+
     it('should returns default-top-left position', () => {
       const windowLayout = { width: 400, height: 600 };
       const triggerLayout = { width: 50, height: 50, x: 100, y: 100 };

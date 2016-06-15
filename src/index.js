@@ -5,7 +5,8 @@ import MenuOptions from './MenuOptions';
 import MenuTrigger from './MenuTrigger';
 
 import ContextMenu from './renderers/ContextMenu';
+import NotAnimatedContextMenu from './renderers/NotAnimatedContextMenu';
 import SlideInMenu from './renderers/SlideInMenu';
-const renderers = { ContextMenu, SlideInMenu };
+const renderers = { ContextMenu, SlideInMenu, NotAnimatedContextMenu };
 
 export { Menu as default, MenuContext, MenuOption, MenuOptions, MenuTrigger, renderers };

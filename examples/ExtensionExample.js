@@ -4,12 +4,15 @@ import Menu, {
   MenuContext,
   MenuOptions,
   MenuOption,
-  MenuTrigger
+  MenuTrigger,
+  renderers,
 } from 'react-native-popup-menu';
 
 const CheckedOption = (props) => (
   <MenuOption {...props} text={'\u2713 ' + props.text} />
 )
+
+Menu.setDefaultRenderer(renderers.NotAnimatedContextMenu);
 
 const ExtensionExample = () => (
   <MenuContext style={{flexDirection: 'column', padding: 30}}>

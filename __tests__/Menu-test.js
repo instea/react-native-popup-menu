@@ -34,6 +34,11 @@ describe('Menu', () => {
     }
   }
 
+  it('should export api', () => {
+    expect(typeof Menu.debug).toEqual('boolean');
+    expect(typeof Menu.setDefaultRenderer).toEqual('function');
+  });
+
   it('should render component and preserve children order', () => {
     const { output } = renderMenu(
       <Menu>

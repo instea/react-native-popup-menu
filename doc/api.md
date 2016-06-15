@@ -25,7 +25,7 @@ Root menu component defining menu name and providing menu events.
 |---|---|---|---|---|
 |`name`|`String`|Optional|`auto-generated`|Unique name of menu|
 |`opened`|`Boolean`|Optional||Declaratively states if menu is opened. When this prop is provided, menu is controlled and imperative API won't work.|
-|`renderer`|`Function`|Optional|`ContextMenu`|Defines position, animation and basic menu styles (currently available renderers are `ContextMenu` and `SlideInMenu`). See [renderers section](#renderers) for more details|
+|`renderer`|`Function`|Optional|`ContextMenu`|Defines position, animation and basic menu styles. See [renderers section](#renderers) for more details|
 
 ### Events
 | Event Name | Arguments | Notes |
@@ -39,6 +39,11 @@ Root menu component defining menu name and providing menu events.
 | Property name | Type | Opt/Required | Default | Note |
 |---|---|---|---|---|
 |`debug`|`Boolean`|Optional|`false`|This property enables debug logs|
+
+### Static Functions
+| Function name | Arguments | Returns | Note |
+|---|---|---|---|
+|`setDefaultRenderer`| `Function`| | Sets new default renderer. See [renderers section](#renderers) for more details |
 
 ## MenuTrigger
 
@@ -132,7 +137,11 @@ See more in custom styling [example](../examples/StylingExample.js).
 ## renderers
 
 Renderers are react components which wraps `MenuOptions` and are responsible for menu position and animation.
-In `renderers` module there are already provided two renderers - `ContextMenu` (default) and `SlideInMenu`.
-It is possible to extend menu and use custom renderer (see implementation of existing renderers).
+The `renderers` module provides following renderers
+* `ContextMenu` (default) - opens (animated) context menu over the trigger position. The `ContextMenu.computePosition` exports function for position calculation in case you would like to implement your own renderer (without special position calculation).
+* `NotAnimatedContextMenu` - same as ContextMenu but without any animation.
+* `SlideInMenu` - slides in the menu from the bottom of the screen.
 
-NOTE: If you only need to add styles or wrap `MenuOptions` with your own component, use `customStyles` or `renderOptionsContainer` options of `MenuOptions` instead.
+It is possible to extend menu and use custom renderer (see implementation of existing renderers or [extension guide](extensions.md)).
+
+**Note:**  If you only need to add styles or wrap `MenuOptions` with your own component, use `customStyles` or `renderOptionsContainer` options of `MenuOptions` instead.
