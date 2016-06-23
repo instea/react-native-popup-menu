@@ -1,1 +1,7 @@
 examples
+.babelrc
+Jenkinsfile
+coverage/
+target/
+__tests__/
+__mocks__/
