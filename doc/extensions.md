@@ -31,7 +31,7 @@ const menu = (props) => (
 ```
 
 ## Custom renderer
-It is possible to use different renderer to display menu. There are already few predefined renderers: e.g. `ContextMenu` and `SlideInMenu` (from the `renderers` module). To use it you need to pass it to the `<Menu />` props:
+It is possible to use different renderer to display menu. There are already few predefined renderers: e.g. `ContextMenu` and `SlideInMenu` (from the `renderers` module). To use it you need to pass it to the `<Menu />` props or use `setDefaultRenderer` (see [API](api.md#static-functions)):
 
 ```
 import { ..., renderers } from 'react-native-popup-menu';
