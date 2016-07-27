@@ -95,9 +95,9 @@ To style `<MenuOptions />` and it's `<MenuOption />` components you can pass `cu
 
 | Object key | Type | Notes |
 |---|---|---|
-|`optionsWrapper`|`Object`|Style of wrapping `View` component|
+|`optionsWrapper`|`Object`|Style of `View` component wrapping all options|
 |`optionsContainer`|`Object`|Style of wrapping `AnimatedView` component|
-|`optionWrapper`|`Object`|Style of wrapping `View` component.|
+|`optionWrapper`|`Object`|Style of `View` component wrapping single option|
 |`optionTouchable`|`Object`|Style props of `TouchableHighlight`. Supported keys: `activeOpacity`, `underlayColor`|
 |`optionText`|`Object`|Style of `Text` component (when `text` shorthand option is defined)|
 
