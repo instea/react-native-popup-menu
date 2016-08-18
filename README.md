@@ -12,7 +12,9 @@ npm install react-native-popup-menu --save
 
 ## Demo
 
+<kbd>
 ![](./android.demo.gif)
+</kbd>
 
 ## Basic Usage
 
