@@ -43,7 +43,7 @@ export default class ContextMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      scaleAnim: new Animated.Value(0.001),
+      scaleAnim: new Animated.Value(0.1),
     };
   }
 
