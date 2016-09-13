@@ -27,6 +27,21 @@ describe('MenuOptions', () => {
     });
   });
 
+  it('should accept optional (null) options', () => {
+    const option = false;
+    const { output } = render(
+      <MenuOptions>
+        <MenuOption />
+        {option ? <MenuOption />: null}
+        <MenuOption />
+      </MenuOptions>
+    );
+    expect(output.type).toEqual(View);
+    const children = output.props.children;
+    expect(children.length).toEqual(2);
+  });
+
+
   it("should prioritize option's onSelect handler", () => {
     const onSelect = () => 0;
     const onSelectOption = () => 1;
