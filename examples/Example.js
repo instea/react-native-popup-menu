@@ -67,6 +67,7 @@ export default class Example extends Component {
                 <MenuOption value={2} text='Option two' />
                 <MenuOption value={3} text='Option three' />
                 <MenuOption value={4} text='Option four' />
+                { null /* conditional not rendered option */ }
                 <MenuOption value={5} text='Option five' />
               </MenuOptions>
             </Menu>
