@@ -1,7 +1,6 @@
 # react-native-popup-menu
 
 Extensible popup menu component for React Native.
-It is inspired by [react-native-menu](https://github.com/jaysoo/react-native-menu) component which has its limitations.
 Target platforms are both Android and iOS.
 
 ## Installation
@@ -17,6 +16,9 @@ npm install react-native-popup-menu --save
 </kbd>
 
 ## Basic Usage
+Wrap your application inside `MenuContext` and then simply use `Menu` component where you need it. Below you can find simple examples.
+
+For more detailed documentation check [API](./doc/api.md).
 
 ### Context menu - uncontrolled
 

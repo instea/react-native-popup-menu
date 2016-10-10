@@ -4,8 +4,9 @@
 
 It provides methods to handle popup menus imperatively.  The same methods are exposed to the child context with name `menuActions`.
 
-**Note:** It is important that `<MenuContext />` is on the top of the component hierarchy and wrap all `<Menu />` components.
+**Note:** It is important that `<MenuContext />` is on the top of the component hierarchy (e.g. `ScrollView` should be inside of `MenuContext`) and wraps all `<Menu />` components.
 This is needed in order to solve z-index issues.
+The only known exception is when you use [Modal](https://facebook.github.io/react-native/docs/modal.html) - you need to place (additional) 'MenuContext' inside of 'Modal' (see our [ModalExample](../examples/ModalExample.js))
 
 ### Methods, `menuActions` context
 
