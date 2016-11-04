@@ -9,4 +9,4 @@ import NotAnimatedContextMenu from './renderers/NotAnimatedContextMenu';
 import SlideInMenu from './renderers/SlideInMenu';
 const renderers = { ContextMenu, SlideInMenu, NotAnimatedContextMenu };
 
-export { Menu as default, MenuContext, MenuOption, MenuOptions, MenuTrigger, renderers };
+export { Menu as default, Menu, MenuContext, MenuOption, MenuOptions, MenuTrigger, renderers };
