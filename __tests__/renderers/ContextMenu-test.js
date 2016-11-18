@@ -7,8 +7,9 @@ const { default: ContextMenu, computePosition } = require('../../src/renderers/C
 
 describe('ContextMenu', () => {
 
+  const windowLayout = { width: 400, height: 600, x: 0, y: 0 };
   const defaultLayouts = {
-    windowLayout: { width: 400, height: 600 },
+    windowLayout,
     triggerLayout: { width: 50, height: 50, x: 10, y: 10 },
     optionsLayout: { width: 200, height: 100 },
   };
@@ -35,7 +36,6 @@ describe('ContextMenu', () => {
     });
 
     it('should returns default-top-left position', () => {
-      const windowLayout = { width: 400, height: 600 };
       const triggerLayout = { width: 50, height: 50, x: 100, y: 100 };
       const optionsLayout = { width: 50, height: 50 };
       const layouts = { windowLayout, triggerLayout, optionsLayout };
@@ -45,7 +45,6 @@ describe('ContextMenu', () => {
     });
 
     it('should returns top-left position', () => {
-      const windowLayout = { width: 400, height: 600 };
       const triggerLayout = { width: 50, height: 50, x: 10, y: 10 };
       const optionsLayout = { width: 50, height: 50 };
       const layouts = { windowLayout, triggerLayout, optionsLayout };
@@ -55,7 +54,6 @@ describe('ContextMenu', () => {
     });
 
     it('should returns top-right position', () => {
-      const windowLayout = { width: 400, height: 600 };
       const triggerLayout = { width: 100, height: 50, x: 300, y: 0 };
       const optionsLayout = { width: 150, height: 100 };
       const layouts = { windowLayout, triggerLayout, optionsLayout };
@@ -65,7 +63,6 @@ describe('ContextMenu', () => {
     });
 
     it('should returns bottom-left position', () => {
-      const windowLayout = { width: 400, height: 600 };
       const triggerLayout = { width: 100, height: 100, x: 10, y: 500 };
       const optionsLayout = { width: 150, height: 150 };
       const layouts = { windowLayout, triggerLayout, optionsLayout };
@@ -75,7 +72,6 @@ describe('ContextMenu', () => {
     });
 
     it('should returns bottom-right position', () => {
-      const windowLayout = { width: 400, height: 600 };
       const triggerLayout = { width: 100, height: 100, x: 300, y: 500 };
       const optionsLayout = { width: 150, height: 150 };
       const layouts = { windowLayout, triggerLayout, optionsLayout };
@@ -85,7 +81,6 @@ describe('ContextMenu', () => {
     });
 
     it('should return horizontal middle position', () => {
-      const windowLayout = { width: 400, height: 600 };
       const triggerLayout = { width: 100, height: 20, x: 10, y: 290 };
       const optionsLayout = { width: 150, height: 500 };
       const layouts = { windowLayout, triggerLayout, optionsLayout };
@@ -95,7 +90,6 @@ describe('ContextMenu', () => {
     });
 
     it('should return vertical middle position', () => {
-      const windowLayout = { width: 400, height: 600 };
       const triggerLayout = { width: 100, height: 20, x: 150, y: 10 };
       const optionsLayout = { width: 300, height: 100 };
       const layouts = { windowLayout, triggerLayout, optionsLayout };
@@ -105,7 +99,6 @@ describe('ContextMenu', () => {
     });
 
     it('should return zero top position for big menus', () => {
-      const windowLayout = { width: 400, height: 600 };
       const triggerLayout = { width: 100, height: 20, x: 10, y: 290 };
       const optionsLayout = { width: 150, height: 700 };
       const layouts = { windowLayout, triggerLayout, optionsLayout };
@@ -115,7 +108,6 @@ describe('ContextMenu', () => {
     });
 
     it('should return zero left position for big menus', () => {
-      const windowLayout = { width: 400, height: 600 };
       const triggerLayout = { width: 100, height: 20, x: 150, y: 10 };
       const optionsLayout = { width: 500, height: 100 };
       const layouts = { windowLayout, triggerLayout, optionsLayout };
@@ -125,7 +117,6 @@ describe('ContextMenu', () => {
     });
 
     it('should return zero top because of overlaping cener position', () => {
-      const windowLayout = { width: 400, height: 600 };
       const triggerLayout = { width: 100, height: 20, x: 10, y: 200 };
       const optionsLayout = { width: 150, height: 500 };
       const layouts = { windowLayout, triggerLayout, optionsLayout };
@@ -135,7 +126,6 @@ describe('ContextMenu', () => {
     });
 
     it('should return zero bottom because of overlaping cener position', () => {
-      const windowLayout = { width: 400, height: 600 };
       const triggerLayout = { width: 100, height: 20, x: 10, y: 450 };
       const optionsLayout = { width: 150, height: 500 };
       const layouts = { windowLayout, triggerLayout, optionsLayout };
@@ -145,7 +135,6 @@ describe('ContextMenu', () => {
     });
 
     it('should return zero left because of overlaping cener position', () => {
-      const windowLayout = { width: 400, height: 600 };
       const triggerLayout = { width: 1, height: 20, x: 100, y: 10 };
       const optionsLayout = { width: 350, height: 50 };
       const layouts = { windowLayout, triggerLayout, optionsLayout };
@@ -153,6 +142,17 @@ describe('ContextMenu', () => {
         top: 10, left: 0
       });
     });
+
+    it('should consider window offset', () => {
+      const windowLayout = { width: 400, height: 600, x: 20, y: 30 };
+      const triggerLayout = { width: 50, height: 50, x: 100, y: 100 };
+      const optionsLayout = { width: 50, height: 50 };
+      const layouts = { windowLayout, triggerLayout, optionsLayout };
+      expect(computePosition(layouts)).toEqual({
+        top: 70, left: 80
+      });
+    });
+
   });
 
 });

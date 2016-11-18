@@ -9,6 +9,7 @@ import ControlledExample from './ControlledExample';
 import ExtensionExample from './ExtensionExample';
 import ModalExample from './ModalExample';
 import StylingExample from './StylingExample';
+import NonRootExample from './NonRootExample';
 
 const demos = [
   { Component: BasicExample, name: 'Basic example' },
@@ -18,6 +19,7 @@ const demos = [
   { Component: ExtensionExample, name: 'Extensions example' },
   { Component: ModalExample, name: 'Modal example' },
   { Component: StylingExample, name: 'Styling example' },
+  { Component: NonRootExample, name: 'Non root example' },
 ];
 
 // show debug messages for demos.
