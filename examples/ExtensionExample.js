@@ -12,12 +12,16 @@ const CheckedOption = (props) => (
   <MenuOption {...props} text={'\u2713 ' + props.text} />
 )
 
-Menu.setDefaultRenderer(renderers.NotAnimatedContextMenu);
+/* You can set default renderer for all menus just once in your application: */
+//Menu.setDefaultRenderer(renderers.NotAnimatedContextMenu);
 
 const ExtensionExample = () => (
   <MenuContext style={{flexDirection: 'column', padding: 30}}>
     <Text>Extensible hello world!</Text>
-    <Menu onSelect={value => alert(`Selected number: ${value}`)}>
+    <Menu
+      onSelect={value => alert(`Selected number: ${value}`)}
+      renderer={renderers.NotAnimatedContextMenu}
+    >
       <MenuTrigger text='Select option' />
       <MenuOptions>
         <MenuOption value={1} text='One' />

@@ -26,13 +26,17 @@ export default function makeMenuRegistry(menus = new Map()) {
   /**
    * Updates layout infomration.
    */
-  function updateLayoutInfo(name, { triggerLayout, optionsLayout }) {
+  function updateLayoutInfo(name, layouts = {}) {
     if (!menus.has(name)) {
       return;
     }
     const menu = Object.assign({}, menus.get(name));
-    triggerLayout && (menu.triggerLayout = triggerLayout);
-    optionsLayout && (menu.optionsLayout = optionsLayout);
+    if (layouts.hasOwnProperty('triggerLayout')) {
+      menu.triggerLayout = layouts.triggerLayout;
+    }
+    if (layouts.hasOwnProperty('optionsLayout')) {
+      menu.optionsLayout = layouts.optionsLayout;
+    }
     menus.set(name, menu);
   }
 

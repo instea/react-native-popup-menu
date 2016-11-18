@@ -88,6 +88,21 @@ describe('menuRegistry tests', () => {
       });
     });
 
+    it('should invalidate triggerLayout', () => {
+      const menus = new Map([['menu1', {
+        name: 'menu1',
+        instance: menu1,
+        triggerLayout: 5,
+      }]]);
+      const registry = makeMenuRegistry(menus);
+      registry.updateLayoutInfo('menu1', { triggerLayout: undefined });
+      expect(registry.getMenu('menu1')).to.eql({
+        name: 'menu1',
+        instance: menu1,
+        triggerLayout: undefined,
+      });
+    });
+
   });
 
   describe('getAll', () => {

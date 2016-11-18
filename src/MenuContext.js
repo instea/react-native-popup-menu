@@ -48,7 +48,11 @@ export default class MenuContext extends Component {
   closeMenu() {
     debug('close menu');
     this._menuRegistry.getAll().forEach(menu => {
-      menu.instance._getOpened() && menu.instance._setOpened(false);
+      if (menu.instance._getOpened()) {
+        menu.instance._setOpened(false);
+        // invalidate trigger layout
+        this._menuRegistry.updateLayoutInfo(menu.name, { triggerLayout: undefined });
+      }
     });
     this._notify();
   }
