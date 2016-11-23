@@ -1,30 +1,30 @@
 # react-native-popup-menu
 
-Extensible popup menu component for React Native.
-Target platforms are both Android and iOS.
+Extensible popup menu component for React Native for both Android and iOS.
 
+Features:
+* Simple to use popup/context menu
+* Multiple modes: animated, not animated or slide in from bottom
+* Easy styling
+* Customizable on various levels - menu options, positioning, animations
+* Can work as controlled as well as uncontrolled component
+* Different lifecycle hooks
+
+![Popup menu](doc/img/context-menu.png)
 ## Installation
 
 ```
 npm install react-native-popup-menu --save
 ```
 
-## Demo
-
-<kbd>
-![](./android.demo.gif)
-</kbd>
-
 ## Basic Usage
-Wrap your application inside `MenuContext` and then simply use `Menu` component where you need it. Below you can find simple examples.
+Wrap your application inside `MenuContext` and then simply use `Menu` component where you need it. Below you can find a simple example.
 
 For more detailed documentation check [API](./doc/api.md).
 
-### Context menu - uncontrolled
-
 ```js
 import React from 'react';
-import { Text, AppRegistry } from 'react-native';
+import { Text } from 'react-native';
 import Menu, {
   MenuContext,
   MenuOptions,
@@ -49,70 +49,14 @@ export const App = () => (
 );
 ```
 
-### Context menu - controlled
-
-```js
-export default class ControlledExample extends Component {
-
-  constructor(props, ctx) {
-    super(props, ctx);
-    this.state = { opened: true };
-  }
-
-  onOptionSelect(value) {
-    alert(`Selected number: ${value}`);
-    this.setState({ opened: false });
-  }
-
-  render() {
-    return (
-      <MenuContext
-        style={{flexDirection: 'column', padding: 30}}>
-        <Text>Hello world!</Text>
-        <Menu
-          opened={this.state.opened}
-          onBackdropPress={() => this.setState({ opened: false })}
-          onSelect={value => this.onOptionSelect(value)}>
-          <MenuTrigger
-            onPress={() => this.setState({ opened: true })}
-            text='Select option'/>
-          <MenuOptions>
-            <MenuOption value={1} text='One' />
-            <MenuOption value={2}>
-              <Text style={{color: 'red'}}>Two</Text>
-            </MenuOption>
-            <MenuOption value={3} disabled={true} text='Three' />
-          </MenuOptions>
-        </Menu>
-      </MenuContext>
-    );
-  }
-
-}
-```
-
-### Slide-in menu
-
-```js
-import { ..., renderers} from 'react-native-popup-menu';
-
-// NOTE: `onSelect` handler can be also passed to `MenuOption`'s props
-export const App = () => (
-  <MenuContext style={{flexDirection: 'column', padding: 30}}>
-    <Text>Hello world!</Text>
-    <Menu renderer={renderers.SlideInMenu}>
-      <MenuTrigger text='Select option' />
-      <MenuOptions>
-        <MenuOption onSelect={() => alert('option one')} text='One' />
-        <MenuOption onSelect={() => alert('option two')} text='Two' />
-      </MenuOptions>
-    </Menu>
-  </MenuContext>
-);
-```
-
 ## Documentation
 
+- [Examples](doc/examples.md)
 - [API](doc/api.md)
 - [Extension points](doc/extensions.md)
-- [Examples](examples/)
+
+## Demo
+
+<kbd>
+![](./android.demo.gif)
+</kbd>

@@ -6,3 +6,4 @@ target/
 __tests__/
 __mocks__/
 *.demo.gif
+doc/

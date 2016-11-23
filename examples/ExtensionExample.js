@@ -9,7 +9,7 @@ import Menu, {
 } from 'react-native-popup-menu';
 
 const CheckedOption = (props) => (
-  <MenuOption {...props} text={'\u2713 ' + props.text} />
+  <MenuOption {...props} text={(props.checked ? '\u2713 ' : '') + props.text} />
 )
 
 /* You can set default renderer for all menus just once in your application: */
@@ -24,8 +24,8 @@ const ExtensionExample = () => (
     >
       <MenuTrigger text='Select option' />
       <MenuOptions>
-        <MenuOption value={1} text='One' />
-        <CheckedOption value={2} text='Two' />
+        <CheckedOption value={1} text='One' />
+        <CheckedOption checked value={2} text='Two' />
       </MenuOptions>
     </Menu>
   </MenuContext>
