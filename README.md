@@ -33,7 +33,7 @@ import Menu, {
 } from 'react-native-popup-menu';
 
 export const App = () => (
-  <MenuContext style={{flexDirection: 'column', padding: 30}}>
+  <MenuContext>
     <Text>Hello world!</Text>
     <Menu onSelect={value => alert(`Selected number: ${value}`)}>
       <MenuTrigger text='Select option' />

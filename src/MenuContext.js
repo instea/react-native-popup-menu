@@ -95,7 +95,7 @@ export default class MenuContext extends Component {
     debug('render menu', this.isMenuOpen(), this._ownLayout);
     return (
       <View style={{flex:1}} onLayout={e => this._onLayout(e)}>
-        <View style={[customStyles.menuContextWrapper, style]}>
+        <View style={[{flex:1}, customStyles.menuContextWrapper, style]}>
           { this.props.children }
         </View>
         {shouldRenderMenu &&
@@ -182,4 +182,3 @@ MenuContext.childContextTypes = {
   menuRegistry: React.PropTypes.object,
   menuActions: React.PropTypes.object,
 };
-

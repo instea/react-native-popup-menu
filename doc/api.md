@@ -17,6 +17,12 @@ The only known exception is when you use [Modal](https://facebook.github.io/reac
 |`closeMenu`||Closes currently opened menu|
 |`isMenuOpen`||Returns `true` if any menu is open|
 
+### Properties
+| Option | Type | Opt/Required | Default | Note |
+|---|---|---|---|---|
+|`style`|`Style`|Optional||Style of wrapping `View` component. Same as `customStyles.menuContextWrapper` but when both are present result style is a merge where this style has higher precedence.|
+|`customStyles`|`Object`|Optional||Object defining wrapper, touchable and text styles|
+
 ### Custom styles
 
 To style `<MenuContext />` and backdrop component you can pass `customStyles` object prop with following keys:
@@ -27,6 +33,7 @@ To style `<MenuContext />` and backdrop component you can pass `customStyles` ob
 |`backdrop`|`Style`|Backdrop `View` style|
 
 **Note:** `Style` type is any valid RN style parameter.
+**Note:** In addition to these styles we add also `{flex:1}`. You can disable it by e.g. `style={{flex:0}}`.
 
 See more in custom styling [example](../examples/StylingExample.js).
 
@@ -34,7 +41,7 @@ See more in custom styling [example](../examples/StylingExample.js).
 
 Root menu component defining menu name and providing menu events.
 
-### Options
+### Properties
 | Option | Type | Opt/Required | Default | Note |
 |---|---|---|---|---|
 |`name`|`String`|Optional|`auto-generated`|Unique name of menu|
@@ -66,7 +73,7 @@ Menu can by opened by clicking on `<MenuTrigger />` or by calling context method
 
 **Note:** It is necessary that `<MenuTrigger />` is a direct child of `<Menu />`.
 
-### Options
+### Properties
 | Option | Type | Opt/Required | Default | Note |
 |---|---|---|---|---|
 |`disabled`|`Boolean`|Optional|`false`|Indicates if trigger can be pressed|
@@ -98,7 +105,7 @@ This component wrapps all menu options.
 
 **Note:** It is necessary that `<MenuOptions />` is a direct child of `<Menu />`.
 
-### Options
+### Properties
 | Option | Type | Opt/Required | Default | Note |
 |---|---|---|---|---|
 |`optionsContainerStyle`|`Style`|Optional||Custom styles for options container. Note: this option is deprecated, use `customStyles` option instead|
@@ -127,7 +134,7 @@ See more in custom styling [example](../examples/StylingExample.js).
 
 Wrapper component of menu option.
 
-### Options
+### Properties
 | Option | Type | Opt/Required | Default | Note |
 |---|---|---|---|---|
 |`value`|`Any`|Optional||Value of option|
