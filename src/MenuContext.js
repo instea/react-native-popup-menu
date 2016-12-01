@@ -90,15 +90,16 @@ export default class MenuContext extends Component {
   }
 
   render() {
+    const { style, customStyles } = this.props;
     const shouldRenderMenu = this.isMenuOpen() && this._isInitialized();
     debug('render menu', this.isMenuOpen(), this._ownLayout);
     return (
       <View style={{flex:1}} onLayout={e => this._onLayout(e)}>
-        <View style={this.props.style}>
+        <View style={[customStyles.menuContextWrapper, style]}>
           { this.props.children }
         </View>
         {shouldRenderMenu &&
-          <Backdrop onPress={() => this._onBackdropPress()} />
+          <Backdrop onPress={() => this._onBackdropPress()} style={customStyles.backdrop} />
         }
         {shouldRenderMenu &&
           this._makeOptions(this.state.openedMenu)
@@ -168,6 +169,14 @@ export default class MenuContext extends Component {
   }
 
 }
+
+MenuContext.propTypes = {
+  customStyles: React.PropTypes.object,
+}
+
+MenuContext.defaultProps = {
+  customStyles: {},
+};
 
 MenuContext.childContextTypes = {
   menuRegistry: React.PropTypes.object,

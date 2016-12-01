@@ -17,6 +17,19 @@ The only known exception is when you use [Modal](https://facebook.github.io/reac
 |`closeMenu`||Closes currently opened menu|
 |`isMenuOpen`||Returns `true` if any menu is open|
 
+### Custom styles
+
+To style `<MenuContext />` and backdrop component you can pass `customStyles` object prop with following keys:
+
+| Object key | Type | Notes |
+|---|---|---|
+|`menuContextWrapper`|`Style`|Style of wrapping `View` component|
+|`backdrop`|`Style`|Backdrop `View` style|
+
+**Note:** `Style` type is any valid RN style parameter.
+
+See more in custom styling [example](../examples/StylingExample.js).
+
 ## Menu
 
 Root menu component defining menu name and providing menu events.
@@ -71,9 +84,11 @@ To style `<MenuTrigger />` component you can pass `customStyles` object prop wit
 
 | Object key | Type | Notes |
 |---|---|---|
-|`triggerWrapper`|`Object`|Style of wrapping `View` component|
-|`triggerTouchable`|`Object`|Style props of `TouchableHighlight`. Supported keys: `activeOpacity`, `underlayColor`|
-|`triggerText`|`Object`|Style of `Text` component (used when `text` shorthand option is defined)|
+|`triggerWrapper`|`Style`|Style of wrapping `View` component|
+|`triggerTouchable`|`Style`|Style props of `TouchableHighlight`. Supported keys: `activeOpacity`, `underlayColor`|
+|`triggerText`|`Style`|Style of `Text` component (used when `text` shorthand option is defined)|
+
+**Note:** `Style` type is any valid RN style parameter.
 
 See more in custom styling [example](../examples/StylingExample.js).
 
@@ -96,13 +111,15 @@ To style `<MenuOptions />` and it's `<MenuOption />` components you can pass `cu
 
 | Object key | Type | Notes |
 |---|---|---|
-|`optionsWrapper`|`Object`|Style of `View` component wrapping all options|
-|`optionsContainer`|`Object`|Style of wrapping `AnimatedView` component|
-|`optionWrapper`|`Object`|Style of `View` component wrapping single option|
-|`optionTouchable`|`Object`|Style props of `TouchableHighlight`. Supported keys: `activeOpacity`, `underlayColor`|
-|`optionText`|`Object`|Style of `Text` component (when `text` shorthand option is defined)|
+|`optionsWrapper`|`Style`|Style of `View` component wrapping all options|
+|`optionsContainer`|`Style`|Style of wrapping `AnimatedView` component|
+|`optionWrapper`|`Style`|Style of `View` component wrapping single option|
+|`optionTouchable`|`Style`|Style props of `TouchableHighlight`. Supported keys: `activeOpacity`, `underlayColor`|
+|`optionText`|`Style`|Style of `Text` component (when `text` shorthand option is defined)|
 
 **Note:** `optionWrapper`, `optionTouchable` and `optionText` styles of particular menu option can be overriden by `customStyles` prop of `<MenuOption />` component.
+
+**Note:** `Style` type is any valid RN style parameter.
 
 See more in custom styling [example](../examples/StylingExample.js).
 
@@ -129,9 +146,11 @@ To style `<MenuOption />` component you can pass `customStyles` object prop with
 
 | Object key | Type | Notes |
 |---|---|---|
-|`optionWrapper`|`Object`|Style of wrapping `View` component.|
-|`optionTouchable`|`Object`|Style props of `TouchableHighlight`. Supported keys: `activeOpacity`, `underlayColor`|
-|`optionText`|`Object`|Style of `Text` component (when `text` shorthand option is defined)|
+|`optionWrapper`|`Style`|Style of wrapping `View` component.|
+|`optionTouchable`|`Style`|Style props of `TouchableHighlight`. Supported keys: `activeOpacity`, `underlayColor`|
+|`optionText`|`Style`|Style of `Text` component (when `text` shorthand option is defined)|
+
+**Note:** `Style` type is any valid RN style parameter.
 
 See more in custom styling [example](../examples/StylingExample.js).
 

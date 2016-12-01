@@ -19,7 +19,7 @@ export default class BasicExample extends Component {
 
   render() {
     return (
-      <MenuContext style={styles.container}>
+      <MenuContext customStyles={menuContextStyles}>
         <Menu renderer={this.state.renderer}>
           <MenuTrigger text='Select option' customStyles={triggerStyles} />
           <MenuOptions customStyles={optionsStyles}>
@@ -94,5 +94,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     padding: 30,
   },
+  backdrop: {
+    backgroundColor: 'red',
+    opacity: 0.5,
+  },
 });
 
+const menuContextStyles = {
+  menuContextWrapper: styles.container,
+  backdrop: styles.backdrop,
+};

@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 
 const Backdrop = props => (
   <TouchableWithoutFeedback onPress={props.onPress}>
-    <View style={styles.backdrop} />
+    <View style={[styles.backdrop, props.style]} />
   </TouchableWithoutFeedback>
 );
 
