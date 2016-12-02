@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, TouchableHighlight, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import { debug } from './logger.js';
+import { makeTouchable } from './helpers';
 
 export default class MenuTrigger extends Component {
 
@@ -13,14 +14,18 @@ export default class MenuTrigger extends Component {
   render() {
     const { disabled, onRef, text, children, style, customStyles, ...other } = this.props;
     const onPress = () => !disabled && this._onPress();
+    const { Touchable, defaultTouchableProps } = makeTouchable(customStyles.TriggerTouchableComponent);
     return (
       <View ref={onRef} collapsable={false}>
-        <TouchableHighlight onPress={onPress} style={[customStyles.triggerWrapper, style]}
-          {...defaultTouchableStyles} {...customStyles.triggerTouchable}>
-          <View {...other}>
+        <Touchable
+          onPress={onPress}
+          {...defaultTouchableProps}
+          {...customStyles.triggerTouchable}
+        >
+          <View {...other} style={[customStyles.triggerWrapper, style]}>
             {text ? <Text style={customStyles.triggerText}>{text}</Text> : children}
           </View>
-        </TouchableHighlight>
+        </Touchable>
       </View>
     );
   }
@@ -43,6 +48,3 @@ MenuTrigger.contextTypes = {
   menuActions: React.PropTypes.object,
 };
 
-const defaultTouchableStyles = {
-  underlayColor: 'rgba(0, 0, 0, 0.1)',
-};

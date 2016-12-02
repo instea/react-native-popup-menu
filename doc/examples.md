@@ -104,6 +104,7 @@ const triggerStyles = {
     underlayColor: 'darkblue',
     activeOpacity: 70,
   },
+  TriggerTouchableComponent: TouchableHighlight,
 };
 ```
 For exact definitions of `customStyles` please refer to [API](api.md).

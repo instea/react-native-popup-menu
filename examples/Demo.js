@@ -11,6 +11,7 @@ import ModalExample from './ModalExample';
 import StylingExample from './StylingExample';
 import NonRootExample from './NonRootExample';
 import NavigatorExample from './NavigatorExample';
+import TouchableExample from './TouchableExample';
 
 const demos = [
   { Component: BasicExample, name: 'Basic example' },
@@ -20,6 +21,7 @@ const demos = [
   { Component: ExtensionExample, name: 'Extensions example' },
   { Component: ModalExample, name: 'Modal example' },
   { Component: StylingExample, name: 'Styling example' },
+  { Component: TouchableExample, name: 'Touchable config example' },
   { Component: NonRootExample, name: 'Non root example' },
   { Component: NavigatorExample, name: 'Example with react-native-router-flux' },
 ];

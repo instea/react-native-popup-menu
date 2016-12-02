@@ -3,6 +3,7 @@ import { TouchableHighlight, View, Text } from 'react-native';
 import { render, normalizeStyle, nthChild } from './helpers';
 
 jest.dontMock('../src/MenuTrigger');
+jest.dontMock('../src/helpers');
 const MenuTrigger = require('../src/MenuTrigger').default;
 const { createSpy, objectContaining } = jasmine;
 
@@ -82,10 +83,11 @@ describe('MenuTrigger', () => {
       <MenuTrigger menuName='menu1' text='some text' customStyles={customStyles} />
     );
     const touchable = nthChild(output, 1);
+    const view = nthChild(output, 2);
     const text = nthChild(output, 3);
     expect(normalizeStyle(touchable.props))
       .toEqual(objectContaining({ underlayColor: 'green' }));
-    expect(normalizeStyle(touchable.props.style))
+    expect(normalizeStyle(view.props.style))
       .toEqual(objectContaining(customStyles.triggerWrapper));
     expect(normalizeStyle(text.props.style))
       .toEqual(objectContaining(customStyles.triggerText));

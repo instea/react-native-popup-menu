@@ -1,7 +1,8 @@
 import { expect } from 'chai';
+import { TouchableHighlight, TouchableNativeFeedback, Platform } from 'react-native';
 
 jest.dontMock('../src/helpers');
-const { measure, makeName } = require('../src/helpers');
+const { measure, makeName, makeTouchable } = require('../src/helpers');
 
 describe('helpers test', () => {
 
@@ -38,6 +39,35 @@ describe('helpers test', () => {
       expect(name2).to.be.a('string');
       expect(name1).not.to.be.equal(name2);
     });
+  });
+
+  describe('makeTouchable', () => {
+
+    it('should create TouchableNativeFeedback for android', () => {
+      Platform.select.mockImplementationOnce(o => {
+        return o.android;
+      });
+      const { Touchable, defaultTouchableProps } = makeTouchable();
+      expect(Touchable).to.be.equal(TouchableNativeFeedback);
+      expect(defaultTouchableProps).to.be.an('object');
+    });
+
+    it('should create TouchableHighlight for ios', () => {
+      Platform.select.mockImplementationOnce(o => {
+        return o.ios;
+      });
+      const { Touchable, defaultTouchableProps } = makeTouchable();
+      expect(Touchable).to.be.equal(TouchableHighlight);
+      expect(defaultTouchableProps).to.be.an('object');
+    });
+
+    it('should return passed component', () => {
+      const MyTouchable = () => null;
+      const { Touchable, defaultTouchableProps } = makeTouchable(MyTouchable);
+      expect(Touchable).to.be.equal(MyTouchable);
+      expect(defaultTouchableProps).to.be.an('object');
+    });
+
   });
 
 });

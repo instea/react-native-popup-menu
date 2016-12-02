@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableHighlight, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { debug } from './logger';
+import { makeTouchable } from './helpers';
 
 export default class MenuOption extends Component {
 
@@ -23,14 +24,17 @@ export default class MenuOption extends Component {
         </View>
       );
     }
+    const { Touchable, defaultTouchableProps } = makeTouchable(customStyles.OptionTouchableComponent);
     return (
-      <TouchableHighlight onPress={() => this._onSelect()}
-        style={[defaultStyles.option, customStyles.optionWrapper, style]}
-        {...defaultTouchableStyles} {...customStyles.optionTouchable}>
-        <View>
+      <Touchable
+        onPress={() => this._onSelect()}
+        {...defaultTouchableProps}
+        {...customStyles.optionTouchable}
+      >
+        <View style={[defaultStyles.option, customStyles.optionWrapper, style]}>
           {text ? <Text style={customStyles.optionText}>{text}</Text> : children}
         </View>
-      </TouchableHighlight>
+      </Touchable>
     );
   }
 }
@@ -62,7 +66,3 @@ const defaultStyles = StyleSheet.create({
     color: '#ccc',
   },
 });
-
-const defaultTouchableStyles = {
-  underlayColor: 'rgba(0, 0, 0, 0.1)',
-};

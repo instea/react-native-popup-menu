@@ -3,6 +3,7 @@ import { TouchableHighlight, View, Text } from 'react-native';
 import { render, normalizeStyle, nthChild } from './helpers';
 
 jest.dontMock('../src/MenuOption');
+jest.dontMock('../src/helpers');
 const MenuOption = require('../src/MenuOption').default;
 const { createSpy, objectContaining } = jasmine;
 
@@ -98,10 +99,11 @@ describe('MenuOption', () => {
       <MenuOption text='some text' customStyles={customStyles} />
     );
     const touchable = output;
+    const view = nthChild(output, 1);
     const text = nthChild(output, 2);
     expect(normalizeStyle(touchable.props))
       .toEqual(objectContaining({ underlayColor: 'green' }));
-    expect(normalizeStyle(touchable.props.style))
+    expect(normalizeStyle(view.props.style))
       .toEqual(objectContaining(customStyles.optionWrapper));
     expect(normalizeStyle(text.props.style))
       .toEqual(objectContaining(customStyles.optionText));

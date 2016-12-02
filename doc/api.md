@@ -35,7 +35,7 @@ To style `<MenuContext />` and backdrop component you can pass `customStyles` ob
 **Note:** `Style` type is any valid RN style parameter.
 **Note:** In addition to these styles we add also `{flex:1}`. You can disable it by e.g. `style={{flex:0}}`.
 
-See more in custom styling [example](../examples/StylingExample.js).
+See more in custom [styling example](../examples/StylingExample.js).
 
 ## Menu
 
@@ -92,12 +92,13 @@ To style `<MenuTrigger />` component you can pass `customStyles` object prop wit
 | Object key | Type | Notes |
 |---|---|---|
 |`triggerWrapper`|`Style`|Style of wrapping `View` component|
-|`triggerTouchable`|`Style`|Style props of `TouchableHighlight`. Supported keys: `activeOpacity`, `underlayColor`|
 |`triggerText`|`Style`|Style of `Text` component (used when `text` shorthand option is defined)|
+|`TriggerTouchableComponent`|`Component`|Touchable component of trigger. Default value is `TouchableHighlight` for iOS and `TouchableNativeFeedvack` for Android|
+|`triggerTouchable`|`Object`|Properties passed to the touchable component (e.g. `activeOpacity`, `underlayColor` for `TouchableHighlight`)|
 
 **Note:** `Style` type is any valid RN style parameter.
 
-See more in custom styling [example](../examples/StylingExample.js).
+See more in custom [styling example](../examples/StylingExample.js) and [touchable example](../examples/TouchableExample.js).
 
 ## MenuOptions
 
@@ -121,14 +122,15 @@ To style `<MenuOptions />` and it's `<MenuOption />` components you can pass `cu
 |`optionsWrapper`|`Style`|Style of `View` component wrapping all options|
 |`optionsContainer`|`Style`|Style of wrapping `AnimatedView` component|
 |`optionWrapper`|`Style`|Style of `View` component wrapping single option|
-|`optionTouchable`|`Style`|Style props of `TouchableHighlight`. Supported keys: `activeOpacity`, `underlayColor`|
 |`optionText`|`Style`|Style of `Text` component (when `text` shorthand option is defined)|
+|`OptionTouchableComponent`|`Component`|Touchable component of option. Default value is `TouchableHighlight` for iOS and `TouchableNativeFeedvack` for Android|
+|`optionTouchable`|`Object`|Properties passed to the touchable component (e.g. `activeOpacity`, `underlayColor` for `TouchableHighlight`)|
 
 **Note:** `optionWrapper`, `optionTouchable` and `optionText` styles of particular menu option can be overriden by `customStyles` prop of `<MenuOption />` component.
 
 **Note:** `Style` type is any valid RN style parameter.
 
-See more in custom styling [example](../examples/StylingExample.js).
+See more in custom [styling example](../examples/StylingExample.js) and [touchable example](../examples/TouchableExample.js).
 
 ## MenuOption
 
@@ -154,12 +156,13 @@ To style `<MenuOption />` component you can pass `customStyles` object prop with
 | Object key | Type | Notes |
 |---|---|---|
 |`optionWrapper`|`Style`|Style of wrapping `View` component.|
-|`optionTouchable`|`Style`|Style props of `TouchableHighlight`. Supported keys: `activeOpacity`, `underlayColor`|
 |`optionText`|`Style`|Style of `Text` component (when `text` shorthand option is defined)|
+|`OptionTouchableComponent`|`Component`|Touchable component of option. Default value is `TouchableHighlight` for iOS and `TouchableNativeFeedvack` for Android|
+|`optionTouchable`|`Object`|Properties passed to the touchable component (e.g. `activeOpacity`, `underlayColor` for `TouchableHighlight`)|
 
 **Note:** `Style` type is any valid RN style parameter.
 
-See more in custom styling [example](../examples/StylingExample.js).
+See more in custom [styling example](../examples/StylingExample.js) and [touchable example](../examples/TouchableExample.js).
 
 ## renderers
 
