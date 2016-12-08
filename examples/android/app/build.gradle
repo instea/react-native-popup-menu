@@ -96,6 +96,14 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
     }
+    signingConfigs {
+        release {
+          storeFile file("my-release-key.keystore")
+          storePassword "my-password"
+          keyAlias "my-key-alias"
+          keyPassword "my-password"
+        }
+    }
     splits {
         abi {
             reset()
@@ -108,6 +116,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release

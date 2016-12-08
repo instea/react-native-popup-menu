@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { TouchableHighlight, TouchableNativeFeedback, Platform } from 'react-native';
 
 jest.dontMock('../src/helpers');
-const { measure, makeName, makeTouchable } = require('../src/helpers');
+const { measure, makeName, makeTouchable, lo } = require('../src/helpers');
 
 describe('helpers test', () => {
 
@@ -66,6 +66,31 @@ describe('helpers test', () => {
       const { Touchable, defaultTouchableProps } = makeTouchable(MyTouchable);
       expect(Touchable).to.be.equal(MyTouchable);
       expect(defaultTouchableProps).to.be.an('object');
+    });
+
+  });
+
+  describe('lo', () => {
+
+    it('should return primitive unchanged', () => {
+      const res = lo(3);
+      expect(res).to.be.equal(3);
+    });
+
+    it('should return nexted object without private fields unchanged', () => {
+      const input = { a: 'ahoj', b : { c : 3, d : { e : 'nested' }}};
+      const res = lo(input);
+      expect(res).to.be.deep.equal(input);
+    });
+
+    it('should strip private fields', () => {
+      const res = lo({ a: { _b : "private", c: 3}});
+      expect(res).to.be.deep.equal({ a: { c : 3}});
+    });
+
+    it('should strip excluded fields', () => {
+      const res = lo({ a: { b : "exc", c: 3}}, "b");
+      expect(res).to.be.deep.equal({ a: { c : 3}});
     });
 
   });

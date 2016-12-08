@@ -67,16 +67,16 @@ export default class MenuContext extends Component {
     this._notify();
   }
 
-  _notify() {
+  _notify(forceUpdate) {
     const NULL = {};
     const prev = this.openedMenu || NULL;
     const next = this._menuRegistry.getAll().find(menu => menu.instance._isOpen()) || NULL;
-    if (prev === next) {
-      return debug('notify: skipping - no update needed');
-    }
-    debug('notify: next menu:', next.name, ' prev menu:', prev.name);
     // set newly opened menu before any callbacks are called
     this.openedMenu = next === NULL ? undefined : next;
+    if (!forceUpdate && !this._isRenderNeeded(prev, next)) {
+      return;
+    }
+    debug('notify: next menu:', next.name, ' prev menu:', prev.name);
     let afterSetState = undefined;
     if (prev.name !== next.name) {
       prev.instance && prev.instance.props.onClose();
@@ -87,6 +87,25 @@ export default class MenuContext extends Component {
     }
     this.setState({ openedMenu: this.openedMenu }, afterSetState);
     debug('notify ended');
+  }
+
+  /**
+  Compares states of opened menu to determine if rerender is needed.
+  */
+  _isRenderNeeded(prev, next) {
+    if (prev === next) {
+      debug('_isRenderNeeded: skipping - no change');
+      return false;
+    }
+    if (prev.name !== next.name) {
+      return true;
+    }
+    const { triggerLayout, optionsLayout } = next;
+    if (!triggerLayout || !optionsLayout) {
+      debug('_isRenderNeeded: skipping - no trigger or options layout');
+      return false;
+    }
+    return true;
   }
 
   render() {
@@ -128,9 +147,11 @@ export default class MenuContext extends Component {
     });
   }
 
-  _onOptionsLayout(e, name) {
-    debug('got options layout', e.nativeEvent.layout);
-    this._menuRegistry.updateLayoutInfo(name, { optionsLayout: e.nativeEvent.layout });
+  _onOptionsLayout(e, name, isOutside) {
+    const optionsLayout = e.nativeEvent.layout;
+    optionsLayout.isOutside = isOutside;
+    debug('got options layout', optionsLayout);
+    this._menuRegistry.updateLayoutInfo(name, { optionsLayout });
     this._notify();
   }
 
@@ -140,14 +161,12 @@ export default class MenuContext extends Component {
     const windowLayout = this._ownLayout;
     const { optionsContainerStyle, renderOptionsContainer, customStyles } = options.props;
     const optionsRenderer = renderOptionsContainer || defaultOptionsContainerRenderer;
-    const onLayout = e => this._onOptionsLayout(e, instance.getName());
+    const isOutside = !triggerLayout || !optionsLayout;
+    const onLayout = e => this._onOptionsLayout(e, instance.getName(), isOutside);
     const style = [optionsContainerStyle, customStyles.optionsContainer];
     const layouts = { windowLayout, triggerLayout, optionsLayout };
     const props = { style, onLayout, layouts };
-    if (!triggerLayout || !optionsLayout) {
-      return React.createElement(MenuOutside, props, optionsRenderer(options));
-    }
-    return React.createElement(renderer, props, optionsRenderer(options));
+    return React.createElement(isOutside ? MenuOutside : renderer, props, optionsRenderer(options));
   }
 
   _onLayout({ nativeEvent: { layout } }) {
@@ -164,7 +183,8 @@ export default class MenuContext extends Component {
     measure(trigger).then(triggerLayout => {
       debug('got trigger measurements after context layout change', triggerLayout);
       this._menuRegistry.updateLayoutInfo(instance.getName(), { triggerLayout });
-      this._notify();
+      // force update as own layout has changed
+      this._notify(true);
     });
   }
 

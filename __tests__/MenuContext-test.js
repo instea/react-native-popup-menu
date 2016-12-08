@@ -19,6 +19,7 @@ jest.mock('../src/helpers', () => ({
       height: 50
     })
   }),
+  lo: x => x,
 }));
 
 const MenuContext = require('../src/MenuContext').default;
@@ -204,6 +205,7 @@ describe('MenuContext', () => {
     expect(menuRegistry.getMenu('menu1')).toEqual(objectContaining({
       optionsLayout: {
         width: 22,
+        isOutside: true,
         height: 33
       }
     }));
