@@ -119,8 +119,8 @@ To style `<MenuOptions />` and it's `<MenuOption />` components you can pass `cu
 
 | Object key | Type | Notes |
 |---|---|---|
-|`optionsWrapper`|`Style`|Style of `View` component wrapping all options|
-|`optionsContainer`|`Style`|Style of wrapping `AnimatedView` component|
+|`optionsWrapper`|`Style`|Style of wrapping `MenuOptions` component (can be overriden by `style` prop)|
+|`optionsContainer`|`Style`|Style passed to the menu renderer (e.g. `Animated.View`)|
 |`optionWrapper`|`Style`|Style of `View` component wrapping single option|
 |`optionText`|`Style`|Style of `Text` component (when `text` shorthand option is defined)|
 |`OptionTouchableComponent`|`Component`|Touchable component of option. Default value is `TouchableHighlight` for iOS and `TouchableNativeFeedvack` for Android|
