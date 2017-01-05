@@ -9,6 +9,8 @@ export const computePosition = ({ windowLayout, optionsLayout }) => {
   return { top, left };
 }
 
+const DURATION = 100;
+
 export default class SlideInMenu extends React.Component {
 
   constructor(props) {
@@ -16,13 +18,23 @@ export default class SlideInMenu extends React.Component {
     this.state = {
       slide: new Animated.Value(0),
     };
+    this.close = this.close.bind(this);
   }
 
   componentDidMount() {
     Animated.timing(this.state.slide, {
-      duration: 100,
+      duration: DURATION,
       toValue: 1
     }).start();
+  }
+
+  close() {
+    return new Promise(resolve => {
+      Animated.timing(this.state.slide, {
+        duration: DURATION,
+        toValue: 0
+      }).start(resolve);
+    });
   }
 
   render() {

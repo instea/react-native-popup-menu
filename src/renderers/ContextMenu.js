@@ -37,6 +37,7 @@ export const computePosition = ({ windowLayout, triggerLayout, optionsLayout }) 
   return { top, left };
 };
 
+const DURATION = 80;
 
 export default class ContextMenu extends React.Component {
 
@@ -45,13 +46,23 @@ export default class ContextMenu extends React.Component {
     this.state = {
       scaleAnim: new Animated.Value(0.1),
     };
+    this.close = this.close.bind(this);
   }
 
   componentDidMount() {
     Animated.timing(this.state.scaleAnim, {
-      duration: 80,
+      duration: DURATION,
       toValue: 1
     }).start();
+  }
+
+  close() {
+    return new Promise(resolve => {
+      Animated.timing(this.state.scaleAnim, {
+        duration: DURATION,
+        toValue: 0
+      }).start(resolve);
+    });
   }
 
   render() {

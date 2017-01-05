@@ -11,6 +11,8 @@ const layoutsEqual = (a, b) => (
   a === b || (a && b && a.width === b.width && a.height === b.height)
 );
 
+const isFunctional = Component => !Component.prototype.render;
+
 export default class MenuContext extends Component {
 
   constructor(props) {
@@ -47,14 +49,17 @@ export default class MenuContext extends Component {
 
   closeMenu() {
     debug('close menu');
-    this._menuRegistry.getAll().forEach(menu => {
-      if (menu.instance._getOpened()) {
-        menu.instance._setOpened(false);
-        // invalidate trigger layout
-        this._menuRegistry.updateLayoutInfo(menu.name, { triggerLayout: undefined });
-      }
-    });
-    this._notify();
+    const closeAnimation = (this.refs.menuOptions && this.refs.menuOptions.close) || Promise.resolve;
+    closeAnimation().then(() => {
+      this._menuRegistry.getAll().forEach(menu => {
+        if (menu.instance._getOpened()) {
+          menu.instance._setOpened(false);
+          // invalidate trigger layout
+          this._menuRegistry.updateLayoutInfo(menu.name, { triggerLayout: undefined });
+        }
+      });
+      this._notify();
+    })
   }
 
   toggleMenu(name) {
@@ -166,7 +171,11 @@ export default class MenuContext extends Component {
     const style = [optionsContainerStyle, customStyles.optionsContainer];
     const layouts = { windowLayout, triggerLayout, optionsLayout };
     const props = { style, onLayout, layouts };
-    return React.createElement(isOutside ? MenuOutside : renderer, props, optionsRenderer(options));
+    const optionsType = isOutside ? MenuOutside : renderer;
+    if (!isFunctional(optionsType)) {
+      props.ref = 'menuOptions';
+    }
+    return React.createElement(optionsType, props, optionsRenderer(options));
   }
 
   _onLayout({ nativeEvent: { layout } }) {
@@ -202,3 +211,4 @@ MenuContext.childContextTypes = {
   menuRegistry: React.PropTypes.object,
   menuActions: React.PropTypes.object,
 };
+
