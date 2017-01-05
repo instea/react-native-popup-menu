@@ -36,6 +36,10 @@ export function makeTouchable(TouchableComponent) {
   return { Touchable, defaultTouchableProps };
 }
 
+function includes(arr, value) {
+  return arr.indexOf(value) > -1;
+}
+
 /**
 Log object - prepares object for logging by stripping all "private" or excluding fields
 */
@@ -49,7 +53,7 @@ export function lo(object, ...excluding) {
     const res = {};
     for (var property in obj) {
       if (obj.hasOwnProperty(property)) {
-        if (!property.startsWith('_') && !exc.includes(property)) {
+        if (!property.startsWith('_') && !includes(exc, property)) {
           res[property] = withoutPrivate(obj[property]);
         }
       }
