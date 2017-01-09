@@ -56,10 +56,12 @@ const CustomMenu = (props) => {
 };
 ```
 
-To compute your own menu position you can use `layouts` property which has properties:
+To compute your own menu position you can use `layouts` property which is an object with properties:
 
 * `triggerLayout` contains dimensions and position of `<Trigger />` component (width, height, x, y).
 * `optionsLayout` contains dimensions of `<Options />` component (width, height);
 * `windowLayout` contains dimensions and position of working area/window i.e. `<MenuContext/>` area (width, height, x, y);
+
+In order to handle asynchronous closing animations, renderer can implement `close()`method which is called before menu closes. `close` method has to return `Promise`.
 
 **Note:** It is important that you pass rest of the properties to the wrapping component. We internally pass `onLayout` handler to detect layout change and re-render component. Also it is recommended to re-use styles from props in order to be customizable (via `customStyles.optionsContainer` or `optionsContainerStyle` option). Although for now it might suffice to pass only `onLayout` in addition to other standard props, we highly recommend to pass any properties (as in example) in order to stay compatible with any further versions of the library.
