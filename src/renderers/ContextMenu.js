@@ -46,7 +46,6 @@ export default class ContextMenu extends React.Component {
     this.state = {
       scaleAnim: new Animated.Value(0.1),
     };
-    this.close = this.close.bind(this);
   }
 
   componentDidMount() {

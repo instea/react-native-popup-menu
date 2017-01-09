@@ -18,7 +18,6 @@ export default class SlideInMenu extends React.Component {
     this.state = {
       slide: new Animated.Value(0),
     };
-    this.close = this.close.bind(this);
   }
 
   componentDidMount() {

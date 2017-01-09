@@ -49,8 +49,8 @@ export default class MenuContext extends Component {
 
   closeMenu() {
     debug('close menu');
-    const closeAnimation = (this.refs.menuOptions && this.refs.menuOptions.close) || Promise.resolve;
-    closeAnimation().then(() => {
+    const closePromise = (this.refs.menuOptions && this.refs.menuOptions.close()) || Promise.resolve();
+    closePromise.then(() => {
       this._menuRegistry.getAll().forEach(menu => {
         if (menu.instance._getOpened()) {
           menu.instance._setOpened(false);
