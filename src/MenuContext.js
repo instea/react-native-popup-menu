@@ -59,7 +59,7 @@ export default class MenuContext extends Component {
         }
       });
       this._notify();
-    })
+    }).catch(console.error);
   }
 
   toggleMenu(name) {
