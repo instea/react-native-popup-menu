@@ -45,12 +45,13 @@ export default class MenuContext extends Component {
     debug('open menu', name);
     menu.instance._setOpened(true);
     this._notify();
+    return Promise.resolve();
   }
 
   closeMenu() {
     debug('close menu');
     const closePromise = (this.refs.menuOptions && this.refs.menuOptions.close()) || Promise.resolve();
-    closePromise.then(() => {
+    return closePromise.then(() => {
       this._menuRegistry.getAll().forEach(menu => {
         if (menu.instance._getOpened()) {
           menu.instance._setOpened(false);
@@ -68,8 +69,11 @@ export default class MenuContext extends Component {
       return console.warn(`menu with name ${name} does not exist`);
     }
     debug('toggle menu', name);
-    menu.instance._setOpened(!menu.instance._getOpened());
-    this._notify();
+    if (menu.instance._getOpened()) {
+      return this.closeMenu();
+    } else {
+      return this.openMenu(name);
+    }
   }
 
   _notify(forceUpdate) {
