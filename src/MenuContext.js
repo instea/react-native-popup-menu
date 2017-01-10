@@ -50,7 +50,9 @@ export default class MenuContext extends Component {
 
   closeMenu() {
     debug('close menu');
-    const closePromise = (this.refs.menuOptions && this.refs.menuOptions.close()) || Promise.resolve();
+    const closePromise = (this.refs.menuOptions
+      && this.refs.menuOptions.close
+      && this.refs.menuOptions.close()) || Promise.resolve();
     return closePromise.then(() => {
       this._menuRegistry.getAll().forEach(menu => {
         if (menu.instance._getOpened()) {
@@ -215,4 +217,3 @@ MenuContext.childContextTypes = {
   menuRegistry: React.PropTypes.object,
   menuActions: React.PropTypes.object,
 };
-

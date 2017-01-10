@@ -67,7 +67,8 @@ export default class ContextMenu extends React.Component {
   render() {
     const { style, children, layouts, ...other } = this.props;
     const animation = {
-      transform: [ { scale: this.state.scaleAnim } ]
+      transform: [ { scale: this.state.scaleAnim } ],
+      opacity: this.state.scaleAnim,
     };
     const position = computePosition(layouts);
     return (
