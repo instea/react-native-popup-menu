@@ -46,8 +46,6 @@ describe('MenuContext', () => {
     }
   }
 
-  const menu1 = makeMenuStub('menu1')
-
   const defaultLayout = {
     nativeEvent: {
       layout: {
@@ -56,6 +54,12 @@ describe('MenuContext', () => {
       }
     }
   };
+
+  let menu1;
+
+  beforeEach(() => {
+    menu1 = makeMenuStub('menu1');
+  });
 
   it('should expose api', () => {
     const { instance } = render(
@@ -125,14 +129,15 @@ describe('MenuContext', () => {
     initOutput.props.onLayout(defaultLayout);
     menuRegistry.subscribe(menu1);
     menuActions.openMenu('menu1');
-    menuActions.closeMenu();
-    expect(menuActions.isMenuOpen()).toEqual(false);
-    expect(menu1.props.onClose).toHaveBeenCalled()
-    const output = renderer.getRenderOutput();
-    const [ components, backdrop, options ] = output.props.children;
-    expect(components.type).toEqual(View);
-    expect(backdrop).toBeFalsy();
-    expect(options).toBeFalsy();
+    menuActions.closeMenu().then(() => {
+      expect(menuActions.isMenuOpen()).toEqual(false);
+      expect(menu1.props.onClose).toHaveBeenCalled();
+      const output = renderer.getRenderOutput();
+      const [ components, backdrop, options ] = output.props.children;
+      expect(components.type).toEqual(View);
+      expect(backdrop).toBeFalsy();
+      expect(options).toBeFalsy();
+    });
   });
 
   it('should toggle menu', () => {
@@ -141,14 +146,17 @@ describe('MenuContext', () => {
     );
     const { menuRegistry, menuActions } = instance.getChildContext();
     menuRegistry.subscribe(menu1);
-    menuActions.toggleMenu('menu1');
-    expect(menuActions.isMenuOpen()).toEqual(true);
-    expect(menu1._isOpen()).toEqual(true);
-    menuActions.toggleMenu('menu1');
-    expect(menuActions.isMenuOpen()).toEqual(false);
-    expect(menu1._isOpen()).toEqual(false);
-    menuActions.toggleMenu('menu1');
-    expect(menuActions.isMenuOpen()).toEqual(true);
+    return menuActions.toggleMenu('menu1').then(() => {
+      expect(menuActions.isMenuOpen()).toEqual(true);
+      expect(menu1._isOpen()).toEqual(true);
+      return menuActions.toggleMenu('menu1').then(() => {
+        expect(menuActions.isMenuOpen()).toEqual(false);
+        expect(menu1._isOpen()).toEqual(false);
+        return menuActions.toggleMenu('menu1').then(() => {
+          expect(menuActions.isMenuOpen()).toEqual(true);
+        });
+      });
+    });
   });
 
   it('should not open non existing menu', () => {

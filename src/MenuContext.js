@@ -11,6 +11,8 @@ const layoutsEqual = (a, b) => (
   a === b || (a && b && a.width === b.width && a.height === b.height)
 );
 
+const isFunctional = Component => !Component.prototype.render;
+
 export default class MenuContext extends Component {
 
   constructor(props) {
@@ -43,18 +45,24 @@ export default class MenuContext extends Component {
     debug('open menu', name);
     menu.instance._setOpened(true);
     this._notify();
+    return Promise.resolve();
   }
 
   closeMenu() {
     debug('close menu');
-    this._menuRegistry.getAll().forEach(menu => {
-      if (menu.instance._getOpened()) {
-        menu.instance._setOpened(false);
-        // invalidate trigger layout
-        this._menuRegistry.updateLayoutInfo(menu.name, { triggerLayout: undefined });
-      }
-    });
-    this._notify();
+    const closePromise = (this.refs.menuOptions
+      && this.refs.menuOptions.close
+      && this.refs.menuOptions.close()) || Promise.resolve();
+    return closePromise.then(() => {
+      this._menuRegistry.getAll().forEach(menu => {
+        if (menu.instance._getOpened()) {
+          menu.instance._setOpened(false);
+          // invalidate trigger layout
+          this._menuRegistry.updateLayoutInfo(menu.name, { triggerLayout: undefined });
+        }
+      });
+      this._notify();
+    }).catch(console.error);
   }
 
   toggleMenu(name) {
@@ -63,8 +71,11 @@ export default class MenuContext extends Component {
       return console.warn(`menu with name ${name} does not exist`);
     }
     debug('toggle menu', name);
-    menu.instance._setOpened(!menu.instance._getOpened());
-    this._notify();
+    if (menu.instance._getOpened()) {
+      return this.closeMenu();
+    } else {
+      return this.openMenu(name);
+    }
   }
 
   _notify(forceUpdate) {
@@ -166,7 +177,11 @@ export default class MenuContext extends Component {
     const style = [optionsContainerStyle, customStyles.optionsContainer];
     const layouts = { windowLayout, triggerLayout, optionsLayout };
     const props = { style, onLayout, layouts };
-    return React.createElement(isOutside ? MenuOutside : renderer, props, optionsRenderer(options));
+    const optionsType = isOutside ? MenuOutside : renderer;
+    if (!isFunctional(optionsType)) {
+      props.ref = 'menuOptions';
+    }
+    return React.createElement(optionsType, props, optionsRenderer(options));
   }
 
   _onLayout({ nativeEvent: { layout } }) {
