@@ -16,15 +16,17 @@ export default class MenuTrigger extends Component {
     const onPress = () => !disabled && this._onPress();
     const { Touchable, defaultTouchableProps } = makeTouchable(customStyles.TriggerTouchableComponent);
     return (
-      <Touchable
-        onPress={onPress}
-        {...defaultTouchableProps}
-        {...customStyles.triggerTouchable}
-      >
-        <View {...other} style={[customStyles.triggerWrapper, style]} ref={onRef}>
-          {text ? <Text style={customStyles.triggerText}>{text}</Text> : children}
-        </View>
-      </Touchable>
+      <View ref={onRef} collapsable={false}>
+        <Touchable
+          onPress={onPress}
+          {...defaultTouchableProps}
+          {...customStyles.triggerTouchable}
+        >
+          <View {...other} style={[customStyles.triggerWrapper, style]}>
+            {text ? <Text style={customStyles.triggerText}>{text}</Text> : children}
+          </View>
+        </Touchable>
+      </View>
     );
   }
 
