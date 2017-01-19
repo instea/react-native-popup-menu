@@ -20,7 +20,7 @@ export default class BasicExample extends Component {
   render() {
     return (
       <MenuContext customStyles={menuContextStyles}>
-        <Menu renderer={this.state.renderer}>
+        <Menu renderer={this.state.renderer} style={{ height: 50 }}>
           <MenuTrigger text='Select option' customStyles={triggerStyles} />
           <MenuOptions customStyles={optionsStyles}>
             <MenuOption text='Context Menu'
@@ -44,9 +44,16 @@ const triggerStyles = {
   triggerText: {
     color: 'white',
   },
-  triggerWrapper: {
+  triggerOuterWrapper: {
+    backgroundColor: 'orange',
     padding: 5,
+    flex: 1,
+  },
+  triggerWrapper: {
     backgroundColor: 'blue',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
   },
   triggerTouchable: {
     underlayColor: 'darkblue',

@@ -91,7 +91,8 @@ To style `<MenuTrigger />` component you can pass `customStyles` object prop wit
 
 | Object key | Type | Notes |
 |---|---|---|
-|`triggerWrapper`|`Style`|Style of wrapping `View` component|
+|`triggerOuterWrapper`|`Style`|Style of outer `View` component|
+|`triggerWrapper`|`Style`|Style of inner `View` component (can be overriden by `style` prop)|
 |`triggerText`|`Style`|Style of `Text` component (used when `text` shorthand option is defined)|
 |`TriggerTouchableComponent`|`Component`|Touchable component of trigger. Default value is `TouchableHighlight` for iOS and `TouchableNativeFeedvack` for Android|
 |`triggerTouchable`|`Object`|Properties passed to the touchable component (e.g. `activeOpacity`, `underlayColor` for `TouchableHighlight`)|
