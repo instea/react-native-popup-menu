@@ -44,8 +44,8 @@ Root menu component defining menu name and providing menu events.
 ### Methods
 | Method Name | Arguments | Notes
 |---|---|---|
-|`open`|``|Opens menu|
-|`close`|``|Closes menu|
+|`open`||Opens menu|
+|`close`||Closes menu|
 
 ### Properties
 | Option | Type | Opt/Required | Default | Note |
