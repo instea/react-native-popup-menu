@@ -12,12 +12,14 @@ import StylingExample from './StylingExample';
 import NonRootExample from './NonRootExample';
 import NavigatorExample from './NavigatorExample';
 import TouchableExample from './TouchableExample';
+import MenuMethodsExemple from './MenuMethodsExemple';
 
 const demos = [
   { Component: BasicExample, name: 'Basic example' },
   { Component: Example, name: 'Advanced example' },
   { Component: OriginalExample, name: 'Original example' },
   { Component: ControlledExample, name: 'Controlled example' },
+  { Component: MenuMethodsExemple, name: 'Controlling menu using menu methods' },
   { Component: ExtensionExample, name: 'Extensions example' },
   { Component: ModalExample, name: 'Modal example' },
   { Component: StylingExample, name: 'Styling example' },

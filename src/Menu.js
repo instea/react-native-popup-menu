@@ -50,6 +50,14 @@ export default class Menu extends Component {
     this.context.menuRegistry.unsubscribe(this);
   }
 
+  open() {
+    this.context.menuActions.openMenu(this._name);
+  }
+
+  close() {
+    this.context.menuActions.closeMenu();
+  }
+
   getName() {
     return this._name;
   }
