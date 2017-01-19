@@ -26,7 +26,8 @@ For more detailed documentation check [API](./doc/api.md).
 ```js
 import React from 'react';
 import { Text } from 'react-native';
-import Menu, {
+import {
+  Menu,
   MenuContext,
   MenuOptions,
   MenuOption,
