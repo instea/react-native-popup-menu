@@ -58,6 +58,9 @@ const triggerStyles = {
   triggerTouchable: {
     underlayColor: 'darkblue',
     activeOpacity: 70,
+    style : {
+      flex: 1,
+    },
   },
 };
 
