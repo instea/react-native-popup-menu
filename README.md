@@ -24,18 +24,25 @@ Wrap your application inside `MenuContext` and then simply use `Menu` component 
 For more detailed documentation check [API](./doc/api.md).
 
 ```js
-import React from 'react';
-import { Text } from 'react-native';
+// your entry point
+import { MenuContext } from 'react-native-popup-menu';
+
+export const App = () => (
+  <MenuContext>
+    <YourApp />
+  </MenuContext>
+);
+
+// somewhere in your app
 import {
   Menu,
-  MenuContext,
   MenuOptions,
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
 
-export const App = () => (
-  <MenuContext>
+export const YourComponent = () => (
+  <View>
     <Text>Hello world!</Text>
     <Menu onSelect={value => alert(`Selected number: ${value}`)}>
       <MenuTrigger text='Select option' />
@@ -47,8 +54,9 @@ export const App = () => (
         <MenuOption value={3} disabled={true} text='Three' />
       </MenuOptions>
     </Menu>
-  </MenuContext>
+  </View>
 );
+
 ```
 
 ## Documentation
