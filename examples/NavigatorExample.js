@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View, } from 'react-native';
 import Menu, {
   MenuContext,
   MenuOptions,
@@ -11,18 +11,22 @@ import {Scene, Router, Actions} from 'react-native-router-flux';
 
 class NavigatorExample extends React.Component {
   render() {
-    return <Router>
-      <Scene key="root">
-        <Scene key="login" component={Page} title="Login"/>
-        <Scene key="register" component={Page} title="Register"/>
-        <Scene key="home" component={Page}/>
-      </Scene>
-    </Router>
+    return (
+      <MenuContext>
+        <Router>
+          <Scene key="root">
+            <Scene key="login" component={Page} title="Login" renderRightButton={NavigatorMenu}/>
+            <Scene key="register" component={Page} title="Register"/>
+            <Scene key="home" component={Page}/>
+          </Scene>
+        </Router>
+      </MenuContext>
+    );
   }
 }
 
 const Page = () => (
-    <MenuContext style={{flexDirection: 'column', padding: 70}}>
+    <View style={{flexDirection: 'column', padding: 70}}>
       <Text>Hello world with react-native-router-flux!</Text>
       <Menu>
         <MenuTrigger text='Select option' />
@@ -32,7 +36,18 @@ const Page = () => (
           <MenuOption onSelect={() => Actions.home()} text='Home' />
         </MenuOptions>
       </Menu>
-    </MenuContext>
+    </View>
+);
+
+const NavigatorMenu = () => (
+  <Menu>
+    <MenuTrigger text='...' />
+    <MenuOptions>
+      <MenuOption onSelect={() => Actions.login()} text='Navigation Login' />
+      <MenuOption onSelect={() => Actions.register()} text='Navigation Register' />
+      <MenuOption onSelect={() => Actions.home()} text='Navigation Home' />
+    </MenuOptions>
+  </Menu>
 );
 
 export default NavigatorExample;
