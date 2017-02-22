@@ -50,9 +50,11 @@ export default class MenuContext extends Component {
 
   closeMenu() {
     debug('close menu');
-    const closePromise = (this.refs.menuOptions
+    const hideMenu = (this.refs.menuOptions
       && this.refs.menuOptions.close
       && this.refs.menuOptions.close()) || Promise.resolve();
+    const hideBackdrop = this.refs.backdrop && this.refs.backdrop.close();
+    const closePromise = Promise.all([hideMenu, hideBackdrop]);
     return closePromise.then(() => {
       this._menuRegistry.getAll().forEach(menu => {
         if (menu.instance._getOpened()) {
@@ -129,7 +131,7 @@ export default class MenuContext extends Component {
           { this.props.children }
         </View>
         {shouldRenderMenu &&
-          <Backdrop onPress={() => this._onBackdropPress()} style={customStyles.backdrop} />
+          <Backdrop onPress={() => this._onBackdropPress()} style={customStyles.backdrop} ref='backdrop' />
         }
         {shouldRenderMenu &&
           this._makeOptions(this.state.openedMenu)

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Animated, StyleSheet } from 'react-native';
+import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION } from '../constants';
 
 const axisPosition = (oDim, wDim, tPos, tDim) => {
   // if options are bigger than window dimension, then render at 0
@@ -48,7 +49,7 @@ export default class ContextMenu extends React.Component {
 
   componentDidMount() {
     Animated.timing(this.state.scaleAnim, {
-      duration: 225,
+      duration: OPEN_ANIM_DURATION,
       toValue: 1
     }).start();
   }
@@ -56,7 +57,7 @@ export default class ContextMenu extends React.Component {
   close() {
     return new Promise(resolve => {
       Animated.timing(this.state.scaleAnim, {
-        duration: 195,
+        duration: CLOSE_ANIM_DURATION,
         toValue: 0
       }).start(resolve);
     });

@@ -1,18 +1,49 @@
-import React from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import React, { Component } from 'react';
+import { View, StyleSheet, TouchableWithoutFeedback, Animated } from 'react-native';
+import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION } from './constants';
 
-const Backdrop = props => (
-  <TouchableWithoutFeedback onPress={props.onPress}>
-    <View style={[styles.backdrop, props.style]} />
-  </TouchableWithoutFeedback>
-);
+class Backdrop extends Component {
+
+  constructor(...args) {
+    super(...args);
+    this.fadeAnim = new Animated.Value(0.001);
+  }
+
+  componentDidMount() {
+    Animated.timing(this.fadeAnim, {
+      duration: OPEN_ANIM_DURATION,
+      toValue: 1,
+    }).start();
+  }
+
+  close() {
+    return new Promise(resolve => {
+      Animated.timing(this.fadeAnim, {
+        duration: CLOSE_ANIM_DURATION,
+        toValue: 0,
+      }).start(resolve);
+    });
+  }
+
+  render() {
+    const { onPress, style } = this.props;
+    return (
+      <TouchableWithoutFeedback onPress={onPress}>
+        <Animated.View style={[styles.fullscreen, { opacity: this.fadeAnim }]}>
+          <View style={[styles.fullscreen, style]} />
+        </Animated.View>
+      </TouchableWithoutFeedback>
+    );
+  }
+
+}
 
 Backdrop.propTypes = {
   onPress: React.PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
-  backdrop: {
+  fullscreen: {
     opacity: 0,
     position: 'absolute',
     top: 0,
