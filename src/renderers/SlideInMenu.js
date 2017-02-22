@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, StyleSheet } from 'react-native';
+import { Animated, StyleSheet, Easing } from 'react-native';
 import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION } from '../constants';
 
 export const computePosition = ({ windowLayout, optionsLayout }) => {
@@ -22,7 +22,8 @@ export default class SlideInMenu extends React.Component {
   componentDidMount() {
     Animated.timing(this.state.slide, {
       duration: OPEN_ANIM_DURATION,
-      toValue: 1
+      toValue: 1,
+      easing: Easing.out(Easing.cubic),
     }).start();
   }
 
@@ -30,7 +31,8 @@ export default class SlideInMenu extends React.Component {
     return new Promise(resolve => {
       Animated.timing(this.state.slide, {
         duration: CLOSE_ANIM_DURATION,
-        toValue: 0
+        toValue: 0,
+        easing: Easing.in(Easing.cubic),
       }).start(resolve);
     });
   }

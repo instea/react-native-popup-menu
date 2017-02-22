@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, StyleSheet } from 'react-native';
+import { Animated, Easing, StyleSheet } from 'react-native';
 import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION } from '../constants';
 
 const axisPosition = (oDim, wDim, tPos, tDim) => {
@@ -50,7 +50,8 @@ export default class ContextMenu extends React.Component {
   componentDidMount() {
     Animated.timing(this.state.scaleAnim, {
       duration: OPEN_ANIM_DURATION,
-      toValue: 1
+      toValue: 1,
+      easing: Easing.out(Easing.cubic),
     }).start();
   }
 
@@ -58,7 +59,8 @@ export default class ContextMenu extends React.Component {
     return new Promise(resolve => {
       Animated.timing(this.state.scaleAnim, {
         duration: CLOSE_ANIM_DURATION,
-        toValue: 0
+        toValue: 0,
+        easing: Easing.in(Easing.cubic),
       }).start(resolve);
     });
   }
