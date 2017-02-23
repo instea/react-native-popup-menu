@@ -68,5 +68,5 @@ export const YourComponent = () => (
 ## Demo
 
 <kbd>
-![](./android.demo.gif)
+![Popup menu preview](android.demo.gif)
 </kbd>
