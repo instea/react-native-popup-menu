@@ -70,3 +70,6 @@ export const YourComponent = () => (
 <kbd>
 ![Popup menu preview](android.demo.gif)
 </kbd>
+
+## Contributing
+Contributions are welcome! Just open an issues with any idea or pull-request if it is no-brainer. Make sure all tests and linting rules pass. 
