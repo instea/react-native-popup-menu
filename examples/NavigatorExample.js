@@ -9,22 +9,6 @@ import Menu, {
 
 import {Scene, Router, Actions} from 'react-native-router-flux';
 
-class NavigatorExample extends React.Component {
-  render() {
-    return (
-      <MenuContext>
-        <Router>
-          <Scene key="root">
-            <Scene key="login" component={Page} title="Login" renderRightButton={NavigatorMenu}/>
-            <Scene key="register" component={Page} title="Register"/>
-            <Scene key="home" component={Page}/>
-          </Scene>
-        </Router>
-      </MenuContext>
-    );
-  }
-}
-
 const Page = () => (
     <View style={{flexDirection: 'column', padding: 70}}>
       <Text>Hello world with react-native-router-flux!</Text>
@@ -49,5 +33,23 @@ const NavigatorMenu = () => (
     </MenuOptions>
   </Menu>
 );
+
+const scenes = Actions.create(
+  <Scene key="root" >
+    <Scene key="login" component={Page} title="Login" renderRightButton={NavigatorMenu}/>
+    <Scene key="register" component={Page} title="Register"/>
+    <Scene key="home" component={Page}/>
+  </Scene>
+);
+
+class NavigatorExample extends React.Component {
+  render() {
+    return (
+      <MenuContext>
+        <Router scenes={scenes} />
+      </MenuContext>
+    );
+  }
+}
 
 export default NavigatorExample;
