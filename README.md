@@ -44,14 +44,14 @@ import {
 export const YourComponent = () => (
   <View>
     <Text>Hello world!</Text>
-    <Menu onSelect={value => alert(`Selected number: ${value}`)}>
-      <MenuTrigger text='Select option' />
+    <Menu>
+      <MenuTrigger text='Select action' />
       <MenuOptions>
-        <MenuOption value={1} text='One' />
-        <MenuOption value={2}>
-          <Text style={{color: 'red'}}>Two</Text>
+        <MenuOption onSelect={() => alert(`Save`)} text='Save' />
+        <MenuOption onSelect={() => alert(`Delete`)} >
+          <Text style={{color: 'red'}}>Delete</Text>
         </MenuOption>
-        <MenuOption value={3} disabled={true} text='Three' />
+        <MenuOption onSelect={() => alert(`Not called`)} disabled={true} text='Disabled' />
       </MenuOptions>
     </Menu>
   </View>
@@ -67,9 +67,7 @@ export const YourComponent = () => (
 
 ## Demo
 
-<kbd>
-![Popup menu preview](android.demo.gif)
-</kbd>
+![Popup menu preview](./android.demo.gif)
 
 ## Contributing
 Contributions are welcome! Just open an issues with any idea or pull-request if it is no-brainer. Make sure all tests and linting rules pass. 
