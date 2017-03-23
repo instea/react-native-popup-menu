@@ -19,6 +19,22 @@ Most basic example showing menu in its uncontrolled form where menu automaticall
 Both `MenuTrigger` and `MenuOption` can have arbitrary children so you have full power over its styling.
 Attribute `text` is just simple shorthand for `Text` child as it is the most common case.
 
+## Per option action
+Actions (`onSelect`) can be attached also directly to specific `MenuOption` if you don't share logic between different options.
+In fact you can combine both approaches and have some actions attached to a menu option and rest will be handled by "global" [`Menu`](./api.md#menu) `onSelect` prop.
+
+```js
+<Menu>
+  <MenuTrigger text='edit' />
+  <MenuOptions>
+    <MenuOption onSelect={() => this.toggleHighlight(l.id)} text={l.highlighted ? 'Unhighlight' : 'Highlight'} />
+    <View style={styles.divider}/>
+    <MenuOption onSelect={() => this.deleteLogItem(l.id)} text='Delete' />
+  </MenuOptions>
+</Menu>
+```
+Not all children of `MenuOptions` must be a menu options (e.g. use it as a menu separator/divider)
+
 ## Declarative menu
 [ControlledExample](../examples/ControlledExample.js):
 Menu can be controlled also declaratively via properties.
