@@ -7,19 +7,6 @@ import Menu, {
   MenuTrigger
 } from 'react-native-popup-menu';
 
-const triggerStyles = {
-  // triggerOuterWrapper: {
-  //   backgroundColor: 'orange',
-  //   flexDirection: 'row',
-  // },
-  // triggerWrapper: {
-  //   backgroundColor: 'blue',
-  //   alignItems: 'center',
-  //   justifyContent: 'flex-start',
-  //   flexDirection: 'row',
-  // },
-};
-
 const menuContextStyles = {
   menuContextWrapper: {
     flex: null,
