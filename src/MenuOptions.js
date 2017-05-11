@@ -19,7 +19,10 @@ MenuOptions.propTypes = {
   onSelect: React.PropTypes.func,
   customStyles: React.PropTypes.object,
   renderOptionsContainer: React.PropTypes.func,
-  optionsContainerStyle: View.propTypes.style,
+  optionsContainerStyle: React.PropTypes.oneOfType([
+    React.PropTypes.object,
+    React.PropTypes.number,
+  ]),
 };
 
 MenuOptions.defaultProps = {
