@@ -48,23 +48,32 @@ export default class MenuContext extends Component {
     return Promise.resolve();
   }
 
-  closeMenu() {
+  closeMenu() { // has no effect on controlled menus
     debug('close menu');
+    this._menuRegistry.getAll()
+      .filter(menu => menu.instance._getOpened())
+      .forEach(menu => menu.instance._setOpened(false));
+    this._notify();
+  }
+
+  _invalidateTriggerLayouts() {
+    // invalidate layouts for closed menus,
+    // both controlled and uncontrolled menus
+    this._menuRegistry.getAll()
+      .filter(menu => !menu.instance._isOpen())
+      .forEach(menu => {
+        this._menuRegistry.updateLayoutInfo(menu.name, { triggerLayout: undefined });
+      });
+  }
+
+  _beforeClose(menu) {
+    debug('before close', menu.name);
     const hideMenu = (this.refs.menuOptions
       && this.refs.menuOptions.close
       && this.refs.menuOptions.close()) || Promise.resolve();
     const hideBackdrop = this.refs.backdrop && this.refs.backdrop.close();
-    const closePromise = Promise.all([hideMenu, hideBackdrop]);
-    return closePromise.then(() => {
-      this._menuRegistry.getAll().forEach(menu => {
-        if (menu.instance._getOpened()) {
-          menu.instance._setOpened(false);
-          // invalidate trigger layout
-          this._menuRegistry.updateLayoutInfo(menu.name, { triggerLayout: undefined });
-        }
-      });
-      this._notify();
-    }).catch(console.error);
+    this._invalidateTriggerLayouts();
+    return Promise.all([hideMenu, hideBackdrop]);
   }
 
   toggleMenu(name) {
@@ -91,15 +100,21 @@ export default class MenuContext extends Component {
     }
     debug('notify: next menu:', next.name, ' prev menu:', prev.name);
     let afterSetState = undefined;
+    let beforeSetState = Promise.resolve;
     if (prev.name !== next.name) {
-      prev.instance && prev.instance.props.onClose();
-      if (next.name) {
+      if (prev !== NULL && !prev.instance._isOpen()) {
+        beforeSetState = () => this._beforeClose(prev)
+          .then(() => prev.instance.props.onClose());
+      }
+      if (next !== NULL) {
         next.instance.props.onOpen();
         afterSetState = () => this._initOpen(next);
       }
     }
-    this.setState({ openedMenu: this.openedMenu }, afterSetState);
-    debug('notify ended');
+    beforeSetState().then(() => {
+      this.setState({ openedMenu: this.openedMenu }, afterSetState);
+      debug('notify ended');
+    });
   }
 
   /**
