@@ -46,7 +46,7 @@ const OriginalExample = React.createClass({
     });
   },
   render() {
-    return (
+    return ( // eslint-disable-next-line react/no-string-refs
       <MenuContext style={{ flex: 1 }} ref="MenuContext">
         <View style={styles.topbar}>
           <Menu onSelect={this.setMessage}>

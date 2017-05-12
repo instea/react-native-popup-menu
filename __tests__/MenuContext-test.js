@@ -95,8 +95,8 @@ describe('MenuContext', () => {
     expect(backdrop).toBeFalsy();
     expect(options).toBeFalsy();
     expect(components.props.children).toEqual([
-      <View />, // eslint-disable-line react/jsx-key
-      <Text>Some text</Text> // eslint-disable-line react/jsx-key
+      <View />,
+      <Text>Some text</Text>
     ]);
   });
 

@@ -68,10 +68,10 @@ export default class MenuContext extends Component {
 
   _beforeClose(menu) {
     debug('before close', menu.name);
-    const hideMenu = (this.refs.menuOptions
-      && this.refs.menuOptions.close
-      && this.refs.menuOptions.close()) || Promise.resolve();
-    const hideBackdrop = this.refs.backdrop && this.refs.backdrop.close();
+    const hideMenu = (this.optionsRef
+      && this.optionsRef.close
+      && this.optionsRef.close()) || Promise.resolve();
+    const hideBackdrop = this.backdropRef && this.backdropRef.close();
     this._invalidateTriggerLayouts();
     return Promise.all([hideMenu, hideBackdrop]);
   }
@@ -147,13 +147,25 @@ export default class MenuContext extends Component {
           { this.props.children }
         </View>
         {shouldRenderMenu &&
-          <Backdrop onPress={() => this._onBackdropPress()} style={customStyles.backdrop} ref='backdrop' />
+          <Backdrop
+            onPress={() => this._onBackdropPress()}
+            style={customStyles.backdrop}
+            ref={this.onBackdropRef}
+          />
         }
         {shouldRenderMenu &&
           this._makeOptions(this.state.openedMenu)
         }
       </View>
     );
+  }
+
+  onBackdropRef = r => {
+    this.backdropRef = r;
+  }
+
+  onOptionsRef = r => {
+    this.optionsRef = r;
   }
 
   _onBackdropPress() {
@@ -197,7 +209,7 @@ export default class MenuContext extends Component {
     const props = { style, onLayout, layouts };
     const optionsType = isOutside ? MenuOutside : renderer;
     if (!isFunctional(optionsType)) {
-      props.ref = 'menuOptions';
+      props.ref = this.onOptionsRef;
     }
     return React.createElement(optionsType, props, optionsRenderer(options));
   }

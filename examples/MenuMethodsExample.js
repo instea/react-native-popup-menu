@@ -12,19 +12,23 @@ export default class ControlledExample extends Component {
   onOptionSelect(value) {
     alert(`Selected number: ${value}`);
     if (value === 1) {
-      this.refs.menu.close();
+      this.menu.close();
     }
     return false;
   }
 
   openMenu() {
-    this.refs.menu.open();
+    this.menu.open();
+  }
+
+  onRef = r => {
+    this.menu = r;
   }
 
   render() {
     return (
       <MenuContext style={{flexDirection: 'column', padding: 30}}>
-        <Menu onSelect={value => this.onOptionSelect(value)} ref='menu'>
+        <Menu onSelect={value => this.onOptionSelect(value)} ref={this.onRef}>
           <MenuTrigger text='Select option'/>
           <MenuOptions>
             <MenuOption value={1} text='One' />
