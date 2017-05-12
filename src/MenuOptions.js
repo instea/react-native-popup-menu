@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { View } from 'react-native';
 
 const MenuOptions = ({ style, children, onSelect, customStyles }) => (
@@ -16,12 +16,13 @@ const MenuOptions = ({ style, children, onSelect, customStyles }) => (
 );
 
 MenuOptions.propTypes = {
-  onSelect: React.PropTypes.func,
-  customStyles: React.PropTypes.object,
-  renderOptionsContainer: React.PropTypes.func,
-  optionsContainerStyle: React.PropTypes.oneOfType([
-    React.PropTypes.object,
-    React.PropTypes.number,
+  onSelect: PropTypes.func,
+  customStyles: PropTypes.object,
+  renderOptionsContainer: PropTypes.func,
+  optionsContainerStyle: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.number,
+    PropTypes.array,
   ]),
 };
 
