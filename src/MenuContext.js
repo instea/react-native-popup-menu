@@ -40,37 +40,47 @@ export default class MenuContext extends Component {
   openMenu(name) {
     const menu = this._menuRegistry.getMenu(name);
     if (!menu) {
-      return console.warn(`menu with name ${name} does not exist`);
+      console.warn(`menu with name ${name} does not exist`);
+      return Promise.resolve();
     }
     debug('open menu', name);
     menu.instance._setOpened(true);
-    this._notify();
-    return Promise.resolve();
+    return this._notify();
   }
 
-  closeMenu() {
+  closeMenu() { // has no effect on controlled menus
     debug('close menu');
-    const hideMenu = (this.refs.menuOptions
-      && this.refs.menuOptions.close
-      && this.refs.menuOptions.close()) || Promise.resolve();
-    const hideBackdrop = this.refs.backdrop && this.refs.backdrop.close();
-    const closePromise = Promise.all([hideMenu, hideBackdrop]);
-    return closePromise.then(() => {
-      this._menuRegistry.getAll().forEach(menu => {
-        if (menu.instance._getOpened()) {
-          menu.instance._setOpened(false);
-          // invalidate trigger layout
-          this._menuRegistry.updateLayoutInfo(menu.name, { triggerLayout: undefined });
-        }
+    this._menuRegistry.getAll()
+      .filter(menu => menu.instance._getOpened())
+      .forEach(menu => menu.instance._setOpened(false));
+    return this._notify();
+  }
+
+  _invalidateTriggerLayouts() {
+    // invalidate layouts for closed menus,
+    // both controlled and uncontrolled menus
+    this._menuRegistry.getAll()
+      .filter(menu => !menu.instance._isOpen())
+      .forEach(menu => {
+        this._menuRegistry.updateLayoutInfo(menu.name, { triggerLayout: undefined });
       });
-      this._notify();
-    }).catch(console.error);
+  }
+
+  _beforeClose(menu) {
+    debug('before close', menu.name);
+    const hideMenu = (this.optionsRef
+      && this.optionsRef.close
+      && this.optionsRef.close()) || Promise.resolve();
+    const hideBackdrop = this.backdropRef && this.backdropRef.close();
+    this._invalidateTriggerLayouts();
+    return Promise.all([hideMenu, hideBackdrop]);
   }
 
   toggleMenu(name) {
     const menu = this._menuRegistry.getMenu(name);
     if (!menu) {
-      return console.warn(`menu with name ${name} does not exist`);
+      console.warn(`menu with name ${name} does not exist`);
+      return Promise.resolve();
     }
     debug('toggle menu', name);
     if (menu.instance._getOpened()) {
@@ -87,19 +97,25 @@ export default class MenuContext extends Component {
     // set newly opened menu before any callbacks are called
     this.openedMenu = next === NULL ? undefined : next;
     if (!forceUpdate && !this._isRenderNeeded(prev, next)) {
-      return;
+      return Promise.resolve();
     }
     debug('notify: next menu:', next.name, ' prev menu:', prev.name);
     let afterSetState = undefined;
+    let beforeSetState = () => Promise.resolve();
     if (prev.name !== next.name) {
-      prev.instance && prev.instance.props.onClose();
-      if (next.name) {
+      if (prev !== NULL && !prev.instance._isOpen()) {
+        beforeSetState = () => this._beforeClose(prev)
+          .then(() => prev.instance.props.onClose());
+      }
+      if (next !== NULL) {
         next.instance.props.onOpen();
         afterSetState = () => this._initOpen(next);
       }
     }
-    this.setState({ openedMenu: this.openedMenu }, afterSetState);
-    debug('notify ended');
+    return beforeSetState().then(() => {
+      this.setState({ openedMenu: this.openedMenu }, afterSetState);
+      debug('notify ended');
+    });
   }
 
   /**
@@ -131,13 +147,25 @@ export default class MenuContext extends Component {
           { this.props.children }
         </View>
         {shouldRenderMenu &&
-          <Backdrop onPress={() => this._onBackdropPress()} style={customStyles.backdrop} ref='backdrop' />
+          <Backdrop
+            onPress={() => this._onBackdropPress()}
+            style={customStyles.backdrop}
+            ref={this.onBackdropRef}
+          />
         }
         {shouldRenderMenu &&
           this._makeOptions(this.state.openedMenu)
         }
       </View>
     );
+  }
+
+  onBackdropRef = r => {
+    this.backdropRef = r;
+  }
+
+  onOptionsRef = r => {
+    this.optionsRef = r;
   }
 
   _onBackdropPress() {
@@ -181,7 +209,7 @@ export default class MenuContext extends Component {
     const props = { style, onLayout, layouts };
     const optionsType = isOutside ? MenuOutside : renderer;
     if (!isFunctional(optionsType)) {
-      props.ref = 'menuOptions';
+      props.ref = this.onOptionsRef;
     }
     return React.createElement(optionsType, props, optionsRenderer(options));
   }

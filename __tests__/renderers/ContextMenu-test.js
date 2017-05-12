@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated } from 'react-native';
+import { Animated, Text } from 'react-native';
 import { render } from '../helpers';
 
 jest.dontMock('../../src/renderers/ContextMenu');
