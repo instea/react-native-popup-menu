@@ -21,10 +21,10 @@
   },
   "homepage": "https://github.com/instea/react-native-popup-menu",
   "jest": {
-    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
-    "testFileExtensions": [
-      "js"
-    ],
+    "transform": {
+      ".*": "<rootDir>/node_modules/babel-jest"
+    },
+    "testRegex": ".*-test.js",
     "moduleFileExtensions": [
       "js"
     ],
@@ -41,18 +41,20 @@
   },
   "devDependencies": {
     "babel-core": "^6.8.0",
-    "babel-eslint": "^6.0.4",
-    "babel-jest": "^12.0.2",
+    "babel-eslint": "^7.2.3",
+    "babel-jest": "^20.0.1",
+    "babel-polyfill": "^6.23.0",
     "babel-preset-react": "^6.5.0",
-    "babel-preset-react-native": "^1.7.0",
+    "babel-preset-react-native": "^1.9.2",
     "chai": "^3.5.0",
-    "eslint": "^2.9.0",
-    "eslint-plugin-react": "^5.1.1",
+    "eslint": "^3.19.0",
+    "eslint-plugin-react": "^7.0.0",
     "jasmine-reporters": "^2.1.1",
-    "jest-cli": "^12.0.2",
-    "mocha": "^2.4.5",
-    "react": "^15.0.2",
-    "react-addons-test-utils": "^15.0.2",
-    "sinon": "^1.17.4"
+    "jest-cli": "^20.0.1",
+    "mocha": "^3.3.0",
+    "react": "^15.5.4",
+    "react-addons-test-utils": "^15.5.1",
+    "react-dom": "^15.5.4",
+    "sinon": "^2.2.0"
   }
 }

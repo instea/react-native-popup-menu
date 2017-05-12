@@ -40,12 +40,12 @@ export default class MenuContext extends Component {
   openMenu(name) {
     const menu = this._menuRegistry.getMenu(name);
     if (!menu) {
-      return console.warn(`menu with name ${name} does not exist`);
+      console.warn(`menu with name ${name} does not exist`);
+      return Promise.resolve();
     }
     debug('open menu', name);
     menu.instance._setOpened(true);
-    this._notify();
-    return Promise.resolve();
+    return this._notify();
   }
 
   closeMenu() { // has no effect on controlled menus
@@ -53,7 +53,7 @@ export default class MenuContext extends Component {
     this._menuRegistry.getAll()
       .filter(menu => menu.instance._getOpened())
       .forEach(menu => menu.instance._setOpened(false));
-    this._notify();
+    return this._notify();
   }
 
   _invalidateTriggerLayouts() {
@@ -79,7 +79,8 @@ export default class MenuContext extends Component {
   toggleMenu(name) {
     const menu = this._menuRegistry.getMenu(name);
     if (!menu) {
-      return console.warn(`menu with name ${name} does not exist`);
+      console.warn(`menu with name ${name} does not exist`);
+      return Promise.resolve();
     }
     debug('toggle menu', name);
     if (menu.instance._getOpened()) {
@@ -96,11 +97,11 @@ export default class MenuContext extends Component {
     // set newly opened menu before any callbacks are called
     this.openedMenu = next === NULL ? undefined : next;
     if (!forceUpdate && !this._isRenderNeeded(prev, next)) {
-      return;
+      return Promise.resolve();
     }
     debug('notify: next menu:', next.name, ' prev menu:', prev.name);
     let afterSetState = undefined;
-    let beforeSetState = Promise.resolve;
+    let beforeSetState = () => Promise.resolve();
     if (prev.name !== next.name) {
       if (prev !== NULL && !prev.instance._isOpen()) {
         beforeSetState = () => this._beforeClose(prev)
@@ -111,7 +112,7 @@ export default class MenuContext extends Component {
         afterSetState = () => this._initOpen(next);
       }
     }
-    beforeSetState().then(() => {
+    return beforeSetState().then(() => {
       this.setState({ openedMenu: this.openedMenu }, afterSetState);
       debug('notify ended');
     });
