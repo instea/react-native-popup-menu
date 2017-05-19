@@ -1,6 +1,6 @@
 # react-native-popup-menu
 
-Extensible popup menu component for React Native for both Android and iOS.
+Extensible popup menu component for React Native for Android, iOS and (unofficially) UWP.
 
 Features:
 * Simple to use popup/context menu
@@ -11,7 +11,7 @@ Features:
 * Can work as controlled as well as uncontrolled component
 * Different lifecycle hooks
 
-![Popup menu](doc/img/context-menu.png)
+![Popup menu demo](./android.demo.gif)
 ## Installation
 
 ```
@@ -65,9 +65,5 @@ export const YourComponent = () => (
 - [API](doc/api.md)
 - [Extension points](doc/extensions.md)
 
-## Demo
-
-![Popup menu preview](./android.demo.gif)
-
 ## Contributing
-Contributions are welcome! Just open an issues with any idea or pull-request if it is no-brainer. Make sure all tests and linting rules pass. 
+Contributions are welcome! Just open an issues with any idea or pull-request if it is no-brainer. Make sure all tests and linting rules pass.
