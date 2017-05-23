@@ -9,6 +9,7 @@
     "react": "15.3.2",
     "react-native": "^0.37.0",
     "react-native-popup-menu": "..",
-    "react-native-router-flux": "^3.37.0"
+    "react-native-router-flux": "^3.37.0",
+    "react-native-vector-icons": "^3.0.0"
   }
 }
