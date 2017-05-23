@@ -16,6 +16,9 @@ export default class MenuOption extends Component {
 
   render() {
     const { text, disabled, children, style, customStyles } = this.props;
+    if (text && React.Children.count(children) > 0) {
+      console.warn("MenuOption: Please don't use text property together with explicit children. Children are ignored.");
+    }
     if (disabled) {
       const disabledStyles = [defaultStyles.optionTextDisabled, customStyles.optionText];
       return (
