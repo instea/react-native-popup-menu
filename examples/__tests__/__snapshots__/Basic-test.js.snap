@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<MenuContext
+  style={
+    Object {
+      "flexDirection": "column",
+      "padding": 30,
+    }
+  }
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+  >
+    Hello world!
+  </Text>
+  <Menu
+    onSelect={[Function]}
+  >
+    <MenuTrigger
+      text="Select option"
+    />
+    <MenuOptions>
+      <MenuOption
+        text="One"
+        value={1}
+      />
+      <MenuOption
+        value={2}
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          style={
+            Object {
+              "color": "red",
+            }
+          }
+        >
+          Two
+        </Text>
+      </MenuOption>
+      <MenuOption
+        disabled={true}
+        text="Three"
+        value={3}
+      />
+    </MenuOptions>
+  </Menu>
+</MenuContext>
+`;

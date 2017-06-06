@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "test": "jest",
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
@@ -11,5 +12,12 @@
     "react-native-popup-menu": "..",
     "react-native-router-flux": "^3.37.0",
     "react-native-vector-icons": "^3.0.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "devDependencies": {
+    "jest": "^20.0.4",
+    "react-test-renderer": "^15.4.2"
   }
 }

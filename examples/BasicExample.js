@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
-import Menu, {
+import {
+  Menu,
   MenuContext,
   MenuOptions,
   MenuOption,
