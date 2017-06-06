@@ -25,6 +25,7 @@
       ".*": "<rootDir>/node_modules/babel-jest"
     },
     "testRegex": ".*-test.js",
+    "testPathIgnorePatterns": ["/node_modules/", "<rootDir>/examples/"],
     "moduleFileExtensions": [
       "js"
     ],
