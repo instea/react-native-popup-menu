@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableWithoutFeedback, Animated } from 'react-native';
 import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION } from './constants';
 
@@ -39,7 +40,7 @@ class Backdrop extends Component {
 }
 
 Backdrop.propTypes = {
-  onPress: React.PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import makeMenuRegistry from './menuRegistry';
 import Backdrop from './Backdrop';
@@ -236,7 +237,7 @@ export default class MenuContext extends Component {
 }
 
 MenuContext.propTypes = {
-  customStyles: React.PropTypes.object,
+  customStyles: PropTypes.object,
 }
 
 MenuContext.defaultProps = {
@@ -244,6 +245,6 @@ MenuContext.defaultProps = {
 };
 
 MenuContext.childContextTypes = {
-  menuRegistry: React.PropTypes.object,
-  menuActions: React.PropTypes.object,
+  menuRegistry: PropTypes.object,
+  menuActions: PropTypes.object,
 };
