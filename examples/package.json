@@ -7,17 +7,17 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "react": "^15.4.2",
-    "react-native": "^0.42.3",
+    "react": "15.4.2",
+    "react-native": "0.42.3",
     "react-native-popup-menu": "..",
-    "react-native-router-flux": "^3.37.0",
-    "react-native-vector-icons": "^3.0.0"
+    "react-native-router-flux": "3.37.0",
+    "react-native-vector-icons": "4.2.0"
   },
   "jest": {
     "preset": "react-native"
   },
   "devDependencies": {
-    "jest": "^20.0.4",
-    "react-test-renderer": "^15.4.2"
+    "jest": "20.0.4",
+    "react-test-renderer": "15.4.2"
   }
 }

@@ -12,11 +12,13 @@ Features:
 * Different lifecycle hooks
 
 ![Popup menu demo](./android.demo.gif)
+
 ## Installation
 
 ```
 npm install react-native-popup-menu --save
 ```
+If you are using older RN versions check our compatibility table.
 
 ## Basic Usage
 Wrap your application inside `MenuContext` and then simply use `Menu` component where you need it. Below you can find a simple example.
@@ -67,3 +69,11 @@ export const YourComponent = () => (
 
 ## Contributing
 Contributions are welcome! Just open an issues with any idea or pull-request if it is no-brainer. Make sure all tests and linting rules pass.
+
+## React Native Compatibility
+We keep compatibility on best effort basis.
+
+| popup-menu version | min RN version |
+| ------------------ | -------------- |
+| 0.8                | 0.38           |
+| 0.7                | 0.18           |
