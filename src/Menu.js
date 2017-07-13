@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { MenuOptions, MenuTrigger } from './index';
 import ContextMenu from './renderers/ContextMenu';
@@ -134,13 +135,13 @@ Menu.setDefaultRenderer = (renderer) => {
 }
 
 Menu.propTypes = {
-  name: React.PropTypes.string,
-  renderer: React.PropTypes.func,
-  onSelect: React.PropTypes.func,
-  onOpen: React.PropTypes.func,
-  onClose: React.PropTypes.func,
-  opened: React.PropTypes.bool,
-  onBackdropPress: React.PropTypes.func,
+  name: PropTypes.string,
+  renderer: PropTypes.func,
+  onSelect: PropTypes.func,
+  onOpen: PropTypes.func,
+  onClose: PropTypes.func,
+  opened: PropTypes.bool,
+  onBackdropPress: PropTypes.func,
 };
 
 Menu.defaultProps = {
@@ -152,6 +153,6 @@ Menu.defaultProps = {
 };
 
 Menu.contextTypes = {
-  menuRegistry: React.PropTypes.object,
-  menuActions: React.PropTypes.object,
+  menuRegistry: PropTypes.object,
+  menuActions: PropTypes.object,
 };

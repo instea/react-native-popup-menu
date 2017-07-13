@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { debug } from './logger.js';
 import { makeTouchable } from './helpers';
@@ -33,10 +34,10 @@ export default class MenuTrigger extends Component {
 }
 
 MenuTrigger.propTypes = {
-  disabled: React.PropTypes.bool,
-  text: React.PropTypes.string,
-  onPress: React.PropTypes.func,
-  customStyles: React.PropTypes.object,
+  disabled: PropTypes.bool,
+  text: PropTypes.string,
+  onPress: PropTypes.func,
+  customStyles: PropTypes.object,
 };
 
 MenuTrigger.defaultProps = {
@@ -45,6 +46,6 @@ MenuTrigger.defaultProps = {
 };
 
 MenuTrigger.contextTypes = {
-  menuActions: React.PropTypes.object,
+  menuActions: PropTypes.object,
 };
 

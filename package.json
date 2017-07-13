@@ -53,6 +53,7 @@
     "jasmine-reporters": "^2.1.1",
     "jest-cli": "^20.0.1",
     "mocha": "^3.3.0",
+    "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-addons-test-utils": "^15.5.1",
     "react-dom": "^15.5.4",
