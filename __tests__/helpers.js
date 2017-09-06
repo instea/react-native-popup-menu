@@ -32,6 +32,25 @@ export function showDebug() {
   }));
 }
 
+const WAIT_STEP = 50;
+export function waitFor(condition, timeout = 200) {
+  const startTime = new Date().getTime();
+  return new Promise((resolve, reject) => {
+    const check = () => {
+      const t = new Date().getTime();
+      console.log('Checking condition at time:', t - startTime);
+      if (condition()) {
+        return resolve();
+      }
+      if (t > startTime + timeout) {
+        return reject();
+      }
+      setTimeout(check, Math.min(WAIT_STEP, startTime + timeout - t));
+    };
+    check();
+  });
+}
+
 export function nthChild(node, n) {
   return n === 0 ? node : nthChild(node.props.children, n - 1);
 }

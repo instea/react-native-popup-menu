@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { View, BackHandler } from 'react-native';
 import makeMenuRegistry from './menuRegistry';
 import Backdrop from './Backdrop';
 import { measure } from './helpers';
@@ -32,6 +32,33 @@ export default class MenuContext extends Component {
     };
     const menuRegistry = this._menuRegistry;
     return { menuRegistry, menuActions };
+  }
+
+  _handleBackButton = () => {
+    const { backHandler } = this.props;
+    
+    // Default handler if true is passed
+    if (backHandler === true) {
+      if (this.isMenuOpen()) {
+        this.closeMenu();
+        return true;
+      }
+    }
+
+    // Custom handler called with MenuContext instance id function is passed
+    if (typeof backHandler === 'function') {
+      return backHandler(this);
+    }
+
+    return false;
+  }
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
   }
 
   isMenuOpen() {
@@ -238,10 +265,12 @@ export default class MenuContext extends Component {
 
 MenuContext.propTypes = {
   customStyles: PropTypes.object,
+  backHandler: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
 }
 
 MenuContext.defaultProps = {
   customStyles: {},
+  backHandler: false,
 };
 
 MenuContext.childContextTypes = {

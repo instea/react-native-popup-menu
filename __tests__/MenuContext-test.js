@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { render } from './helpers';
+import { render, waitFor } from './helpers';
 import { MenuOptions, MenuTrigger } from '../src/index';
 import MenuOutside from '../src/renderers/MenuOutside';
 import Backdrop from '../src/Backdrop';
@@ -239,6 +239,49 @@ describe('MenuContext', () => {
       backdrop.props.onPress();
       expect(menu1.props.onBackdropPress).toHaveBeenCalled();
     });
+  });
+  
+  it('should close the menu if backHandler prop is true and back button is pressed', () => {
+    const { output: initOutput, instance } = render(
+      <MenuContext backHandler={true} />
+    );
+    const { menuRegistry, menuActions } = instance.getChildContext();
+    initOutput.props.onLayout(defaultLayout);
+    menuRegistry.subscribe(menu1);
+    return menuActions.openMenu('menu1').then(() => {
+      instance._handleBackButton();
+      return waitFor(() => !instance.isMenuOpen())
+        .then(() => false)
+        .catch(() => true)
+        .then((isOpen) => expect(isOpen).toEqual(false), 1000);
+    })
+  });
+  
+  it('should not close the menu if backHandler prop is false and back button is pressed', () => {
+    const { output: initOutput, instance } = render(
+      <MenuContext backHandler={false} />
+    );
+    const { menuRegistry, menuActions } = instance.getChildContext();
+    initOutput.props.onLayout(defaultLayout);
+    menuRegistry.subscribe(menu1);
+    return menuActions.openMenu('menu1').then(() => {
+      instance._handleBackButton();
+      expect(instance.isMenuOpen()).toEqual(true);
+    })
+  });
+  
+  it('should invoke custom handler if backHandler prop is a function and back button is pressed', () => {
+    const handler = jest.fn().mockReturnValue(true);
+    const { output: initOutput, instance } = render(
+      <MenuContext backHandler={handler} />
+    );
+    const { menuRegistry, menuActions } = instance.getChildContext();
+    initOutput.props.onLayout(defaultLayout);
+    menuRegistry.subscribe(menu1);
+    return menuActions.openMenu('menu1').then(() => {
+      instance._handleBackButton();
+      expect(handler.mock.calls).toHaveLength(1);
+    })
   });
 
 });

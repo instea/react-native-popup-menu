@@ -13,6 +13,7 @@ import NonRootExample from './NonRootExample';
 import NavigatorExample from './NavigatorExample';
 import TouchableExample from './TouchableExample';
 import MenuMethodsExample from './MenuMethodsExample';
+import CloseOnBackExample from './CloseOnBackExample';
 
 const demos = [
   { Component: BasicExample, name: 'Basic example' },
@@ -26,6 +27,7 @@ const demos = [
   { Component: TouchableExample, name: 'Touchable config example' },
   { Component: NonRootExample, name: 'Non root example' },
   { Component: NavigatorExample, name: 'Example with react-native-router-flux' },
+  { Component: CloseOnBackExample, name: 'Close on back button press example' },
 ];
 
 // show debug messages for demos.

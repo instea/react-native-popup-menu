@@ -22,6 +22,7 @@ The only known exception is when you use [Modal](https://facebook.github.io/reac
 |---|---|---|---|---|
 |`style`|`Style`|Optional||Style of wrapping `View` component. Same as `customStyles.menuContextWrapper` but when both are present result style is a merge where this style has higher precedence.|
 |`customStyles`|`Object`|Optional||Object defining wrapper, touchable and text styles|
+|`backHandler`|`boolean\|Function`|Optional|false|Whether to close the menu when the back button is pressed or custom back button handler if a function is passed|
 
 ### Custom styles
 
@@ -36,6 +37,18 @@ To style `<MenuContext />` and backdrop component you can pass `customStyles` ob
 **Note:** In addition to these styles we add also `{flex:1}`. You can disable it by e.g. `style={{flex:0}}`.
 
 See more in custom [styling example](../examples/StylingExample.js).
+
+### Handling of back button
+
+To handle the back button you can pass `backHandler` prop with the following possible values:
+
+| Value | Description |
+|---|---|
+|false|No handling of back button press|
+|true|The menu will be closed|
+|Function|The function will be called with `MenuContext` instance as the first parameter. The function needs to return true to prevent application exit (or bubbling if there are other listeners registered). Read [BackHandler documentation](https://facebook.github.io/react-native/docs/backhandler.html) for more information.|
+
+See more in custom [close on back example](../examples/CloseOnBackExample.js).
 
 ## Menu
 
