@@ -25,7 +25,10 @@
       ".*": "<rootDir>/node_modules/babel-jest"
     },
     "testRegex": ".*-test.js",
-    "testPathIgnorePatterns": ["/node_modules/", "<rootDir>/examples/"],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/examples/"
+    ],
     "moduleFileExtensions": [
       "js"
     ],
@@ -55,8 +58,8 @@
     "mocha": "^3.3.0",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
-    "react-addons-test-utils": "^15.5.1",
     "react-dom": "^15.5.4",
+    "react-test-renderer": "^15.6.1",
     "sinon": "^2.2.0"
   }
 }

@@ -105,8 +105,9 @@ describe('MenuContext', () => {
       <MenuContext />
     );
     const { menuRegistry, menuActions } = instance.getChildContext();
+    initOutput.props.onLayout(defaultLayout);
     menuRegistry.subscribe(menu1);
-    menuActions.openMenu('menu1').then(() => {
+    return menuActions.openMenu('menu1').then(() => {
       expect(menuActions.isMenuOpen()).toEqual(true);
       expect(menu1._getOpened()).toEqual(true);
       initOutput.props.onLayout(defaultLayout);
@@ -129,16 +130,16 @@ describe('MenuContext', () => {
     const { menuRegistry, menuActions } = instance.getChildContext();
     initOutput.props.onLayout(defaultLayout);
     menuRegistry.subscribe(menu1);
-    menuActions.openMenu('menu1');
-    menuActions.closeMenu().then(() => {
-      expect(menuActions.isMenuOpen()).toEqual(false);
-      expect(menu1.props.onClose).toHaveBeenCalled();
-      const output = renderer.getRenderOutput();
-      const [ components, backdrop, options ] = output.props.children;
-      expect(components.type).toEqual(View);
-      expect(backdrop).toBeFalsy();
-      expect(options).toBeFalsy();
-    });
+    return menuActions.openMenu('menu1').then(() =>
+      menuActions.closeMenu().then(() => {
+        expect(menuActions.isMenuOpen()).toEqual(false);
+        expect(menu1.props.onClose).toHaveBeenCalled();
+        const output = renderer.getRenderOutput();
+        const [ components, backdrop, options ] = output.props.children;
+        expect(components.type).toEqual(View);
+        expect(backdrop).toBeFalsy();
+        expect(options).toBeFalsy();
+      }));
   });
 
   it('should toggle menu', () => {
@@ -183,7 +184,7 @@ describe('MenuContext', () => {
     );
     const { menuRegistry, menuActions } = instance.getChildContext();
     menuRegistry.subscribe(menu1);
-    menuActions.openMenu('menu1').then(() => {
+    return menuActions.openMenu('menu1').then(() => {
       expect(menuActions.isMenuOpen()).toEqual(true);
       const [ components, backdrop, options ] = output.props.children;
       // on layout has not been not called
@@ -200,7 +201,7 @@ describe('MenuContext', () => {
     const { menuRegistry, menuActions } = instance.getChildContext();
     initOutput.props.onLayout(defaultLayout);
     menuRegistry.subscribe(menu1);
-    menuActions.openMenu('menu1').then(() => {
+    return menuActions.openMenu('menu1').then(() => {
       const output = renderer.getRenderOutput();
       expect(output.props.children.length).toEqual(3);
       const options = output.props.children[2];
@@ -230,7 +231,7 @@ describe('MenuContext', () => {
     const { menuRegistry, menuActions } = instance.getChildContext();
     initOutput.props.onLayout(defaultLayout);
     menuRegistry.subscribe(menu1);
-    menuActions.openMenu('menu1').then(() => {
+    return menuActions.openMenu('menu1').then(() => {
       const output = renderer.getRenderOutput();
       expect(output.props.children.length).toEqual(3);
       const backdrop = output.props.children[1];

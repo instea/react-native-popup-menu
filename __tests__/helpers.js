@@ -1,10 +1,10 @@
-import utils from 'react-addons-test-utils';
+import ShallowRenderer from 'react-test-renderer/shallow';
 
 /**
  * Renders component and returns instance object and rendered output.
  */
 export function render(Component, ctx) {
-  const renderer = utils.createRenderer();
+  const renderer = new ShallowRenderer();
   renderer.render(Component, ctx);
   const instance = renderer._instance._instance;
   const output = renderer.getRenderOutput();
