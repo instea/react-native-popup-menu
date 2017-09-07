@@ -36,7 +36,8 @@ export default class MenuContext extends Component {
 
   _handleBackButton = () => {
     const { backHandler } = this.props;
-    
+    debug('_handleBackButton called', backHandler);
+
     // Default handler if true is passed
     if (backHandler === true) {
       if (this.isMenuOpen()) {
@@ -59,7 +60,7 @@ export default class MenuContext extends Component {
     } else {
       const {backHandler} = this.props;
       if (backHandler === true || typeof backHandler === 'function') {
-        console.warn('backHandler prop cannot be used if BackHandler class is not present (RN .= 0.44)');
+        console.warn('backHandler prop cannot be used if BackHandler is not present (RN >= 0.44 required)');
       }
     }
   }
