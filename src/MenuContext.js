@@ -54,11 +54,20 @@ export default class MenuContext extends Component {
   }
 
   componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
+    if (BackHandler) {
+      BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
+    } else {
+      const {backHandler} = this.props;
+      if (backHandler === true || typeof backHandler === 'function') {
+        console.warn('backHandler prop cannot be used if BackHandler class is not present (RN .= 0.44)');
+      }
+    }
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
+    if (BackHandler) {
+      BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
+    }
   }
 
   isMenuOpen() {
