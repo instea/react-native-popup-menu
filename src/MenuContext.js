@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, BackHandler } from 'react-native';
 import makeMenuRegistry from './menuRegistry';
-import Backdrop from './Backdrop';
+import MenuPlaceholder from './MenuPlaceholder';
 import { measure } from './helpers';
 import { debug } from './logger.js';
 import MenuOutside from './renderers/MenuOutside';
@@ -18,7 +18,6 @@ export default class MenuContext extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
     this._menuRegistry = makeMenuRegistry();
   }
 
@@ -72,7 +71,7 @@ export default class MenuContext extends Component {
   }
 
   isMenuOpen() {
-    return !!this.state.openedMenu;
+    return !!this._getOpenedMenu();
   }
 
   openMenu(name) {
@@ -151,7 +150,7 @@ export default class MenuContext extends Component {
       }
     }
     return beforeSetState().then(() => {
-      this.setState({ openedMenu: this.openedMenu }, afterSetState);
+      this._placeholderRef.setState({ openedMenu: this.openedMenu }, afterSetState);
       debug('notify ended');
     });
   }
@@ -177,23 +176,13 @@ export default class MenuContext extends Component {
 
   render() {
     const { style, customStyles } = this.props;
-    const shouldRenderMenu = this.isMenuOpen() && this._isInitialized();
     debug('render menu', this.isMenuOpen(), this._ownLayout);
     return (
       <View style={{flex:1}} onLayout={e => this._onLayout(e)}>
         <View style={[{flex:1}, customStyles.menuContextWrapper, style]}>
           { this.props.children }
         </View>
-        {shouldRenderMenu &&
-          <Backdrop
-            onPress={() => this._onBackdropPress()}
-            style={customStyles.backdrop}
-            ref={this.onBackdropRef}
-          />
-        }
-        {shouldRenderMenu &&
-          this._makeOptions(this.state.openedMenu)
-        }
+        <MenuPlaceholder ctx={this} ref={this._onPlaceholderRef}/>
       </View>
     );
   }
@@ -206,9 +195,15 @@ export default class MenuContext extends Component {
     this.optionsRef = r;
   }
 
+  _onPlaceholderRef = r => this._placeholderRef = r;
+
+  _getOpenedMenu() {
+    return this._placeholderRef && this._placeholderRef.state.openedMenu
+  }
+
   _onBackdropPress() {
     debug('on backdrop press');
-    this.state.openedMenu.instance.props.onBackdropPress();
+    this._getOpenedMenu().instance.props.onBackdropPress();
     this.closeMenu();
   }
 
@@ -261,7 +256,7 @@ export default class MenuContext extends Component {
     if (!this.isMenuOpen()) {
       return;
     }
-    const { instance } = this.state.openedMenu;
+    const { instance } = this._getOpenedMenu();
     const trigger = instance._getTrigger();
     measure(trigger).then(triggerLayout => {
       debug('got trigger measurements after context layout change', triggerLayout);
