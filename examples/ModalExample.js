@@ -11,20 +11,24 @@ class ModalExample extends Component {
 
   constructor(props, ctx) {
     super(props, ctx);
-    this.state = { visible: false };
+    this.state = { modalVisible: false, menuVisible: true };
   }
 
   render() {
     return (
       <MenuContext style={{flexDirection: 'column', padding: 30}}>
         <Text>Main window:</Text>
-        <Menu>
-          <MenuTrigger text='Select option' />
-          <MenuOptions>
-            <MenuOption onSelect={() => this.setState({ visible: true })} text='Open modal' />
-          </MenuOptions>
-        </Menu>
-        <Modal visible={this.state.visible} onRequestClose={() => this.setState({ visible: false })}>
+        {
+          this.state.menuVisible &&
+          <Menu>
+            <MenuTrigger text='Select option' />
+            <MenuOptions>
+              <MenuOption onSelect={() => this.setState({ modalVisible: true })} text='Open modal' />
+              <MenuOption onSelect={() => this.setState({ menuVisible: false })} text='Remove menu' />
+            </MenuOptions>
+          </Menu>
+        }
+        <Modal visible={this.state.modalVisible} onRequestClose={() => this.setState({ visible: false })}>
           <MenuContext style={{flexDirection: 'column', padding: 30, backgroundColor: 'white'}}>
             <Text>Modal window:</Text>
             <Menu onSelect={value => alert(`Selected number: ${value}`)}>

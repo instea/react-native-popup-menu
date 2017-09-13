@@ -65,6 +65,7 @@ export default class MenuContext extends Component {
   }
 
   componentWillUnmount() {
+    debug('unmounting menu context')
     if (BackHandler) {
       BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
     }
@@ -150,6 +151,10 @@ export default class MenuContext extends Component {
       }
     }
     return beforeSetState().then(() => {
+      if (!this._placeholderRef) {
+        debug('setState ignored - maybe the context was unmounted')
+        return
+      }
       this._placeholderRef.setState({ openedMenu: this.openedMenu }, afterSetState);
       debug('notify ended');
     });
