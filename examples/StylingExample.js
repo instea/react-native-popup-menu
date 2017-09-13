@@ -10,7 +10,7 @@ import Menu, {
 
 const { ContextMenu, SlideInMenu } = renderers;
 
-export default class BasicExample extends Component {
+class BasicExampleComponent extends Component {
 
   constructor(props, ctx) {
     super(props, ctx);
@@ -19,7 +19,6 @@ export default class BasicExample extends Component {
 
   render() {
     return (
-      <MenuContext customStyles={menuContextStyles}>
         <Menu renderer={this.state.renderer} style={{ height: 50 }}>
           <MenuTrigger text='Select option' customStyles={triggerStyles} />
           <MenuOptions customStyles={optionsStyles}>
@@ -34,11 +33,18 @@ export default class BasicExample extends Component {
             </MenuOption>
           </MenuOptions>
         </Menu>
-      </MenuContext>
     );
   }
 
 }
+
+const BasicExample = () => (
+  <MenuContext customStyles={menuContextStyles}>
+    <BasicExampleComponent />
+  </MenuContext>
+)
+
+export default BasicExample
 
 const triggerStyles = {
   triggerText: {
