@@ -183,11 +183,15 @@ export default class MenuContext extends Component {
     const { style, customStyles } = this.props;
     debug('render menu', this.isMenuOpen(), this._ownLayout);
     return (
-      <View style={{flex:1}} onLayout={e => this._onLayout(e)}>
+      <View style={{flex:1}} onLayout={this._onLayout}>
         <View style={[{flex:1}, customStyles.menuContextWrapper, style]}>
           { this.props.children }
         </View>
-        <MenuPlaceholder ctx={this} ref={this._onPlaceholderRef}/>
+        <MenuPlaceholder
+          ctx={this}
+          backdropStyles={customStyles.backdrop}
+          ref={this._onPlaceholderRef}
+          />
       </View>
     );
   }
@@ -206,7 +210,7 @@ export default class MenuContext extends Component {
     return this._placeholderRef && this._placeholderRef.state.openedMenu
   }
 
-  _onBackdropPress() {
+  _onBackdropPress = () => {
     debug('on backdrop press');
     this._getOpenedMenu().instance.props.onBackdropPress();
     this.closeMenu();
@@ -252,7 +256,7 @@ export default class MenuContext extends Component {
     return React.createElement(optionsType, props, optionsRenderer(options));
   }
 
-  _onLayout({ nativeEvent: { layout } }) {
+  _onLayout = ({ nativeEvent: { layout } }) => {
     if (layoutsEqual(this._ownLayout, layout)) {
       return;
     }

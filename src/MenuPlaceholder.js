@@ -10,18 +10,17 @@ export default class MenuPlaceholder extends Component {
   }
 
   render() {
-    const { ctx } = this.props;
+    const { ctx, backdropStyles } = this.props;
     const shouldRenderMenu = ctx.isMenuOpen() && ctx._isInitialized();
     debug('MenuPlaceholder should render', shouldRenderMenu);
     if (!shouldRenderMenu) {
       return null;
     }
-    const { customStyles } = ctx.props;
     return (
       <View style={styles.placeholder}>
         <Backdrop
-          onPress={() => ctx._onBackdropPress()}
-          style={customStyles.backdrop}
+          onPress={ctx._onBackdropPress}
+          style={backdropStyles}
           ref={ctx.onBackdropRef}
         />
         {
