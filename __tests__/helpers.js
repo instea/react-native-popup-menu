@@ -32,6 +32,20 @@ export function showDebug() {
   }));
 }
 
+/**
+Creates a mock of react instance
+*/
+export function mockReactInstance() {
+  const instance = {
+    state: {}
+  };
+  instance.setState = (newState, after) => {
+    Object.assign(instance.state, newState);
+    after && after();
+  }
+  return instance;
+}
+
 const WAIT_STEP = 50;
 export function waitFor(condition, timeout = 200) {
   const startTime = new Date().getTime();

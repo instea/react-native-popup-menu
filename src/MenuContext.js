@@ -238,7 +238,8 @@ export default class MenuContext extends Component {
     this._notify();
   }
 
-  _makeOptions({ instance, triggerLayout, optionsLayout }) {
+  _makeOptions() {
+    const { instance, triggerLayout, optionsLayout } = this._getOpenedMenu();
     const options = instance._getOptions();
     const { renderer } = instance.props;
     const windowLayout = this._ownLayout;

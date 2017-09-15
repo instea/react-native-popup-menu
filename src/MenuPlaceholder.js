@@ -24,7 +24,7 @@ export default class MenuPlaceholder extends Component {
           ref={ctx.onBackdropRef}
         />
         {
-          ctx._makeOptions(this.state.openedMenu)
+          ctx._makeOptions()
         }
       </View>
     );
