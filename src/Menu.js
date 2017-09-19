@@ -38,8 +38,10 @@ export default class Menu extends Component {
   }
 
   componentDidUpdate() {
-    debug('component did update', this._name);
-    this.context.menuActions._notify();
+    // force update if menu is opened as its content might have changed
+    const force = this._isOpen();
+    debug('component did update', this._name, force);
+    this.context.menuActions._notify(force);
   }
 
   componentWillUnmount() {
