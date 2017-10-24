@@ -13,7 +13,7 @@ export default class MenuTrigger extends Component {
   }
 
   render() {
-    const { disabled, onRef, text, children, style, customStyles, ...other } = this.props;
+    const { disabled, onRef, text, children, style, customStyles, menuName, ...other } = this.props;
     const onPress = () => !disabled && this._onPress();
     const { Touchable, defaultTouchableProps } = makeTouchable(customStyles.TriggerTouchableComponent);
     return (
