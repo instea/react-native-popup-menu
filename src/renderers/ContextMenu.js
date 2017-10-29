@@ -52,6 +52,7 @@ export default class ContextMenu extends React.Component {
       duration: OPEN_ANIM_DURATION,
       toValue: 1,
       easing: Easing.out(Easing.cubic),
+      useNativeDriver: true
     }).start();
   }
 
@@ -61,6 +62,7 @@ export default class ContextMenu extends React.Component {
         duration: CLOSE_ANIM_DURATION,
         toValue: 0,
         easing: Easing.in(Easing.cubic),
+        useNativeDriver: true
       }).start(resolve);
     });
   }
