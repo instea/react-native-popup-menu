@@ -62,6 +62,7 @@ MenuOption.propTypes = {
 
 MenuOption.defaultProps = {
   disabled: false,
+  disableTouchable: false,
   customStyles: {},
 };
 
