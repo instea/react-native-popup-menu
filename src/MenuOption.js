@@ -16,7 +16,7 @@ export default class MenuOption extends Component {
   }
 
   render() {
-    const { text, disabled, children, style, customStyles } = this.props;
+    const { text, disabled, disableTouchable, children, style, customStyles } = this.props;
     if (text && React.Children.count(children) > 0) {
       console.warn("MenuOption: Please don't use text property together with explicit children. Children are ignored.");
     }
@@ -28,23 +28,32 @@ export default class MenuOption extends Component {
         </View>
       );
     }
-    const { Touchable, defaultTouchableProps } = makeTouchable(customStyles.OptionTouchableComponent);
-    return (
-      <Touchable
-        onPress={() => this._onSelect()}
-        {...defaultTouchableProps}
-        {...customStyles.optionTouchable}
-      >
-        <View style={[defaultStyles.option, customStyles.optionWrapper, style]}>
-          {text ? <Text style={customStyles.optionText}>{text}</Text> : children}
-        </View>
-      </Touchable>
+    const rendered = (
+      <View style={[defaultStyles.option, customStyles.optionWrapper, style]}>
+        {text ? <Text style={customStyles.optionText}>{text}</Text> : children}
+      </View>
     );
+    if (disableTouchable) {
+      return rendered;
+    }
+    else {
+      const { Touchable, defaultTouchableProps } = makeTouchable(customStyles.OptionTouchableComponent);
+      return (
+        <Touchable
+          onPress={() => this._onSelect()}
+          {...defaultTouchableProps}
+          {...customStyles.optionTouchable}
+        >
+          {rendered}
+        </Touchable>
+      );
+    }
   }
 }
 
 MenuOption.propTypes = {
   disabled: PropTypes.bool,
+  disableTouchable: PropTypes.bool,
   onSelect: PropTypes.func,
   text: PropTypes.string,
   value: PropTypes.any,
@@ -53,6 +62,7 @@ MenuOption.propTypes = {
 
 MenuOption.defaultProps = {
   disabled: false,
+  disableTouchable: false,
   customStyles: {},
 };
 
