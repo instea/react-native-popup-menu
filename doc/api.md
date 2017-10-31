@@ -162,7 +162,7 @@ Wrapper component of menu option.
 |`value`|`Any`|Optional||Value of option|
 |`text`|`String`|Optional||Text to be rendered. When this prop is provided, option's children won't be rendered|
 |`disabled`|`Boolean`|Optional|`false`|Indicates if option can be pressed|
-|`disableTouchable`|`Boolean`|Optional|`false`|Disables Touchable wrapper (no on press effect and no onSelect execution)|
+|`disableTouchable`|`Boolean`|Optional|`false`|Disables Touchable wrapper (no on press effect and no onSelect execution) Note: Alternatively you don't have to use `MenuOption` at all if you want render something "non-selectable" in the menu (e.g. divider)|
 |`customStyles`|`Object`|Optional||Object defining wrapper, touchable and text styles|
 
 ### Events
