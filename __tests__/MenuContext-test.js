@@ -21,6 +21,7 @@ jest.mock('../src/helpers', () => ({
     })
   }),
   lo: x => x,
+  iterator2array: it => [...it],
 }));
 
 const MenuContext = require('../src/MenuContext').default;

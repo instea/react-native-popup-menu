@@ -1,3 +1,5 @@
+import { iterator2array } from './helpers';
+
 /**
  * Registry to subscribe, unsubscribe and update data of menus.
  *
@@ -51,7 +53,7 @@ export default function makeMenuRegistry(menus = new Map()) {
    * Returns all subscribed menus as array of `menu data`
    */
   function getAll() {
-    return [...menus.values()];
+    return iterator2array(menus.values());
   }
 
   return { subscribe, unsubscribe, updateLayoutInfo, getMenu, getAll };

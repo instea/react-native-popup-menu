@@ -63,3 +63,15 @@ export function lo(object, ...excluding) {
   }
   return withoutPrivate(object);
 }
+
+/**
+Converts iterator to array
+*/
+export function iterator2array(it) {
+  // workaround around https://github.com/instea/react-native-popup-menu/issues/41#issuecomment-340290127
+  const arr = [];
+  for (let next = it.next(); !next.done; next = it.next()) {
+    arr.push(next.value);
+  }
+  return arr;
+}
