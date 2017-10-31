@@ -23,6 +23,7 @@
   "rules": {
     "no-console": 0,
     "comma-dangle": 0,
+    "no-unused-vars": ["error", { "ignoreRestSiblings": true }],
     "react/prop-types": 0,
     "react/no-did-mount-set-state": 0,
     "react/no-deprecated": 0

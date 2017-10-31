@@ -1,3 +1,4 @@
+/* globals jest, test, expect */
 import 'react-native';
 import React from 'react';
 
