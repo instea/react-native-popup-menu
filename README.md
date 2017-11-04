@@ -77,5 +77,6 @@ We keep compatibility on best effort basis.
 
 | popup-menu version | min RN version |
 | ------------------ | -------------- |
+| 0.9                | 0.40           |
 | 0.8                | 0.38           |
 | 0.7                | 0.18           |
