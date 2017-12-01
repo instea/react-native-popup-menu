@@ -10,11 +10,13 @@ class Backdrop extends Component {
     this.fadeAnim = new Animated.Value(0.001);
   }
 
-  componentDidMount() {
-    Animated.timing(this.fadeAnim, {
-      duration: OPEN_ANIM_DURATION,
-      toValue: 1,
-    }).start();
+  open() {
+    return new Promise(resolve => {
+      Animated.timing(this.fadeAnim, {
+        duration: OPEN_ANIM_DURATION,
+        toValue: 1,
+      }).start(resolve);
+    });
   }
 
   close() {

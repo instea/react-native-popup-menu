@@ -226,6 +226,7 @@ export default class MenuContext extends Component {
     measure(trigger).then(triggerLayout => {
       debug('got trigger measurements', triggerLayout);
       this._menuRegistry.updateLayoutInfo(menu.name, { triggerLayout });
+      this.backdropRef && this.backdropRef.open()
       this._notify();
     });
   }
