@@ -15,7 +15,11 @@ export default function makeMenuRegistry(menus = new Map()) {
    * Subscribes menu instance.
    */
   function subscribe(instance) {
-    menus.set(instance.getName(), { name: instance.getName(), instance });
+    const name = instance.getName()
+    if (menus.get(name)) {
+      console.warn(`incorrect usage of popup menu - menu with name ${name} already exists`);
+    }
+    menus.set(name, { name, instance });
   }
 
   /**
