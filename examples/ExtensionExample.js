@@ -10,11 +10,14 @@ import Menu, {
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const CheckedOption = (props) => (
-  <MenuOption {...props} text={(props.checked ? '\u2713 ' : '') + props.text} />
+  <MenuOption
+    value={props.value}
+    text={(props.checked ? '\u2713 ' : '') + props.text}
+  />
 )
 
-const IconOption = ({iconName, text, ...others}) => (
-  <MenuOption {...others} >
+const IconOption = ({iconName, text, value}) => (
+  <MenuOption value={value}>
     <Text>
       <Icon name={iconName} />
       {' ' + text}

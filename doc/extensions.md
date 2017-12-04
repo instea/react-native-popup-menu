@@ -6,14 +6,32 @@
 Simplest example that adds checkmark symbol (unicode 2713).
 ```
 const CheckedOption = (props) => (
-  <MenuOption {...props} text={'\u2713 ' + props.text} />
+  <MenuOption value={props.value} text={'\u2713 ' + props.text} />
 )
 ```
 
-**Note:** It is important that you pass all properties to underlying `MenuOption`. We internally pass `onSelect` handler to all menu options so that we can react to user actions. Although for now it might suffice to pass only `onSelect` in addition to other standard props, we highly recommend to pass any properties (as in example) in order to stay compatible with any further versions of the library.
+**Note:** `MenuOption` can be placed anywhere inside of `MenuOptions` container. For example it can be rendered using `FlatList`.
 
-## MenuOptions - renderOptionsContainer
-You can control rendering of `<MenuOptions />` component by passing rendering function into `renderOptionsContainer` property. It takes `<MenuOptions />` component as argument and it have to return react component. For example if you want to wrap options with custom component and add some text above options:
+## MenuOptions
+`<MenuOption />` components are not required to be direct children of `<MenuOptions />`. You can pass any children to `<MenuOptions />` component. For example if you want to wrap options with custom component and add some text above options:
+
+```
+const menu = (props) => (
+  <Menu>
+    <MenuTrigger />
+    <MenuOptions>
+      <SomeCustomContainer>
+        <Text>Some text</Text>
+        <MenuOption value={1} text="value 1" />
+        <MenuOption value={2} text="value 2" />
+      </SomeCustomContainer>
+    </MenuOptions>
+  </Menu>
+);
+```
+
+#### Using `renderOptionsContainer` prop (DEPRECATED)
+You can also control rendering of `<MenuOptions />` component by passing rendering function into `renderOptionsContainer` property. It takes `<MenuOptions />` component as argument and it have to return react component.
 
 ```
 const optionsRenderer = (options) => (
@@ -25,10 +43,14 @@ const optionsRenderer = (options) => (
 const menu = (props) => (
   <Menu>
     <MenuTrigger />
-    <MenuOptions renderOptionsContainer={optionsRenderer} />
+    <MenuOptions renderOptionsContainer={optionsRenderer}>
+      <MenuOption value={1} text="value 1" />
+      <MenuOption value={2} text="value 2" />
+    </MenuOptions>
   </Menu>
 );
 ```
+**Note:** It is highly recommended to use first approach to extend menu options. `renderOptionsContainer` property might be removed in the future versions of the library.
 
 ## Custom renderer
 It is possible to use different renderer to display menu. There are already few predefined renderers: e.g. `ContextMenu` and `SlideInMenu` (from the `renderers` module). To use it you need to pass it to the `<Menu />` props or use `setDefaultRenderer` (see [API](api.md#static-functions)):
