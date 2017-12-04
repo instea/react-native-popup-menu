@@ -8,7 +8,6 @@ class MenuOptions extends React.Component {
     const { customStyles } = _props
     const menu = this.context.menuActions._getOpenedMenu()
     const menuName = menu.instance.getName()
-    console.log('=== set styles', menuName, customStyles)
     this.context.menuRegistry.setOptionsCustomStyles(menuName, customStyles)
   }
 

@@ -158,7 +158,7 @@ describe('Menu', () => {
     expect(ctx.menuActions._notify).toHaveBeenCalled();
   });
 
-  it('should forward on select handler to menu options', () => {
+  it('should get menu options', () => {
     const onSelect = () => 0;
     const { instance } = renderMenu(
       <Menu onSelect={ onSelect }>
@@ -168,7 +168,6 @@ describe('Menu', () => {
     );
     const options = instance._getOptions();
     expect(options.type).toEqual(MenuOptions);
-    expect(options.props.onSelect).toEqual(onSelect);
   });
 
   it('declarative opened takes precedence over imperative', () => {
