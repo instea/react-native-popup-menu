@@ -27,7 +27,8 @@ export default class MenuContext extends Component {
       closeMenu: () => this.closeMenu(),
       toggleMenu: name => this.toggleMenu(name),
       isMenuOpen: () => this.isMenuOpen(),
-      _notify: force => this._notify(force)
+      _getOpenedMenu: () => this._getOpenedMenu(),
+      _notify: force => this._notify(force),
     };
     const menuRegistry = this._menuRegistry;
     return { menuRegistry, menuActions };

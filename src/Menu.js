@@ -53,6 +53,12 @@ export default class Menu extends Component {
     this.context.menuRegistry.unsubscribe(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.name !== nextProps.name) {
+      console.warn('Menu name cannot be changed');
+    }
+  }
+
   open() {
     this.context.menuActions.openMenu(this._name);
   }
@@ -103,9 +109,7 @@ export default class Menu extends Component {
   }
 
   _getOptions() {
-    const { children, onSelect } = this.props;
-    const optionsElem = childrenToArray(children).find(isMenuOptions);
-    return React.cloneElement(optionsElem, { onSelect });
+    return childrenToArray(this.props.children).find(isMenuOptions);
   }
 
   _getOpened() {
