@@ -8,13 +8,27 @@ const MenuOptions = require('../src/MenuOptions').default;
 
 describe('MenuOptions', () => {
 
+  function mockCtx() {
+    return {
+      menuActions: {
+        _getOpenedMenu: () => ({
+          instance: { getName: () => 'menu1' }
+        }),
+      },
+      menuRegistry: {
+        setOptionsCustomStyles: jest.fn(),
+      },
+    };
+  }
+
   it('should render component', () => {
     const { output } = render(
       <MenuOptions>
         <MenuOption />
         <MenuOption />
         <MenuOption />
-      </MenuOptions>
+      </MenuOptions>,
+      mockCtx()
     );
     expect(output.type).toEqual(View);
     const children = output.props.children;
@@ -31,7 +45,8 @@ describe('MenuOptions', () => {
         <MenuOption />
         {option ? <MenuOption />: null}
         <MenuOption />
-      </MenuOptions>
+      </MenuOptions>,
+      mockCtx()
     );
     expect(output.type).toEqual(View);
     const children = output.props.children;
@@ -43,7 +58,8 @@ describe('MenuOptions', () => {
     const { output } = render(
       <MenuOptions>
         <UserOption />
-      </MenuOptions>
+      </MenuOptions>,
+      mockCtx()
     );
     expect(output.type).toEqual(View);
     const children = output.props.children;
@@ -58,21 +74,11 @@ describe('MenuOptions', () => {
     const customStyles2 = {
       optionsWrapper: { backgroundColor: 'blue' },
     };
-    const ctx = {
-      menuActions: {
-        _getOpenedMenu: () => ({
-          instance: { getName: () => 'menu1' }
-        }),
-      },
-      menuRegistry: {
-        setOptionsCustomStyles: jest.fn(),
-      },
-    };
+    const ctx = mockCtx();
     const { instance } = render(
       <MenuOptions customStyles={customStyles} />,
       ctx
     );
-    instance.componentDidMount()
     expect(ctx.menuRegistry.setOptionsCustomStyles)
       .toHaveBeenLastCalledWith('menu1', customStyles)
     instance.componentWillReceiveProps({ customStyles: customStyles2 })

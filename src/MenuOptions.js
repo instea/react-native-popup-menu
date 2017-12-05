@@ -15,7 +15,7 @@ class MenuOptions extends React.Component {
     this.updateCustomStyles(nextProps)
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.updateCustomStyles(this.props)
   }
 

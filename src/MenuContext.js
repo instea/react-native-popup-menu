@@ -156,7 +156,7 @@ export default class MenuContext extends Component {
         debug('setState ignored - maybe the context was unmounted')
         return
       }
-      this._placeholderRef.setState({ openedMenu: this.openedMenu }, afterSetState);
+      this._placeholderRef.setState({ openedMenuName: this.openedMenu && this.openedMenu.name }, afterSetState);
       debug('notify ended');
     });
   }
@@ -208,7 +208,8 @@ export default class MenuContext extends Component {
   _onPlaceholderRef = r => this._placeholderRef = r;
 
   _getOpenedMenu() {
-    return this._placeholderRef && this._placeholderRef.state.openedMenu
+    const name = this._placeholderRef && this._placeholderRef.state.openedMenuName;
+    return name ? this._menuRegistry.getMenu(name) : undefined;
   }
 
   _onBackdropPress = () => {

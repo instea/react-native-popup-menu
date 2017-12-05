@@ -24,8 +24,8 @@ export default class MenuOption extends Component {
   _getCustomStyles() {
     const { optionsCustomStyles } = this.context.menuActions._getOpenedMenu();
     return {
-      ...(optionsCustomStyles || {}),
-      ...(this.props.customStyles || {}),
+      ...optionsCustomStyles,
+      ...this.props.customStyles,
     }
   }
 

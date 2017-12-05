@@ -148,7 +148,7 @@ To style `<MenuOptions />` and it's `<MenuOption />` components you can pass `cu
 
 **Note:** `optionWrapper`, `optionTouchable` and `optionText` styles of particular menu option can be overriden by `customStyles` prop of `<MenuOption />` component.
 
-**Note:** In order to change `customStyles` dynamically, it is required that every children of `MenuOptions` will trigger re-render when `customStyles` changes (when using `shouldComponentUpdate` it must return `true`).
+**Note:** In order to change `customStyles` dynamically, it is required that no child of `MenuOptions` stops the update (e.g. `shouldComponentUpdate` returning `false`).
 
 **Note:** `Style` type is any valid RN style parameter.
 
