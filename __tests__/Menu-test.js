@@ -50,18 +50,22 @@ describe('Menu', () => {
     );
     expect(output.type).toEqual(View);
     expect(output.props.children.length).toEqual(3);
-    expect(output.props.children[0]).toEqual(
-      <Text>Some text</Text>
-    );
+    // React.Children.toArray modifies components keys
+    // using the same function to create expected children
+    const expectedChildren = React.Children.toArray([
+      <Text>Some text</Text>,
+      <MenuTrigger />, // trigger will be modified
+      <MenuOptions />, // options will be removed
+      <Text>Some other text</Text>,
+    ]);
+    expect(output.props.children[0]).toEqual(expectedChildren[0]);
     expect(output.props.children[1]).toEqual(objectContaining({
       type: MenuTrigger,
       props: objectContaining({
         onRef: any(Function)
       })
     }));
-    expect(output.props.children[2]).toEqual(
-      <Text>Some other text</Text>
-    );
+    expect(output.props.children[2]).toEqual(expectedChildren[3]);
   });
 
   it('should subscribe menu and notify context', () => {
@@ -87,12 +91,16 @@ describe('Menu', () => {
     expect(ctx.menuRegistry.subscribe).not.toHaveBeenCalled();
     const output = renderer.getRenderOutput();
     expect(output.type).toEqual(View);
-    expect(output.props.children).toEqual([
+    const expectedChildren = React.Children.toArray([
+      <MenuTrigger />,
+      <Text>Some text</Text>,
+    ]);
+    expect(output.props.children[0]).toEqual(
       objectContaining({
         type: MenuTrigger
-      }),
-      <Text>Some text</Text>
-    ]);
+      })
+    );
+    expect(output.props.children[1]).toEqual(expectedChildren[1]);
   });
 
   it('should not subscribe menu because of missing trigger', () => {
@@ -106,9 +114,9 @@ describe('Menu', () => {
     expect(ctx.menuRegistry.subscribe).not.toHaveBeenCalled();
     const output = renderer.getRenderOutput();
     expect(output.type).toEqual(View);
-    expect(output.props.children).toEqual([
+    expect(output.props.children).toEqual(React.Children.toArray(
       <Text>Some text</Text>
-    ]);
+    ));
   });
 
   it('should not fail without any children', () => {
