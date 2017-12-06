@@ -2,22 +2,34 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 
-const MenuOptions = ({ style, children, onSelect, customStyles }) => (
-  <View style={[customStyles.optionsWrapper, style]}>
-    {
-      React.Children.map(children, c =>
-        React.isValidElement(c) ?
-          React.cloneElement(c, {
-            onSelect: c.props.onSelect || onSelect,
-            customStyles: Object.keys(c.props.customStyles || {}).length ? c.props.customStyles : customStyles
-          }) : c
-      )
-    }
-  </View>
-);
+class MenuOptions extends React.Component {
+
+  updateCustomStyles(_props) {
+    const { customStyles } = _props
+    const menu = this.context.menuActions._getOpenedMenu()
+    const menuName = menu.instance.getName()
+    this.context.menuRegistry.setOptionsCustomStyles(menuName, customStyles)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.updateCustomStyles(nextProps)
+  }
+
+  componentWillMount() {
+    this.updateCustomStyles(this.props)
+  }
+
+  render() {
+    const { customStyles, style, children } = this.props
+    return (
+      <View style={[customStyles.optionsWrapper, style]}>
+        {children}
+      </View>
+    )
+  }
+}
 
 MenuOptions.propTypes = {
-  onSelect: PropTypes.func,
   customStyles: PropTypes.object,
   renderOptionsContainer: PropTypes.func,
   optionsContainerStyle: PropTypes.oneOfType([
@@ -29,6 +41,11 @@ MenuOptions.propTypes = {
 
 MenuOptions.defaultProps = {
   customStyles: {},
+};
+
+MenuOptions.contextTypes = {
+  menuRegistry: PropTypes.object,
+  menuActions: PropTypes.object,
 };
 
 export default MenuOptions;

@@ -7,7 +7,8 @@ import { makeTouchable } from './helpers';
 export default class MenuOption extends Component {
 
   _onSelect() {
-    const { value, onSelect } = this.props;
+    const { value } = this.props;
+    const onSelect = this.props.onSelect || this._getMenusOnSelect()
     const shouldClose = onSelect(value) !== false;
     debug('select option', value, shouldClose);
     if (shouldClose) {
@@ -15,8 +16,22 @@ export default class MenuOption extends Component {
     }
   }
 
+  _getMenusOnSelect() {
+    const menu = this.context.menuActions._getOpenedMenu();
+    return menu.instance.props.onSelect;
+  }
+
+  _getCustomStyles() {
+    const { optionsCustomStyles } = this.context.menuActions._getOpenedMenu();
+    return {
+      ...optionsCustomStyles,
+      ...this.props.customStyles,
+    }
+  }
+
   render() {
-    const { text, disabled, disableTouchable, children, style, customStyles } = this.props;
+    const { text, disabled, disableTouchable, children, style } = this.props;
+    const customStyles = this._getCustomStyles()
     if (text && React.Children.count(children) > 0) {
       console.warn("MenuOption: Please don't use text property together with explicit children. Children are ignored.");
     }

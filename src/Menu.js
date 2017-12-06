@@ -10,13 +10,6 @@ const isRegularComponent = c => c.type !== MenuOptions && c.type !== MenuTrigger
 const isTrigger = c => c.type === MenuTrigger;
 const isMenuOptions = c => c.type === MenuOptions;
 
-const childrenToArray = children => {
-  if (children) {
-    return Array.isArray(children) ? children : [ children ];
-  }
-  return [];
-};
-
 export default class Menu extends Component {
 
   constructor(props, ctx) {
@@ -53,6 +46,12 @@ export default class Menu extends Component {
     this.context.menuRegistry.unsubscribe(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.name !== nextProps.name) {
+      console.warn('Menu name cannot be changed');
+    }
+  }
+
   open() {
     this.context.menuActions.openMenu(this._name);
   }
@@ -76,7 +75,7 @@ export default class Menu extends Component {
   }
 
   _reduceChildren() {
-    return childrenToArray(this.props.children).reduce((r, child) => {
+    return React.Children.toArray(this.props.children).reduce((r, child) => {
       if (isTrigger(child)) {
         r.push(React.cloneElement(child, {
           key: null,
@@ -103,9 +102,7 @@ export default class Menu extends Component {
   }
 
   _getOptions() {
-    const { children, onSelect } = this.props;
-    const optionsElem = childrenToArray(children).find(isMenuOptions);
-    return React.cloneElement(optionsElem, { onSelect });
+    return React.Children.toArray(this.props.children).find(isMenuOptions);
   }
 
   _getOpened() {
@@ -117,7 +114,7 @@ export default class Menu extends Component {
   }
 
   _validateChildren() {
-    const children = childrenToArray(this.props.children);
+    const children = React.Children.toArray(this.props.children);
     const options = children.find(isMenuOptions);
     if (!options) {
       console.warn('Menu has to contain MenuOptions component');

@@ -80,11 +80,24 @@ Another nice use case is to have menu options with icons.
 </MenuOptions>
 ...
 const CheckedOption = (props) => (
-  <MenuOption {...props} text={(props.checked ? '\u2713 ' : '') + props.text} />
+  <MenuOption value={props.value} text={(props.checked ? '\u2713 ' : '') + props.text} />
 )
 ```
-It is important to pass all (other) props to underlaying `MenuOption`.
-For more details see [extensions](extensions.md) documentation.
+
+## Menu within scroll view
+If you want to display menu options in scroll view, simply wrap all menu options with `<ScrollView />` component. For example:
+
+```js
+<MenuOptions>
+  <ScrollView style={{ maxHeight: 200 }}>
+    <MenuOption value={1} text='One' />
+    <MenuOption value={2} text='Two' />
+    ...
+  </ScrollView>
+</MenuOptions>
+```
+
+You can also check our [FlatListExample](../examples/FlatListExample.js).
 
 ## Styled menu
 [StylingExample](../examples/StylingExample.js):

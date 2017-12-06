@@ -14,6 +14,7 @@ import NavigatorExample from './NavigatorExample';
 import TouchableExample from './TouchableExample';
 import MenuMethodsExample from './MenuMethodsExample';
 import CloseOnBackExample from './CloseOnBackExample';
+import FlatListExample from './FlatListExample';
 
 const demos = [
   { Component: BasicExample, name: 'Basic example' },
@@ -28,6 +29,7 @@ const demos = [
   { Component: NonRootExample, name: 'Non root example' },
   { Component: NavigatorExample, name: 'Example with react-native-router-flux' },
   { Component: CloseOnBackExample, name: 'Close on back button press example' },
+  { Component: FlatListExample, name: 'Using FlatList' },
 ];
 
 // show debug messages for demos.

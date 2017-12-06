@@ -1,29 +1,40 @@
 import React from 'react';
 import { View } from 'react-native';
-import { render, normalizeStyle } from './helpers';
+import { render } from './helpers';
 import { MenuOption } from '../src/index';
 
 jest.dontMock('../src/MenuOptions');
 const MenuOptions = require('../src/MenuOptions').default;
-const { objectContaining } = jasmine;
 
 describe('MenuOptions', () => {
 
+  function mockCtx() {
+    return {
+      menuActions: {
+        _getOpenedMenu: () => ({
+          instance: { getName: () => 'menu1' }
+        }),
+      },
+      menuRegistry: {
+        setOptionsCustomStyles: jest.fn(),
+      },
+    };
+  }
+
   it('should render component', () => {
-    const onSelect = () => 0;
     const { output } = render(
-      <MenuOptions onSelect={onSelect}>
+      <MenuOptions>
         <MenuOption />
         <MenuOption />
         <MenuOption />
-      </MenuOptions>
+      </MenuOptions>,
+      mockCtx()
     );
     expect(output.type).toEqual(View);
     const children = output.props.children;
     expect(children.length).toEqual(3);
     children.forEach(ch => {
       expect(ch.type).toBe(MenuOption);
-      expect(ch.props.onSelect).toEqual(onSelect);
     });
   });
 
@@ -34,70 +45,45 @@ describe('MenuOptions', () => {
         <MenuOption />
         {option ? <MenuOption />: null}
         <MenuOption />
-      </MenuOptions>
+      </MenuOptions>,
+      mockCtx()
     );
     expect(output.type).toEqual(View);
     const children = output.props.children;
-    expect(children.length).toEqual(2);
-  });
-
-
-  it("should prioritize option's onSelect handler", () => {
-    const onSelect = () => 0;
-    const onSelectOption = () => 1;
-    const { output } = render(
-      <MenuOptions onSelect={onSelect}>
-        <MenuOption onSelect={onSelectOption} />
-        <MenuOption />
-      </MenuOptions>
-    );
-    expect(output.type).toEqual(View);
-    const children = output.props.children;
-    expect(children.length).toEqual(2);
-    expect(children[0].type).toBe(MenuOption);
-    expect(children[1].type).toBe(MenuOption);
-    expect(children[0].props.onSelect).toEqual(onSelectOption);
-    expect(children[1].props.onSelect).toEqual(onSelect);
+    expect(children.length).toEqual(3);
   });
 
   it('should work with user defined options', () => {
     const UserOption = (props) => <MenuOption {...props} text='user-defined' />;
-    const onSelect = () => 0;
     const { output } = render(
-      <MenuOptions onSelect={onSelect}>
+      <MenuOptions>
         <UserOption />
-      </MenuOptions>
+      </MenuOptions>,
+      mockCtx()
     );
     expect(output.type).toEqual(View);
     const children = output.props.children;
-    expect(children.length).toEqual(1);
-    const ch = children[0];
-    expect(ch.type).toBe(UserOption);
-    expect(ch.props.onSelect).toEqual(onSelect);
+    expect(children.type).toBe(UserOption);
   });
 
-  it('should render options with custom styles', () => {
-    const onSelect = () => 0;
+  it('should register custom styles', () => {
     const customStyles = {
       optionsWrapper: { backgroundColor: 'red' },
       optionText: { color: 'blue' },
     };
-    const customOptionStyles = {
-      optionText: { color: 'pink' },
+    const customStyles2 = {
+      optionsWrapper: { backgroundColor: 'blue' },
     };
-    const { output } = render(
-      <MenuOptions onSelect={onSelect} customStyles={customStyles}>
-        <MenuOption />
-        <MenuOption customStyles={customOptionStyles} />
-        <MenuOption />
-      </MenuOptions>
+    const ctx = mockCtx();
+    const { instance } = render(
+      <MenuOptions customStyles={customStyles} />,
+      ctx
     );
-    expect(normalizeStyle(output.props.style))
-      .toEqual(objectContaining(customStyles.optionsWrapper));
-    const options = output.props.children;
-    expect(options[0].props.customStyles).toEqual(customStyles);
-    expect(options[1].props.customStyles).toEqual(customOptionStyles);
-    expect(options[2].props.customStyles).toEqual(customStyles);
+    expect(ctx.menuRegistry.setOptionsCustomStyles)
+      .toHaveBeenLastCalledWith('menu1', customStyles)
+    instance.componentWillReceiveProps({ customStyles: customStyles2 })
+    expect(ctx.menuRegistry.setOptionsCustomStyles)
+      .toHaveBeenLastCalledWith('menu1', customStyles2)
   });
 
 });
