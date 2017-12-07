@@ -194,6 +194,7 @@ The `renderers` module provides following renderers
 * `ContextMenu` (default) - opens (animated) context menu over the trigger position. The `ContextMenu.computePosition` exports function for position calculation in case you would like to implement your own renderer (without special position calculation).
 * `NotAnimatedContextMenu` - same as ContextMenu but without any animation.
 * `SlideInMenu` - slides in the menu from the bottom of the screen.
+* `Popover` - display menu as a popover.
 
 It is possible to extend menu and use custom renderer (see implementation of existing renderers or [extension guide](extensions.md)).
 
