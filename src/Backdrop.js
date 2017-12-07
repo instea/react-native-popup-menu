@@ -15,6 +15,7 @@ class Backdrop extends Component {
       Animated.timing(this.fadeAnim, {
         duration: OPEN_ANIM_DURATION,
         toValue: 1,
+        useNativeDriver: true,
       }).start(resolve);
     });
   }
@@ -24,6 +25,7 @@ class Backdrop extends Component {
       Animated.timing(this.fadeAnim, {
         duration: CLOSE_ANIM_DURATION,
         toValue: 0,
+        useNativeDriver: true,
       }).start(resolve);
     });
   }
