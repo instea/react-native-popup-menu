@@ -244,7 +244,7 @@ export default class MenuContext extends Component {
   _makeOptions() {
     const { instance, triggerLayout, optionsLayout } = this._getOpenedMenu();
     const options = instance._getOptions();
-    const { renderer } = instance.props;
+    const { renderer, rendererProps } = instance.props;
     const windowLayout = this._ownLayout;
     const { optionsContainerStyle, renderOptionsContainer, customStyles } = options.props;
     const optionsRenderer = renderOptionsContainer || defaultOptionsContainerRenderer;
@@ -252,7 +252,7 @@ export default class MenuContext extends Component {
     const onLayout = e => this._onOptionsLayout(e, instance.getName(), isOutside);
     const style = [optionsContainerStyle, customStyles.optionsContainer];
     const layouts = { windowLayout, triggerLayout, optionsLayout };
-    const props = { style, onLayout, layouts };
+    const props = { ...rendererProps, style, onLayout, layouts };
     const optionsType = isOutside ? MenuOutside : renderer;
     if (!isFunctional(optionsType)) {
       props.ref = this.onOptionsRef;

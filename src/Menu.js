@@ -132,10 +132,14 @@ Menu.debug = false;
 Menu.setDefaultRenderer = (renderer) => {
   Menu.defaultProps.renderer = renderer;
 }
+Menu.setDefaultRendererProps = (rendererProps) => {
+  Menu.defaultProps.rendererProps = rendererProps;
+}
 
 Menu.propTypes = {
   name: PropTypes.string,
   renderer: PropTypes.func,
+  rendererProps: PropTypes.object,
   onSelect: PropTypes.func,
   onOpen: PropTypes.func,
   onClose: PropTypes.func,
@@ -145,6 +149,7 @@ Menu.propTypes = {
 
 Menu.defaultProps = {
   renderer: ContextMenu,
+  rendererProps: {},
   onSelect: () => {},
   onOpen: () => {},
   onClose: () => {},

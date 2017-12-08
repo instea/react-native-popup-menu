@@ -1,5 +1,6 @@
 import { Animated, Easing, StyleSheet, View } from 'react-native';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION } from '../constants.js';
 
@@ -165,15 +166,26 @@ export default class Popover extends React.Component {
   }
 
   render() {
-    const { style, children, layouts, ...other } = this.props;
+    const { style, children, layouts, anchorStyle, ...other } = this.props;
     const animation = {
       transform: [ { scale: this.state.scaleAnim } ],
       opacity: this.state.scaleAnim,
     };
     const { position, placement, offset } = computeProperties(layouts);
     return (
-      <Animated.View style={[styles.animated, animation, position, containerStyle[placement]]}>
-        <View style={[styles.anchor, anchorStyle({ placement, offset })]} />
+      <Animated.View style={[
+        styles.animated,
+        animation,
+        position,
+        containerStyle[placement],
+      ]}>
+        <View
+          style={[
+            styles.anchor,
+            dynamicAnchorStyle({ placement, offset }),
+            anchorStyle,
+          ]}
+        />
         <View {...other} style={[styles.options, style]}>
           {children}
         </View>
@@ -182,6 +194,14 @@ export default class Popover extends React.Component {
   }
 
 }
+
+Popover.propTypes = {
+  anchorStyle: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.number,
+    PropTypes.array,
+  ]),
+};
 
 const containerStyle = {
   left: {
@@ -198,7 +218,7 @@ const containerStyle = {
   },
 }
 
-const anchorStyle = ({ offset, placement }) => {
+const dynamicAnchorStyle = ({ offset, placement }) => {
   switch (placement) {
     case 'right':
       return {
