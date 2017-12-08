@@ -16,7 +16,7 @@ const MyPopover = () => (
       <Text style={styles.triggerText}>{'\u263A'}</Text>
     </MenuTrigger>
     <MenuOptions style={styles.menuOptions}>
-      <Text>Hello world!</Text>
+      <Text style={styles.contentText}>Hello world!</Text>
     </MenuOptions>
   </Menu>
 )
@@ -50,14 +50,13 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: 'column',
     justifyContent: 'space-between',
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   backdrop: {
-    backgroundColor: 'black',
-    opacity: 0.3,
   },
   menuOptions: {
     padding: 50,
@@ -67,6 +66,9 @@ const styles = StyleSheet.create({
   },
   triggerText: {
     fontSize: 20,
+  },
+  contentText: {
+    fontSize: 18,
   },
 })
 

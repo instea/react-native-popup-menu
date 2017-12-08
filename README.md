@@ -13,8 +13,9 @@ Features:
 * Can work as controlled as well as uncontrolled component
 * Different lifecycle hooks
 
-![Popup menu demo](./android.demo.gif)
-![Popup menu demo](./android.demo-popover.gif)
+| Context Menu, Slide-in Menu | Popover |
+|---|---|
+|![Popup menu demo](./android.demo.gif)|![Popup menu demo](./android.demo-popover.gif)|
 
 ## Installation
 
