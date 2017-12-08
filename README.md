@@ -14,6 +14,7 @@ Features:
 * Different lifecycle hooks
 
 ![Popup menu demo](./android.demo.gif)
+![Popup menu demo](./android.demo-popover.gif)
 
 ## Installation
 
