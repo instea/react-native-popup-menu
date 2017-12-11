@@ -5,7 +5,7 @@ import { render } from '../helpers';
 jest.dontMock('../../src/renderers/Popover');
 const { default: Popover } = require('../../src/renderers/Popover');
 
-describe('NotAnimatedContextMenu', () => {
+describe('Popover', () => {
 
   const defaultLayouts = {
     windowLayout: { width: 400, height: 600 },
