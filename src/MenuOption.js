@@ -89,7 +89,6 @@ const defaultStyles = StyleSheet.create({
   option: {
     padding: 5,
     backgroundColor: 'transparent',
-    flex: 1,
   },
   optionTextDisabled: {
     color: '#ccc',

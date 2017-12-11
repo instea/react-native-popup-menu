@@ -5,7 +5,7 @@ Extensible popup menu component for React Native for Android, iOS and (unofficia
 
 Features:
 * Simple to use popup/context menu
-* Multiple modes: animated, not animated or slide in from bottom
+* Multiple modes: animated, not animated, slide in from bottom or popover
 * By default opening and closing animations
 * Optional back button handling
 * Easy styling
@@ -13,7 +13,9 @@ Features:
 * Can work as controlled as well as uncontrolled component
 * Different lifecycle hooks
 
-![Popup menu demo](./android.demo.gif)
+| Context Menu, Slide-in Menu | Popover |
+|---|---|
+|![Popup menu demo](./android.demo.gif)|![Popup menu demo](./android.demo-popover.gif)|
 
 ## Installation
 

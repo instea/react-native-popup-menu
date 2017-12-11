@@ -66,6 +66,7 @@ Root menu component defining menu name and providing menu events.
 |`name`|`String`|Optional|`auto-generated`|Unique name of menu|
 |`opened`|`Boolean`|Optional||Declaratively states if menu is opened. When this prop is provided, menu is controlled and imperative API won't work.|
 |`renderer`|`Function`|Optional|`ContextMenu`|Defines position, animation and basic menu styles. See [renderers section](#renderers) for more details|
+|`rendererProps`|`Object`|Optional||Additional props which will be passed to the renderer|
 
 ### Events
 | Event Name | Arguments | Notes |
@@ -84,6 +85,7 @@ Root menu component defining menu name and providing menu events.
 | Function name | Arguments | Returns | Note |
 |---|---|---|---|
 |`setDefaultRenderer`| `Function`| | Sets new default renderer. See [renderers section](#renderers) for more details |
+|`setDefaultRendererProps`| `Object`| | Sets new default renderer props |
 
 ## MenuTrigger
 
@@ -130,7 +132,7 @@ This component wrapps all menu options.
 | Option | Type | Opt/Required | Default | Note |
 |---|---|---|---|---|
 |`optionsContainerStyle`|`Style`|Optional||Custom styles for options container. Note: this option is deprecated, use `customStyles` option instead|
-|`renderOptionsContainer`|`Func`|Optional|`options => options`|Custom render function for `<MenuOptions />`. It takes options component as argument and returns component. E.g.: `options => <SomeCustomContainer>{options}</SomeCustomContainer>`|
+|`renderOptionsContainer`|`Func`|Optional|`options => options`|Custom render function for `<MenuOptions />`. It takes options component as argument and returns component. E.g.: `options => <SomeCustomContainer>{options}</SomeCustomContainer> (Deprecated)`|
 |`customStyles`|`Object`|Optional||Object defining wrapper, touchable and text styles|
 
 ### Custom styles
@@ -187,14 +189,27 @@ To style `<MenuOption />` component you can pass `customStyles` object prop with
 
 See more in custom [styling example](../examples/StylingExample.js) and [touchable example](../examples/TouchableExample.js).
 
-## renderers
-
+## Renderers
 Renderers are react components which wraps `MenuOptions` and are responsible for menu position and animation.
-The `renderers` module provides following renderers
-* `ContextMenu` (default) - opens (animated) context menu over the trigger position. The `ContextMenu.computePosition` exports function for position calculation in case you would like to implement your own renderer (without special position calculation).
-* `NotAnimatedContextMenu` - same as ContextMenu but without any animation.
-* `SlideInMenu` - slides in the menu from the bottom of the screen.
-
 It is possible to extend menu and use custom renderer (see implementation of existing renderers or [extension guide](extensions.md)).
+All renderers can be found in `renderers` module.
 
-**Note:**  If you only need to add styles or wrap `MenuOptions` with your own component, use `customStyles` or `renderOptionsContainer` options of `MenuOptions` instead.
+**Note:** Renderers can be customized by props which can be passed through `rendererProps` option or `setDefaultRendererProps` static method.
+
+### `ContextMenu` (default)
+Opens (animated) context menu over the trigger position. The `ContextMenu.computePosition` exports function for position calculation in case you would like to implement your own renderer (without special position calculation).
+
+### `NotAnimatedContextMenu`
+Same as ContextMenu but without any animation.
+
+### `SlideInMenu`
+Slides in the menu from the bottom of the screen.
+
+### `Popover`
+Displays menu as a popover. Popover can be customized by following props:
+
+| Option | Type | Opt/Required | Default | Note |
+|---|---|---|---|---|
+|`placement`|`String`|Optional|`auto`|Position of popover to the menu trigger - `top` &#124; `right` &#124; `bottom` &#124; `left` &#124; `auto`|
+|`preferredPlacement`|`String`|Optional|`top`|Preferred placement of popover - `top` &#124; `right` &#124; `bottom` &#124; `left`. Applicable when placement is set to `auto`|
+|`anchorStyle`|`Style`|Optional||Styles passed to popover anchor component|

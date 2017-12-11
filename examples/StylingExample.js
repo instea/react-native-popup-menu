@@ -8,7 +8,7 @@ import Menu, {
   renderers,
 } from 'react-native-popup-menu';
 
-const { ContextMenu, SlideInMenu } = renderers;
+const { ContextMenu, SlideInMenu, Popover } = renderers;
 
 class BasicExampleComponent extends Component {
 
@@ -19,13 +19,19 @@ class BasicExampleComponent extends Component {
 
   render() {
     return (
-        <Menu renderer={this.state.renderer} style={{ height: 50 }}>
+        <Menu
+          renderer={this.state.renderer}
+          rendererProps={{ anchorStyle: styles.anchorStyle }}
+          style={{ height: 50 }}
+        >
           <MenuTrigger text='Select option' customStyles={triggerStyles} />
           <MenuOptions customStyles={optionsStyles}>
             <MenuOption text='Context Menu'
               onSelect={() => this.setState({renderer: ContextMenu})}/>
             <MenuOption text='Slide-in Menu'
               onSelect={() => this.setState({renderer: SlideInMenu})}/>
+            <MenuOption text='Popover'
+              onSelect={() => this.setState({renderer: Popover})}/>
             <MenuOption text='Three (custom)' customStyles={optionStyles}
               onSelect={() => alert('Selected custom styled option')} />
             <MenuOption disabled={true}>
@@ -113,6 +119,9 @@ const styles = StyleSheet.create({
   backdrop: {
     backgroundColor: 'red',
     opacity: 0.5,
+  },
+  anchorStyle: {
+    backgroundColor: 'blue',
   },
 });
 
