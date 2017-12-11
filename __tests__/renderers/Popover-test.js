@@ -8,7 +8,7 @@ const { default: Popover } = require('../../src/renderers/Popover');
 describe('Popover', () => {
 
   const defaultLayouts = {
-    windowLayout: { width: 400, height: 600 },
+    windowLayout: { width: 400, height: 600, x: 0, y: 0 },
     triggerLayout: { width: 50, height: 50, x: 10, y: 10 },
     optionsLayout: { width: 200, height: 100 },
   };
