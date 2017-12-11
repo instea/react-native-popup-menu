@@ -175,7 +175,7 @@ export function computeProperties (
     tPos: tX - wX,
     tDim: tWidth,
   };
-  if (placement !== 'auto') {
+  if (placement !== 'auto' && propertiesByPlacement[placement]) {
     return propertiesByPlacement[placement](hOptions, vOptions)
   }
 
