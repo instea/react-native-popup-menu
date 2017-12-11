@@ -9,41 +9,15 @@ const anchorSize = 15;
 const anchorHyp = Math.sqrt(anchorSize*anchorSize + anchorSize*anchorSize);
 const anchorOffset = (anchorHyp + anchorSize) / 2 - popoverPadding;
 
-const POSITIVE_DIRECTION = 1;
-const NEGATIVE_DIRECTION = -1;
+// left/top placement
+function axisNegativeSideProperties({ oDim, tPos }) {
+  return { position: tPos - oDim };
+}
 
-/**
- * Computes position properties of popover when trying to align it to the triger side.
- * It consideres window boundaries.
- * Returns object with keys:
- *   - position: <Number> Absolute position - top/left,
- *   - direction: <Number> Positive if position is above/left, negative if position is below/right the trigger
- */
-function axisSidePositionProperties({ oDim, wDim, tPos, tDim }) {
-  // if options are bigger than window dimension, then render at 0
-  if (oDim > wDim) {
-    return { position: 0, direction: POSITIVE_DIRECTION };
-  }
-  // render above trigger
-  if (tPos - oDim >= 0) {
-    return { position: tPos - oDim, direction: POSITIVE_DIRECTION };
-  }
-  // render under trigger
-  if (tPos + tDim + oDim <= wDim) {
-    return { position: tPos + tDim, direction: NEGATIVE_DIRECTION };
-  }
-  // compute center position
-  let pos = tPos + (tDim / 2) - (oDim / 2);
-  // check top boundary
-  if (pos < 0) {
-    return { position: 0, direction: NEGATIVE_DIRECTION };
-  }
-  // check bottom boundary
-  if (pos + oDim > wDim) {
-    return { position: wDim - oDim, direction: POSITIVE_DIRECTION };
-  }
-  // if everything ok, render in center position
-  return { position: pos, direction: POSITIVE_DIRECTION };
+// right/bottom placement
+function axisPositiveSideProperties({ tPos, tDim }) {
+  // substract also anchor placeholder from the beginning
+  return { position: tPos + tDim - anchorSize };
 }
 
 // computes offsets (off screen overlap) of popover when trying to align it to the center
@@ -78,11 +52,101 @@ function axisCenteredPositionProperties(options) {
   return { offset: 0, position: center - oDim / 2 };
 }
 
-// picks max offset for popover
-function maxCenterOffset(options) {
+/* Evaluate centering placement */
+function getCenteringPrice(options) {
   const { leftOffset, rightOffset } = centeringProperties(options);
-  return Math.max(0, leftOffset, rightOffset);
+  // TODO: currently shifted popovers have higher price,
+  // popover shift could be taken into account with the same price
+  return Math.max(0, leftOffset) + Math.max(0, rightOffset);
 }
+
+/* Evaluate top placement */
+function getTopPrice(hOptions, vOptions) {
+  const centerOffset = getCenteringPrice(vOptions)
+  const sideOffset =  Math.max(0, hOptions.oDim - hOptions.tPos)
+  return centerOffset + sideOffset
+}
+
+/* Evaluate bottom placement */
+function getBottomPrice(hOptions, vOptions) {
+  const centerOffset = getCenteringPrice(vOptions)
+  const sideOffset =  Math.max(0, hOptions.tPos + hOptions.tDim + hOptions.oDim - hOptions.wDim)
+  return centerOffset + sideOffset
+}
+
+/* Evaluate left placement */
+function getLeftPrice(hOptions, vOptions) {
+  const centerOffset = getCenteringPrice(hOptions)
+  const sideOffset =  Math.max(0, vOptions.oDim - vOptions.tPos)
+  return centerOffset + sideOffset
+}
+
+/* Evaluate right placement */
+function getRightPrice(hOptions, vOptions) {
+  const centerOffset = getCenteringPrice(hOptions)
+  const sideOffset =  Math.max(0, vOptions.tPos + vOptions.tDim + vOptions.oDim - vOptions.wDim)
+  return centerOffset + sideOffset
+}
+
+function topProperties(hOptions, vOptions) {
+  const centered = axisCenteredPositionProperties(vOptions);
+  const side = axisNegativeSideProperties(hOptions);
+  return {
+    position: {
+      top: side.position,
+      left: centered.position,
+    },
+    offset: centered.offset,
+    placement: 'top',
+  };
+}
+
+function bottomProperties(hOptions, vOptions) {
+  const centered = axisCenteredPositionProperties(vOptions);
+  const side = axisPositiveSideProperties(hOptions);
+  return {
+    position: {
+      top: side.position,
+      left: centered.position,
+    },
+    offset: centered.offset,
+    placement: 'bottom',
+  };
+}
+
+function rightProperties(hOptions, vOptions) {
+  const centered = axisCenteredPositionProperties(hOptions);
+  const side = axisPositiveSideProperties(vOptions);
+  return {
+    position: {
+      top: centered.position,
+      left: side.position,
+    },
+    offset: centered.offset,
+    placement: 'right',
+  };
+}
+
+function leftProperties(hOptions, vOptions) {
+  const centered = axisCenteredPositionProperties(hOptions);
+  const side = axisNegativeSideProperties(vOptions);
+  return {
+    position: {
+      top: centered.position,
+      left: side.position,
+    },
+    offset: centered.offset,
+    placement: 'left',
+  };
+}
+
+// maps placement to function which computes correct properties
+const propertiesByPlacement = {
+  top: topProperties,
+  bottom: bottomProperties,
+  left: leftProperties,
+  right: rightProperties,
+};
 
 /**
  * Computes properties needed for drawing popover.
@@ -91,7 +155,11 @@ function maxCenterOffset(options) {
  *   - placement: <Enum> top|left|top|bottom - position to the trigger
  *   - offset: <Number> value by which must be anchor shifted
  */
-export function computeProperties ({ windowLayout, triggerLayout, optionsLayout }) {
+export function computeProperties (
+  { windowLayout, triggerLayout, optionsLayout },
+  placement,
+  preferredPlacement
+) {
   const { x: wX, y: wY, width: wWidth, height: wHeight } = windowLayout;
   const { x: tX, y: tY, height: tHeight, width: tWidth } = triggerLayout;
   const { height: oHeight, width: oWidth } = optionsLayout;
@@ -100,40 +168,29 @@ export function computeProperties ({ windowLayout, triggerLayout, optionsLayout 
     wDim: wHeight,
     tPos: tY - wY,
     tDim: tHeight,
-  }
+  };
   const vOptions = {
     oDim: oWidth + popoverPadding * 2,
     wDim: wWidth,
     tPos: tX - wX,
     tDim: tWidth,
+  };
+  if (placement !== 'auto') {
+    return propertiesByPlacement[placement](hOptions, vOptions)
   }
-  const vCenterOffset = maxCenterOffset(vOptions);
-  const hCenterOffset = maxCenterOffset(hOptions);
 
-  const result = {};
-  // prefer vertical centering
-  if (vCenterOffset <= hCenterOffset) {
-    const { position: left, offset } = axisCenteredPositionProperties(vOptions);
-    const { position: top, direction } = axisSidePositionProperties(hOptions);
-    result.position = { top, left }
-    result.placement = direction > 0 ? 'bottom' : 'top';
-    result.offset = offset;
-    if (result.placement === 'top') {
-      // substract anchor placeholder from the beginning
-      result.position.top -= anchorSize;
-    }
-  } else {
-    const { position: top, offset } = axisCenteredPositionProperties(hOptions);
-    const { position: left, direction } = axisSidePositionProperties(vOptions);
-    result.position = { top, left };
-    result.placement = direction > 0 ? 'right' : 'left';
-    result.offset = offset;
-    if (result.placement === 'left') {
-      // substract anchor placeholder from the beginning
-      result.position.left -= anchorSize;
-    }
-  }
-  return result;
+  const prices = {
+    top: getTopPrice(hOptions, vOptions),
+    bottom: getBottomPrice(hOptions, vOptions),
+    right: getRightPrice(hOptions, vOptions),
+    left: getLeftPrice(hOptions, vOptions),
+  };
+  const bestPrice = Object.values(prices).sort((a, b) => a - b)[0]
+  const bestPlacement = prices[preferredPlacement] === bestPrice
+    ? preferredPlacement
+    : Object.keys(prices).find(pl => prices[pl] === bestPrice)
+
+  return propertiesByPlacement[bestPlacement](hOptions, vOptions)
 }
 
 export default class Popover extends React.Component {
@@ -166,12 +223,24 @@ export default class Popover extends React.Component {
   }
 
   render() {
-    const { style, children, layouts, anchorStyle, ...other } = this.props;
+    const {
+      style,
+      children,
+      layouts,
+      anchorStyle,
+      preferredPlacement,
+      placement: userPlacement,
+      ...other,
+    } = this.props;
     const animation = {
       transform: [ { scale: this.state.scaleAnim } ],
       opacity: this.state.scaleAnim,
     };
-    const { position, placement, offset } = computeProperties(layouts);
+    const { position, placement, offset } = computeProperties(
+      layouts,
+      userPlacement,
+      preferredPlacement
+    );
     return (
       <Animated.View style={[
         styles.animated,
@@ -201,20 +270,27 @@ Popover.propTypes = {
     PropTypes.number,
     PropTypes.array,
   ]),
+  placement: PropTypes.oneOf(['auto', 'top', 'right', 'bottom', 'left']),
+  preferredPlacement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
+};
+
+Popover.defaultProps = {
+  preferredPlacement: 'top',
+  placement: 'auto',
 };
 
 const containerStyle = {
   left: {
-    flexDirection: 'row',
-  },
-  right: {
     flexDirection: 'row-reverse',
   },
+  right: {
+    flexDirection: 'row',
+  },
   top: {
-    flexDirection: 'column',
+    flexDirection: 'column-reverse',
   },
   bottom: {
-    flexDirection: 'column-reverse',
+    flexDirection: 'column',
   },
 }
 
@@ -224,7 +300,7 @@ const dynamicAnchorStyle = ({ offset, placement }) => {
       return {
         top: offset,
         transform: [
-          { translateX: -anchorOffset },
+          { translateX: anchorOffset },
           { rotate: '45deg' },
         ],
       };
@@ -232,7 +308,7 @@ const dynamicAnchorStyle = ({ offset, placement }) => {
       return {
         top: offset,
         transform: [
-          { translateX: anchorOffset },
+          { translateX: -anchorOffset },
           { rotate: '45deg' },
         ],
       };
@@ -240,7 +316,7 @@ const dynamicAnchorStyle = ({ offset, placement }) => {
       return {
         left: offset,
         transform: [
-          { translateY: anchorOffset },
+          { translateY: -anchorOffset },
           { rotate: '45deg' },
         ],
       };
@@ -248,7 +324,7 @@ const dynamicAnchorStyle = ({ offset, placement }) => {
       return {
         left: offset,
         transform: [
-          { translateY: -anchorOffset },
+          { translateY: anchorOffset },
           { rotate: '45deg' },
         ],
       };

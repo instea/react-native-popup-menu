@@ -11,7 +11,7 @@ import React from 'react';
 const { Popover } = renderers
 
 const MyPopover = () => (
-  <Menu renderer={Popover}>
+  <Menu renderer={Popover} rendererProps={{ preferredPlacement: 'bottom' }}>
     <MenuTrigger style={styles.menuTrigger} >
       <Text style={styles.triggerText}>{'\u263A'}</Text>
     </MenuTrigger>
