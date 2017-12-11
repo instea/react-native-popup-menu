@@ -242,12 +242,15 @@ export default class Popover extends React.Component {
       preferredPlacement
     );
     return (
-      <Animated.View style={[
-        styles.animated,
-        animation,
-        position,
-        containerStyle[placement],
-      ]}>
+      <Animated.View
+        style={[
+          styles.animated,
+          animation,
+          position,
+          containerStyle[placement],
+        ]}
+        pointerEvents="box-none"
+      >
         <View
           style={[
             styles.anchor,
