@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 import Menu, {
-  MenuContext,
+  MenuProvider,
   MenuOptions,
   MenuOption,
   MenuTrigger
@@ -29,7 +29,7 @@ export default class ControlledExample extends Component {
 
   render() {
     return (
-      <MenuContext
+      <MenuProvider
         style={{flexDirection: 'column', padding: 30}}>
         <Text>Hello world!</Text>
         <Menu
@@ -47,7 +47,7 @@ export default class ControlledExample extends Component {
             <MenuOption value={3} disabled={true} text='Three' />
           </MenuOptions>
         </Menu>
-      </MenuContext>
+      </MenuProvider>
     );
   }
 

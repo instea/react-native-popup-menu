@@ -6,7 +6,7 @@ import {
   Button,
 } from 'react-native';
 import Menu, {
-  MenuContext,
+  MenuProvider,
   MenuOptions,
   MenuOption,
   MenuTrigger,
@@ -24,7 +24,7 @@ class TouchableExample extends React.Component {
     const { Touchable } = this.state;
     const buttonText = 'Select ' + (Touchable ? (getDisplayName(Touchable)) : 'default');
     return (
-      <MenuContext style={{flexDirection: 'column', padding: 30}}>
+      <MenuProvider style={{flexDirection: 'column', padding: 30}}>
 
         <Menu onSelect={Touchable => this.setState({ Touchable })}>
           <MenuTrigger
@@ -80,7 +80,7 @@ class TouchableExample extends React.Component {
           </MenuOptions>
         </Menu>
 
-      </MenuContext>
+      </MenuProvider>
     );
 
   }

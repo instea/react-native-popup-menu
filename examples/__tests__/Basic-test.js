@@ -4,7 +4,7 @@ import React from 'react';
 
 jest.mock('react-native-popup-menu', () => ({
   Menu: 'Menu',
-  MenuContext: 'MenuContext',
+  MenuProvider: 'MenuProvider',
   MenuOptions: 'MenuOptions',
   MenuOption: 'MenuOption',
   MenuTrigger: 'MenuTrigger',

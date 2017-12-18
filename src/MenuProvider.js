@@ -14,7 +14,7 @@ const layoutsEqual = (a, b) => (
 
 const isFunctional = Component => !Component.prototype.render;
 
-export default class MenuContext extends Component {
+export default class MenuProvider extends Component {
 
   constructor(props) {
     super(props);
@@ -46,7 +46,7 @@ export default class MenuContext extends Component {
       }
     }
 
-    // Custom handler called with MenuContext instance id function is passed
+    // Custom handler called with MenuProvider instance id function is passed
     if (typeof backHandler === 'function') {
       return backHandler(this);
     }
@@ -66,7 +66,7 @@ export default class MenuContext extends Component {
   }
 
   componentWillUnmount() {
-    debug('unmounting menu context')
+    debug('unmounting menu provider')
     if (BackHandler) {
       BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
     }
@@ -281,17 +281,17 @@ export default class MenuContext extends Component {
 
 }
 
-MenuContext.propTypes = {
+MenuProvider.propTypes = {
   customStyles: PropTypes.object,
   backHandler: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
 }
 
-MenuContext.defaultProps = {
+MenuProvider.defaultProps = {
   customStyles: {},
   backHandler: false,
 };
 
-MenuContext.childContextTypes = {
+MenuProvider.childContextTypes = {
   menuRegistry: PropTypes.object,
   menuActions: PropTypes.object,
 };

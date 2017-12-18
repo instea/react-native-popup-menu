@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet } from 'react-native';
 import Menu, {
-  MenuContext,
+  MenuProvider,
   MenuOptions,
   MenuOption,
   MenuTrigger,
@@ -45,9 +45,9 @@ class BasicExampleComponent extends Component {
 }
 
 const BasicExample = () => (
-  <MenuContext customStyles={menuContextStyles}>
+  <MenuProvider customStyles={menuProviderStyles}>
     <BasicExampleComponent />
-  </MenuContext>
+  </MenuProvider>
 )
 
 export default BasicExample
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const menuContextStyles = {
-  menuContextWrapper: styles.container,
+const menuProviderStyles = {
+  menuProviderWrapper: styles.container,
   backdrop: styles.backdrop,
 };

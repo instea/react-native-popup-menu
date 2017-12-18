@@ -1,3 +1,4 @@
+import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback } from 'react-native';
 
 /**
@@ -74,4 +75,33 @@ export function iterator2array(it) {
     arr.push(next.value);
   }
   return arr;
+}
+
+/**
+ * Higher order component to deprecate usage of component.
+ * message - deprecate warning message
+ * methods - array of method names to be delegated to deprecated component
+ */
+export function deprecatedComponent(message, methods = []) {
+  return function deprecatedComponentHOC(Component) {
+    return class DeprecatedComponent extends React.Component {
+      constructor(...args) {
+        super(...args);
+        methods.forEach(name => {
+          // delegate methods to the component
+          this[name] = (...args) => this.ref && this.ref[name](...args)
+        });
+      }
+
+      render() {
+        return <Component {...this.props} ref={this.onRef} />
+      }
+
+      onRef = ref => this.ref = ref;
+
+      componentDidMount() {
+        console.warn(message);
+      }
+    }
+  }
 }

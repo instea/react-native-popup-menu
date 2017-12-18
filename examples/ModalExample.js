@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, Modal } from 'react-native';
 import Menu, {
-  MenuContext,
+  MenuProvider,
   MenuOptions,
   MenuOption,
   MenuTrigger
@@ -16,7 +16,7 @@ class ModalExample extends Component {
 
   render() {
     return (
-      <MenuContext style={{flexDirection: 'column', padding: 30}}>
+      <MenuProvider style={{flexDirection: 'column', padding: 30}}>
         <Text>Main window:</Text>
         <Menu>
           <MenuTrigger text='Select option' />
@@ -25,7 +25,7 @@ class ModalExample extends Component {
           </MenuOptions>
         </Menu>
         <Modal visible={this.state.visible} onRequestClose={() => this.setState({ visible: false })}>
-          <MenuContext style={{flexDirection: 'column', padding: 30, backgroundColor: 'white'}}>
+          <MenuProvider style={{flexDirection: 'column', padding: 30, backgroundColor: 'white'}}>
             <Text>Modal window:</Text>
             <Menu onSelect={value => alert(`Selected number: ${value}`)}>
               <MenuTrigger text='Select option' />
@@ -35,9 +35,9 @@ class ModalExample extends Component {
                 <MenuOption onSelect={() => this.setState({ visible: false })} text='Close modal' />
               </MenuOptions>
             </Menu>
-          </MenuContext>
+          </MenuProvider>
         </Modal>
-      </MenuContext>
+      </MenuProvider>
     );
   }
 

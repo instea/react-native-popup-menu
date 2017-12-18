@@ -1,8 +1,17 @@
+import React from 'react';
 import { expect } from 'chai';
 import { TouchableHighlight, TouchableNativeFeedback, Platform } from 'react-native';
+import { View, Text } from 'react-native';
+import { render, nthChild } from './helpers';
 
 jest.dontMock('../src/helpers');
-const { measure, makeName, makeTouchable, lo } = require('../src/helpers');
+const {
+  measure,
+  makeName,
+  makeTouchable,
+  lo,
+  deprecatedComponent,
+} = require('../src/helpers');
 
 describe('helpers test', () => {
 
@@ -94,5 +103,22 @@ describe('helpers test', () => {
     });
 
   });
+
+  describe('deprecatedComponent', () => {
+    it('should render deprecated component', () => {
+      const Deprecated = deprecatedComponent('some warning')(View);
+      const someStyle = { backgroundColor: 'pink' };
+      const { output } = render(
+        <Deprecated style={someStyle}>
+          <Text>Some text</Text>
+        </Deprecated>
+      );
+      expect(output.type).to.equal(View);
+      expect(output.props.style).to.equal(someStyle);
+      expect(nthChild(output, 1)).to.be.deep.equal(
+        <Text>Some text</Text>
+      )
+    })
+  })
 
 });
