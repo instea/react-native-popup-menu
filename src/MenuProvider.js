@@ -58,10 +58,13 @@ export default class MenuProvider extends Component {
     if (BackHandler) {
       BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
     } else {
-      const {backHandler} = this.props;
+      const { backHandler } = this.props;
       if (backHandler === true || typeof backHandler === 'function') {
         console.warn('backHandler prop cannot be used if BackHandler is not present (RN >= 0.44 required)');
       }
+    }
+    if (this.props.customStyles.menuContextWrapper) {
+      console.warn('menuContextWrapper custom style is deprecated and it might be removed in future releases, use menuProviderWrapper instead.');
     }
   }
 
@@ -185,7 +188,12 @@ export default class MenuProvider extends Component {
     debug('render menu', this.isMenuOpen(), this._ownLayout);
     return (
       <View style={{flex:1}} onLayout={this._onLayout}>
-        <View style={[{flex:1}, customStyles.menuContextWrapper, style]}>
+        <View style={[
+          {flex:1},
+          customStyles.menuContextWrapper,
+          customStyles.menuProviderWrapper,
+          style,
+        ]}>
           { this.props.children }
         </View>
         <MenuPlaceholder

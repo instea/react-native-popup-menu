@@ -21,7 +21,7 @@ The only known exception is when you use [Modal](https://facebook.github.io/reac
 ### Properties
 | Option | Type | Opt/Required | Default | Note |
 |---|---|---|---|---|
-|`style`|`Style`|Optional||Style of wrapping `View` component. Same as `customStyles.menuContextWrapper` but when both are present result style is a merge where this style has higher precedence.|
+|`style`|`Style`|Optional||Style of wrapping `View` component. Same as `customStyles.menuProviderWrapper` but when both are present result style is a merge where this style has higher precedence.|
 |`customStyles`|`Object`|Optional||Object defining wrapper, touchable and text styles|
 |`backHandler`|`boolean\|Function`|Optional|false|Whether to close the menu when the back button is pressed or custom back button handler if a function is passed (RN >= 0.44 is required)|
 
@@ -31,7 +31,7 @@ To style `<MenuProvider />` and backdrop component you can pass `customStyles` o
 
 | Object key | Type | Notes |
 |---|---|---|
-|`menuContextWrapper`|`Style`|Style of wrapping `View` component|
+|`menuProviderWrapper`|`Style`|Style of wrapping `View` component (formerly `menuContextWrapper`)|
 |`backdrop`|`Style`|Backdrop `View` style|
 
 **Note:** `Style` type is any valid RN style parameter.
