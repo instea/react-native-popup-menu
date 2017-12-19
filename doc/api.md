@@ -1,12 +1,13 @@
 # API
 
-## MenuContext
+## MenuProvider
 
 It provides methods to handle popup menus imperatively.  The same methods are exposed to the child context with name `menuActions`.
 
-**Note:** It is important that `<MenuContext />` is on the top of the component hierarchy (e.g. `ScrollView` should be inside of `MenuContext`) and wraps all `<Menu />` components.
+**Note:** It is important that `<MenuProvider />` is on the top of the component hierarchy (e.g. `ScrollView` should be inside of `MenuProvider`) and wraps all `<Menu />` components.
 This is needed in order to solve z-index issues.
-The only known exception is when you use [Modal](https://facebook.github.io/react-native/docs/modal.html) - you need to place (additional) 'MenuContext' inside of 'Modal' (see our [ModalExample](../examples/ModalExample.js))
+The only known exception is when you use [Modal](https://facebook.github.io/react-native/docs/modal.html) - you need to place (additional) 'MenuProvider' inside of 'Modal' (see our [ModalExample](../examples/ModalExample.js))
+**Note:** `MenuProvider` was formerly named `MenuContext` which is now deprecated.
 
 ### Methods, `menuActions` context
 
@@ -20,17 +21,17 @@ The only known exception is when you use [Modal](https://facebook.github.io/reac
 ### Properties
 | Option | Type | Opt/Required | Default | Note |
 |---|---|---|---|---|
-|`style`|`Style`|Optional||Style of wrapping `View` component. Same as `customStyles.menuContextWrapper` but when both are present result style is a merge where this style has higher precedence.|
+|`style`|`Style`|Optional||Style of wrapping `View` component. Same as `customStyles.menuProviderWrapper` but when both are present result style is a merge where this style has higher precedence.|
 |`customStyles`|`Object`|Optional||Object defining wrapper, touchable and text styles|
 |`backHandler`|`boolean\|Function`|Optional|false|Whether to close the menu when the back button is pressed or custom back button handler if a function is passed (RN >= 0.44 is required)|
 
 ### Custom styles
 
-To style `<MenuContext />` and backdrop component you can pass `customStyles` object prop with following keys:
+To style `<MenuProvider />` and backdrop component you can pass `customStyles` object prop with following keys:
 
 | Object key | Type | Notes |
 |---|---|---|
-|`menuContextWrapper`|`Style`|Style of wrapping `View` component|
+|`menuProviderWrapper`|`Style`|Style of wrapping `View` component (formerly `menuContextWrapper`)|
 |`backdrop`|`Style`|Backdrop `View` style|
 
 **Note:** `Style` type is any valid RN style parameter.
@@ -46,7 +47,7 @@ To handle the back button you can pass `backHandler` prop with the following pos
 |---|---|
 |false|No handling of back button press|
 |true|The menu will be closed|
-|Function|The function will be called with `MenuContext` instance as the first parameter. The function needs to return true to prevent application exit (or bubbling if there are other listeners registered). Read [BackHandler documentation](https://facebook.github.io/react-native/docs/backhandler.html) for more information.|
+|Function|The function will be called with `MenuProvider` instance as the first parameter. The function needs to return true to prevent application exit (or bubbling if there are other listeners registered). Read [BackHandler documentation](https://facebook.github.io/react-native/docs/backhandler.html) for more information.|
 
 See more in custom [close on back example](../examples/CloseOnBackExample.js).
 

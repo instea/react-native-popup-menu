@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FlatList, Alert, StyleSheet } from 'react-native';
 import {
-  MenuContext,
+  MenuProvider,
   Menu,
   MenuTrigger,
   MenuOptions,
@@ -17,7 +17,7 @@ const data = new Array(500)
 export default class App extends Component {
   render() {
     return (
-      <MenuContext style={styles.container}>
+      <MenuProvider style={styles.container}>
         <Menu onSelect={value => Alert.alert(value)}>
           <MenuTrigger text="Select option" />
           <MenuOptions>
@@ -30,7 +30,7 @@ export default class App extends Component {
             />
           </MenuOptions>
         </Menu>
-      </MenuContext>
+      </MenuProvider>
     );
   }
 }

@@ -2,14 +2,14 @@ import React from 'react';
 import { Text } from 'react-native';
 import {
   Menu,
-  MenuContext,
+  MenuProvider,
   MenuOptions,
   MenuOption,
   MenuTrigger
 } from 'react-native-popup-menu';
 
 const BasicExample = () => (
-  <MenuContext style={{flexDirection: 'column', padding: 30}}>
+  <MenuProvider style={{flexDirection: 'column', padding: 30}}>
     <Text>Hello world!</Text>
     <Menu onSelect={value => alert(`Selected number: ${value}`)}>
       <MenuTrigger text='Select option' />
@@ -21,7 +21,7 @@ const BasicExample = () => (
         <MenuOption value={3} disabled={true} text='Three' />
       </MenuOptions>
     </Menu>
-  </MenuContext>
+  </MenuProvider>
 );
 
 export default BasicExample;

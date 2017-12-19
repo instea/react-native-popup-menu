@@ -11,7 +11,7 @@ const {
 } = RN;
 
 import Menu, {
-  MenuContext,
+  MenuProvider,
   MenuOptions,
   MenuOption,
   MenuTrigger
@@ -21,7 +21,7 @@ const OriginalExample = React.createClass({
   componentDidMount() {
     // We can use the public context API to open/close/toggle the menu.
     //setInterval(() => {
-    //  this.refs.MenuContext.toggleMenu('menu1');
+    //  this.refs.MenuProvider.toggleMenu('menu1');
     //}, 2000);
   },
   getInitialState() {
@@ -47,9 +47,9 @@ const OriginalExample = React.createClass({
   },
   render() {
     return ( // eslint-disable-next-line react/no-string-refs
-      <MenuContext style={{ flex: 1 }} ref="MenuContext">
+      <MenuProvider style={{ flex: 1 }} ref="MenuProvider">
         <View style={styles.topbar}>
-          <Menu onSelect={this.setMessage}>
+          <Menu onSelect={this.setMessage} name="menu1">
             <MenuTrigger disabled={this.state.firstMenuDisabled} style={styles.menuTrigger}>
               <Text style={styles.menuTriggerText}>OPEN FIRST MENU</Text>
             </MenuTrigger>
@@ -125,7 +125,7 @@ const OriginalExample = React.createClass({
             </MenuOptions>
           </Menu>
         </View>
-      </MenuContext>
+      </MenuProvider>
     );
   }
 });

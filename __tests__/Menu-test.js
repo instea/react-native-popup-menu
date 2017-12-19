@@ -5,7 +5,8 @@ import { render } from './helpers';
 import { MenuTrigger, MenuOptions } from '../src/index';
 
 jest.mock('../src/helpers', () => ({
-  makeName: () => 'generated-name'
+  makeName: () => 'generated-name',
+  deprecatedComponent: jest.fn(() => jest.fn()),
 }));
 
 jest.dontMock('../src/Menu');

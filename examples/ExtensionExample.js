@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 import Menu, {
-  MenuContext,
+  MenuProvider,
   MenuOptions,
   MenuOption,
   MenuTrigger,
@@ -29,7 +29,7 @@ const IconOption = ({iconName, text, value}) => (
 //Menu.setDefaultRenderer(renderers.NotAnimatedContextMenu);
 
 const ExtensionExample = () => (
-  <MenuContext style={{flexDirection: 'column', padding: 30}}>
+  <MenuProvider style={{flexDirection: 'column', padding: 30}}>
     <Text>Extensible hello world!</Text>
     <Menu
       onSelect={value => alert(`Selected number: ${value}`)}
@@ -42,7 +42,7 @@ const ExtensionExample = () => (
         <IconOption value={3} iconName='rocket' text='Three' />
       </MenuOptions>
     </Menu>
-  </MenuContext>
+  </MenuProvider>
 );
 
 export default ExtensionExample;

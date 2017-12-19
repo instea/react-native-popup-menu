@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, Button } from 'react-native';
 import {
   Menu,
-  MenuContext,
+  MenuProvider,
   MenuOptions,
   MenuOption,
   MenuTrigger
@@ -20,7 +20,7 @@ class CloseOnBackExample extends Component {
 
   render() {
     return (
-      <MenuContext
+      <MenuProvider
         style={{flexDirection: 'column', padding: 30}}
         backHandler={this.state.customBackHandler ? this.customBackHandler : true}>
         <Menu>
@@ -36,7 +36,7 @@ class CloseOnBackExample extends Component {
         <Button
           title={this.state.customBackHandler ? "Change to default" : "Change to custom"}
           onPress={() => this.setState({ customBackHandler: !this.state.customBackHandler })}/>
-      </MenuContext>
+      </MenuProvider>
     );
   }
 }

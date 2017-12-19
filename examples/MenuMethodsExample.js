@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import Menu, {
-  MenuContext,
+  MenuProvider,
   MenuOptions,
   MenuOption,
   MenuTrigger
@@ -27,7 +27,7 @@ export default class ControlledExample extends Component {
 
   render() {
     return (
-      <MenuContext style={{flexDirection: 'column', padding: 30}}>
+      <MenuProvider style={{flexDirection: 'column', padding: 30}}>
         <Menu onSelect={value => this.onOptionSelect(value)} ref={this.onRef}>
           <MenuTrigger text='Select option'/>
           <MenuOptions>
@@ -38,7 +38,7 @@ export default class ControlledExample extends Component {
         <TouchableOpacity style={{ paddingTop: 50 }} onPress={() => this.openMenu()}>
           <Text>Open menu from outside</Text>
         </TouchableOpacity>
-      </MenuContext>
+      </MenuProvider>
     );
   }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import Menu, {
-  MenuContext,
+  MenuProvider,
   MenuTrigger,
   MenuOptions,
   MenuOption,
@@ -54,7 +54,7 @@ export default class Example extends Component {
 
   render() {
     return (
-      <MenuContext style={{flex: 1}}>
+      <MenuProvider style={{flex: 1}}>
         <View style={styles.container}>
 
           <View style={styles.topbar}>
@@ -112,7 +112,7 @@ export default class Example extends Component {
           </ScrollView>
 
         </View>
-      </MenuContext>
+      </MenuProvider>
     );
   }
 }

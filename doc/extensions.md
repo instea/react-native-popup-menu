@@ -82,7 +82,7 @@ To compute your own menu position you can use `layouts` property which is an obj
 
 * `triggerLayout` contains dimensions and position of `<Trigger />` component (width, height, x, y).
 * `optionsLayout` contains dimensions of `<Options />` component (width, height);
-* `windowLayout` contains dimensions and position of working area/window i.e. `<MenuContext/>` area (width, height, x, y);
+* `windowLayout` contains dimensions and position of working area/window i.e. `<MenuProvider/>` area (width, height, x, y);
 
 In order to handle asynchronous closing animations, renderer can implement `close()`method which is called before menu closes. `close` method has to return `Promise`.
 

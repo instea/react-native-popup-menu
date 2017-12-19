@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import Menu, {
-  MenuContext,
+  MenuProvider,
   MenuOptions,
   MenuOption,
   MenuTrigger
@@ -9,7 +9,7 @@ import Menu, {
 
 const NonRootExample = () => (
   <View style={{padding: 60, flex:1}}>
-    <MenuContext style={{flexDirection: 'column'}}>
+    <MenuProvider style={{flexDirection: 'column'}}>
       <Text>Hello world!</Text>
       <Menu onSelect={value => alert(`Selected number: ${value}`)}>
         <MenuTrigger text='Select option' />
@@ -21,7 +21,7 @@ const NonRootExample = () => (
           <MenuOption value={3} disabled={true} text='Three' />
         </MenuOptions>
       </Menu>
-    </MenuContext>
+    </MenuProvider>
   </View>
 );
 

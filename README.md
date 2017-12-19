@@ -25,18 +25,18 @@ npm install react-native-popup-menu --save
 If you are using older RN versions check our compatibility table.
 
 ## Basic Usage
-Wrap your application inside `MenuContext` and then simply use `Menu` component where you need it. Below you can find a simple example.
+Wrap your application inside `MenuProvider` and then simply use `Menu` component where you need it. Below you can find a simple example.
 
 For more detailed documentation check [API](./doc/api.md).
 
 ```js
 // your entry point
-import { MenuContext } from 'react-native-popup-menu';
+import { MenuProvider } from 'react-native-popup-menu';
 
 export const App = () => (
-  <MenuContext>
+  <MenuProvider>
     <YourApp />
-  </MenuContext>
+  </MenuProvider>
 );
 
 // somewhere in your app

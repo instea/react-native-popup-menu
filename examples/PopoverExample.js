@@ -1,6 +1,6 @@
 import {
   Menu,
-  MenuContext,
+  MenuProvider,
   MenuOptions,
   MenuTrigger,
   renderers,
@@ -33,7 +33,7 @@ const Row = () => (
 )
 
 const PopoverExample = () => (
-  <MenuContext style={styles.container} customStyles={{ backdrop: styles.backdrop }}>
+  <MenuProvider style={styles.container} customStyles={{ backdrop: styles.backdrop }}>
     <Row />
     <Row />
     <Row />
@@ -42,7 +42,7 @@ const PopoverExample = () => (
     <Row />
     <Row />
     <Row />
-  </MenuContext>
+  </MenuProvider>
 );
 
 const styles = StyleSheet.create({

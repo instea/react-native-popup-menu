@@ -14,7 +14,7 @@ const layoutsEqual = (a, b) => (
 
 const isFunctional = Component => !Component.prototype.render;
 
-export default class MenuContext extends Component {
+export default class MenuProvider extends Component {
 
   constructor(props) {
     super(props);
@@ -46,7 +46,7 @@ export default class MenuContext extends Component {
       }
     }
 
-    // Custom handler called with MenuContext instance id function is passed
+    // Custom handler called with MenuProvider instance id function is passed
     if (typeof backHandler === 'function') {
       return backHandler(this);
     }
@@ -58,15 +58,18 @@ export default class MenuContext extends Component {
     if (BackHandler) {
       BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
     } else {
-      const {backHandler} = this.props;
+      const { backHandler } = this.props;
       if (backHandler === true || typeof backHandler === 'function') {
         console.warn('backHandler prop cannot be used if BackHandler is not present (RN >= 0.44 required)');
       }
     }
+    if (this.props.customStyles.menuContextWrapper) {
+      console.warn('menuContextWrapper custom style is deprecated and it might be removed in future releases, use menuProviderWrapper instead.');
+    }
   }
 
   componentWillUnmount() {
-    debug('unmounting menu context')
+    debug('unmounting menu provider')
     if (BackHandler) {
       BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
     }
@@ -185,7 +188,12 @@ export default class MenuContext extends Component {
     debug('render menu', this.isMenuOpen(), this._ownLayout);
     return (
       <View style={{flex:1}} onLayout={this._onLayout}>
-        <View style={[{flex:1}, customStyles.menuContextWrapper, style]}>
+        <View style={[
+          {flex:1},
+          customStyles.menuContextWrapper,
+          customStyles.menuProviderWrapper,
+          style,
+        ]}>
           { this.props.children }
         </View>
         <MenuPlaceholder
@@ -281,17 +289,17 @@ export default class MenuContext extends Component {
 
 }
 
-MenuContext.propTypes = {
+MenuProvider.propTypes = {
   customStyles: PropTypes.object,
   backHandler: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
 }
 
-MenuContext.defaultProps = {
+MenuProvider.defaultProps = {
   customStyles: {},
   backHandler: false,
 };
 
-MenuContext.childContextTypes = {
+MenuProvider.childContextTypes = {
   menuRegistry: PropTypes.object,
   menuActions: PropTypes.object,
 };
