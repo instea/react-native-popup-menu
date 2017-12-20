@@ -10,6 +10,7 @@
         android:minSdkVersion="16"
         android:targetSdkVersion="22" />
 
+    <!-- To enable RTL use android:supportsRtl="true" -->
     <application
       android:name=".MainApplication"
       android:allowBackup="true"
