@@ -31,6 +31,10 @@ const Animated = {
   View: View
 };
 
+const I18nManager = {
+  isRTL: false,
+};
+
 const Text = () => "Text";
 const TouchableHighlight = () => false;
 const TouchableWithoutFeedback = () => false;
@@ -55,6 +59,7 @@ ReactNative.ToolbarAndroid = ToolbarAndroid;
 ReactNative.Image = Image;
 ReactNative.AppRegistry = AppRegistry;
 ReactNative.Animated = Animated;
+ReactNative.I18nManager = I18nManager;
 ReactNative.Platform = Platform;
 
 module.exports = ReactNative;
