@@ -27,8 +27,16 @@ class AppRegistry {
 
 const Animated = {
   timing: () => ({ start: () => undefined }),
-  Value: () => ({ interpolate: () => false }),
+  Value: () => ({
+    interpolate: () => false,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+  }),
   View: View
+};
+
+const PanResponder = {
+  create: jest.fn(() => ({})),
 };
 
 const Text = () => "Text";
@@ -56,5 +64,6 @@ ReactNative.Image = Image;
 ReactNative.AppRegistry = AppRegistry;
 ReactNative.Animated = Animated;
 ReactNative.Platform = Platform;
+ReactNative.PanResponder = PanResponder;
 
 module.exports = ReactNative;

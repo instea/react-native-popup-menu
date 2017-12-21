@@ -20,7 +20,7 @@ describe('SlideInMenu', () => {
       </SlideInMenu>
     );
     expect(output.type).toEqual(Animated.View);
-    expect(output.props.children).toEqual([
+    expect(output.props.children.props.children).toEqual([
       <Text>Some text</Text>,
       <Text>Other text</Text>
     ]);
