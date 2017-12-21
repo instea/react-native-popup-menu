@@ -12,6 +12,7 @@ Features:
 * Customizable on various levels - menu options, positioning, animations
 * Can work as controlled as well as uncontrolled component
 * Different lifecycle hooks
+* RTL layout support
 
 | Context Menu, Slide-in Menu | Popover |
 |---|---|

@@ -1,4 +1,4 @@
-import { Animated, Easing, StyleSheet, View } from 'react-native';
+import { I18nManager, Animated, Easing, StyleSheet, View } from 'react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -88,52 +88,56 @@ function getRightPrice(hOptions, vOptions) {
   return centerOffset + sideOffset
 }
 
-function topProperties(hOptions, vOptions) {
+function getStartPosKey(isRTL) {
+  return isRTL ? 'right' : 'left';
+}
+
+function topProperties(hOptions, vOptions, isRTL) {
   const centered = axisCenteredPositionProperties(vOptions);
   const side = axisNegativeSideProperties(hOptions);
   return {
     position: {
       top: side.position,
-      left: centered.position,
+      [getStartPosKey(isRTL)]: centered.position,
     },
     offset: centered.offset,
     placement: 'top',
   };
 }
 
-function bottomProperties(hOptions, vOptions) {
+function bottomProperties(hOptions, vOptions, isRTL) {
   const centered = axisCenteredPositionProperties(vOptions);
   const side = axisPositiveSideProperties(hOptions);
   return {
     position: {
       top: side.position,
-      left: centered.position,
+      [getStartPosKey(isRTL)]: centered.position,
     },
     offset: centered.offset,
     placement: 'bottom',
   };
 }
 
-function rightProperties(hOptions, vOptions) {
+function rightProperties(hOptions, vOptions, isRTL) {
   const centered = axisCenteredPositionProperties(hOptions);
   const side = axisPositiveSideProperties(vOptions);
   return {
     position: {
       top: centered.position,
-      left: side.position,
+      [getStartPosKey(isRTL)]: side.position,
     },
     offset: centered.offset,
     placement: 'right',
   };
 }
 
-function leftProperties(hOptions, vOptions) {
+function leftProperties(hOptions, vOptions, isRTL) {
   const centered = axisCenteredPositionProperties(hOptions);
   const side = axisNegativeSideProperties(vOptions);
   return {
     position: {
       top: centered.position,
-      left: side.position,
+      [getStartPosKey(isRTL)]: side.position,
     },
     offset: centered.offset,
     placement: 'left',
@@ -158,7 +162,8 @@ const propertiesByPlacement = {
 export function computeProperties (
   { windowLayout, triggerLayout, optionsLayout },
   placement,
-  preferredPlacement
+  preferredPlacement,
+  isRTL,
 ) {
   const { x: wX, y: wY, width: wWidth, height: wHeight } = windowLayout;
   const { x: tX, y: tY, height: tHeight, width: tWidth } = triggerLayout;
@@ -176,7 +181,7 @@ export function computeProperties (
     tDim: tWidth,
   };
   if (placement !== 'auto' && propertiesByPlacement[placement]) {
-    return propertiesByPlacement[placement](hOptions, vOptions)
+    return propertiesByPlacement[placement](hOptions, vOptions, isRTL)
   }
 
   const prices = {
@@ -190,7 +195,7 @@ export function computeProperties (
     ? preferredPlacement
     : Object.keys(prices).find(pl => prices[pl] === bestPrice)
 
-  return propertiesByPlacement[bestPlacement](hOptions, vOptions)
+  return propertiesByPlacement[bestPlacement](hOptions, vOptions, isRTL)
 }
 
 export default class Popover extends React.Component {
@@ -232,6 +237,7 @@ export default class Popover extends React.Component {
       placement: userPlacement,
       ...other,
     } = this.props;
+    const isRTL = I18nManager.isRTL;
     const animation = {
       transform: [ { scale: this.state.scaleAnim } ],
       opacity: this.state.scaleAnim,
@@ -239,7 +245,8 @@ export default class Popover extends React.Component {
     const { position, placement, offset } = computeProperties(
       layouts,
       userPlacement,
-      preferredPlacement
+      preferredPlacement,
+      isRTL,
     );
     return (
       <Animated.View
@@ -247,14 +254,14 @@ export default class Popover extends React.Component {
           styles.animated,
           animation,
           position,
-          containerStyle[placement],
+          getContainerStyle({ placement, isRTL }),
         ]}
         pointerEvents="box-none"
       >
         <View
           style={[
             styles.anchor,
-            dynamicAnchorStyle({ placement, offset }),
+            dynamicAnchorStyle({ placement, offset, isRTL }),
             anchorStyle,
           ]}
         />
@@ -282,12 +289,12 @@ Popover.defaultProps = {
   placement: 'auto',
 };
 
-const containerStyle = {
+const getContainerStyle = ({ placement, isRTL }) => ({
   left: {
-    flexDirection: 'row-reverse',
+    flexDirection: isRTL ? 'row' : 'row-reverse',
   },
   right: {
-    flexDirection: 'row',
+    flexDirection: isRTL ? 'row-reverse' : 'row',
   },
   top: {
     flexDirection: 'column-reverse',
@@ -295,9 +302,10 @@ const containerStyle = {
   bottom: {
     flexDirection: 'column',
   },
-}
+})[placement]
 
-const dynamicAnchorStyle = ({ offset, placement }) => {
+const dynamicAnchorStyle = ({ offset, placement, isRTL }) => {
+  const start = getStartPosKey(isRTL);
   switch (placement) {
     case 'right':
       return {
@@ -317,7 +325,7 @@ const dynamicAnchorStyle = ({ offset, placement }) => {
       };
     case 'top':
       return {
-        left: offset,
+        [start]: offset,
         transform: [
           { translateY: -anchorOffset },
           { rotate: '45deg' },
@@ -325,7 +333,7 @@ const dynamicAnchorStyle = ({ offset, placement }) => {
       };
     case 'bottom':
       return {
-        left: offset,
+        [start]: offset,
         transform: [
           { translateY: anchorOffset },
           { rotate: '45deg' },
