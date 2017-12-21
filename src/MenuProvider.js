@@ -19,6 +19,7 @@ export default class MenuProvider extends Component {
   constructor(props) {
     super(props);
     this._menuRegistry = makeMenuRegistry();
+    this._isMenuClosing = false;
   }
 
   getChildContext() {
@@ -115,7 +116,15 @@ export default class MenuProvider extends Component {
       && this.optionsRef.close()) || Promise.resolve();
     const hideBackdrop = this.backdropRef && this.backdropRef.close();
     this._invalidateTriggerLayouts();
-    return Promise.all([hideMenu, hideBackdrop]);
+    this._isMenuClosing = true;
+    return Promise.all([hideMenu, hideBackdrop])
+      .then(() => {
+        this._isMenuClosing = false;
+      })
+      .catch(err => {
+        this._isMenuClosing = false;
+        throw err;
+      })
   }
 
   toggleMenu(name) {

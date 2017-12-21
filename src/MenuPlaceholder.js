@@ -9,6 +9,10 @@ export default class MenuPlaceholder extends Component {
     this.state = {};
   }
 
+  shouldComponentUpdate() {
+    return !this.props.ctx._isMenuClosing;
+  }
+
   render() {
     const { ctx, backdropStyles } = this.props;
     const shouldRenderMenu = ctx.isMenuOpen() && ctx._isInitialized();
