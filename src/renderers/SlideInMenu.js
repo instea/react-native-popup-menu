@@ -15,6 +15,7 @@ export default class SlideInMenu extends React.Component {
 
   constructor(props) {
     super(props);
+    this.gestureStartSlideValue = 0;
     this.slideValue = 0;
     this.state = {
       slide: new Animated.Value(this.slideValue),
@@ -23,9 +24,12 @@ export default class SlideInMenu extends React.Component {
   }
 
   componentDidMount() {
+    const { height } = this.props.layouts.optionsLayout;
+    const initHeight = this.props.initialHeight || height
+    const heightRatio = initHeight / height;
     Animated.timing(this.state.slide, {
       duration: OPEN_ANIM_DURATION,
-      toValue: 1,
+      toValue: heightRatio,
       easing: Easing.out(Easing.cubic),
       useNativeDriver: true
     }).start();
@@ -83,11 +87,23 @@ export default class SlideInMenu extends React.Component {
   }
 
   panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
+      // handle gestures started on menu options
+      if (Math.abs(gestureState.dx) > 5) {
+        this.gestureStartSlideValue = this.slideValue
+        return true;
+      }
+      return false;
+    },
+    onStartShouldSetPanResponder: () => {
+      // handle gestures started on backdrop
+      this.gestureStartSlideValue = this.slideValue
+      return true
+    },
     onMoveShouldSetPanResponder: () => false, // don't suppress menu options handlers
     onPanResponderMove: (evt, gestureState) => {
       const { height } = this.props.layouts.optionsLayout;
-      const newValue = Math.max(Math.min(1 - gestureState.dy / height, 1), 0);
+      const newValue = Math.max(Math.min(this.gestureStartSlideValue - gestureState.dy / height, 1), 0);
       this.state.slide.setValue(newValue);
     },
     onPanResponderRelease: (evt, gestureState) => {
@@ -114,6 +130,10 @@ export default class SlideInMenu extends React.Component {
   })
 
 }
+
+SlideInMenu.propTypes = {
+  initialHeight: PropTypes.number,
+};
 
 SlideInMenu.contextTypes = {
   menuActions: PropTypes.object,

@@ -204,7 +204,11 @@ Opens (animated) context menu over the trigger position. The `ContextMenu.comput
 Same as ContextMenu but without any animation.
 
 ### `SlideInMenu`
-Slides in the menu from the bottom of the screen.
+Slides in the menu from the bottom of the screen. It could be customized by following props:
+
+| Option | Type | Opt/Required | Default | Note |
+|---|---|---|---|---|
+|`initialHeight`|`Number`|Optional||Initial height of slide-in menu. By pulling up rest of the menu will be displayed. If it is not provided whole menu options will be displayed|
 
 ### `Popover`
 Displays menu as a popover. Popover can be customized by following props:

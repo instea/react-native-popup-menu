@@ -16,6 +16,7 @@ import MenuMethodsExample from './MenuMethodsExample';
 import CloseOnBackExample from './CloseOnBackExample';
 import FlatListExample from './FlatListExample';
 import PopoverExample from './PopoverExample';
+import AdvancedSlideinExample from './AdvancedSlideinExample';
 
 const demos = [
   { Component: BasicExample, name: 'Basic example' },
@@ -32,6 +33,7 @@ const demos = [
   { Component: CloseOnBackExample, name: 'Close on back button press example' },
   { Component: FlatListExample, name: 'Using FlatList' },
   { Component: PopoverExample, name: 'Popover renderer' },
+  { Component: AdvancedSlideinExample, name: 'Advanced slide in renderer' },
 ];
 
 // show debug messages for demos.
