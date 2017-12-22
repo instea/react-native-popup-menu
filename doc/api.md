@@ -214,3 +214,6 @@ Displays menu as a popover. Popover can be customized by following props:
 |`placement`|`String`|Optional|`auto`|Position of popover to the menu trigger - `top` &#124; `right` &#124; `bottom` &#124; `left` &#124; `auto`|
 |`preferredPlacement`|`String`|Optional|`top`|Preferred placement of popover - `top` &#124; `right` &#124; `bottom` &#124; `left`. Applicable when placement is set to `auto`|
 |`anchorStyle`|`Style`|Optional||Styles passed to popover anchor component|
+
+### `Dialog`
+Displays menu in popup dialog.

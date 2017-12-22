@@ -8,7 +8,7 @@ import Menu, {
   renderers,
 } from 'react-native-popup-menu';
 
-const { ContextMenu, SlideInMenu, Popover } = renderers;
+const { ContextMenu, SlideInMenu, Popover, Modal } = renderers;
 
 class BasicExampleComponent extends Component {
 
@@ -30,6 +30,8 @@ class BasicExampleComponent extends Component {
               onSelect={() => this.setState({renderer: ContextMenu})}/>
             <MenuOption text='Slide-in Menu'
               onSelect={() => this.setState({renderer: SlideInMenu})}/>
+            <MenuOption text='Modal'
+              onSelect={() => this.setState({renderer: Modal})}/>
             <MenuOption text='Popover'
               onSelect={() => this.setState({renderer: Popover})}/>
             <MenuOption text='Three (custom)' customStyles={optionStyles}

@@ -9,7 +9,7 @@ import Menu, {
 } from 'react-native-popup-menu';
 
 let unique = 0;
-const { SlideInMenu } = renderers;
+const { SlideInMenu, Dialog } = renderers;
 
 export default class Example extends Component {
 
@@ -54,13 +54,12 @@ export default class Example extends Component {
 
   render() {
     return (
-      <MenuProvider style={{flex: 1}}>
+      <MenuProvider style={{flex: 1}} customStyles={{ backdrop: styles.backdrop }}>
         <View style={styles.container}>
-
           <View style={styles.topbar}>
             <Menu name="numbers" renderer={SlideInMenu} onSelect={value => this.selectNumber(value)}>
               <MenuTrigger style={styles.trigger}>
-                <Text style={[styles.text, styles.triggerText]}>Slide-in menu...</Text>
+                <Text style={[styles.text, styles.triggerText]}>Slide-in</Text>
               </MenuTrigger>
               <MenuOptions customStyles={{ optionText: [styles.text, styles.slideInOption] }}>
                 <MenuOption value={1} text='Option one'  />
@@ -71,14 +70,23 @@ export default class Example extends Component {
                 <MenuOption value={5} text='Option five' />
               </MenuOptions>
             </Menu>
-            <View style={{flex:1}}></View>
+            <Menu name="modal" renderer={Dialog} onSelect={value => this.selectNumber(value)}>
+              <MenuTrigger style={styles.trigger}>
+                <Text style={[styles.text, styles.triggerText]}>Dialog</Text>
+              </MenuTrigger>
+              <MenuOptions customStyles={{ optionText: [styles.text, styles.dialogOption] }}>
+                <MenuOption value={1} text='Option one'  />
+                <MenuOption value={2} text='Option two' />
+                <MenuOption value={3} text='Option three' />
+              </MenuOptions>
+            </Menu>
             <Menu name="types" onSelect={value => this.selectOptionType(value)}
               onBackdropPress={() => this.addLog('menu will be closed by backdrop')}
               onOpen={() => this.addLog('menu is opening')}
               onClose={() => this.addLog('menu is closing')}
               >
               <MenuTrigger style={styles.trigger}>
-                <Text style={[styles.text, styles.triggerText]}>Context menu...</Text>
+                <Text style={[styles.text, styles.triggerText]}>Context</Text>
               </MenuTrigger>
               <MenuOptions customStyles={{ optionText: styles.text }}>
                 <MenuOption value="Normal" text='Normal' />
@@ -127,6 +135,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'dimgray',
     paddingTop : 15,
+    justifyContent: 'space-between',
   },
   trigger: {
     padding: 5,
@@ -152,10 +161,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 8,
   },
+  dialogOption: {
+    padding: 5,
+  },
   slideInOption: {
     padding: 5,
   },
   text: {
     fontSize: 18,
+  },
+  backdrop: {
+    backgroundColor: 'black',
+    opacity: 0.3,
   }
 });

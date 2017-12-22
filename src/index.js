@@ -11,7 +11,8 @@ import ContextMenu from './renderers/ContextMenu';
 import NotAnimatedContextMenu from './renderers/NotAnimatedContextMenu';
 import SlideInMenu from './renderers/SlideInMenu';
 import Popover from './renderers/Popover';
-const renderers = { ContextMenu, SlideInMenu, NotAnimatedContextMenu, Popover };
+import Dialog from './renderers/Dialog';
+const renderers = { ContextMenu, SlideInMenu, NotAnimatedContextMenu, Popover, Dialog };
 
 const MenuContext = deprecatedComponent(
   'MenuContext is deprecated and it might be removed in future releases, use MenuProvider instead.',
