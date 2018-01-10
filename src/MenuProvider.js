@@ -231,7 +231,11 @@ export default class MenuProvider extends Component {
 
   _onBackdropPress = () => {
     debug('on backdrop press');
-    this._getOpenedMenu().instance.props.onBackdropPress();
+    const menu = this._getOpenedMenu();
+    if (menu) {
+      menu.instance.props.onBackdropPress();
+    }
+    
     this.closeMenu();
   }
 
