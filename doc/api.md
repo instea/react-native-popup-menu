@@ -13,9 +13,9 @@ The only known exception is when you use [Modal](https://facebook.github.io/reac
 
 | Method Name | Arguments | Notes
 |---|---|---|
-|`openMenu`|`name`|Opens menu by name|
-|`toggleMenu`|`name`|Toggle menu by name|
-|`closeMenu`||Closes currently opened menu|
+|`openMenu`|`name`|Opens menu by name. Returns promise|
+|`toggleMenu`|`name`|Toggle menu by name. Returns promise|
+|`closeMenu`||Closes currently opened menu. Returns promise|
 |`isMenuOpen`||Returns `true` if any menu is open|
 
 ### Properties
@@ -58,8 +58,8 @@ Root menu component defining menu name and providing menu events.
 ### Methods
 | Method Name | Arguments | Notes
 |---|---|---|
-|`open`||Opens menu|
-|`close`||Closes menu|
+|`open`||Opens menu. Returns promise|
+|`close`||Closes menu. Returns promise|
 
 ### Properties
 | Option | Type | Opt/Required | Default | Note |

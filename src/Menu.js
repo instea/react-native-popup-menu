@@ -53,11 +53,11 @@ export default class Menu extends Component {
   }
 
   open() {
-    this.context.menuActions.openMenu(this._name);
+    return this.context.menuActions.openMenu(this._name);
   }
 
   close() {
-    this.context.menuActions.closeMenu();
+    return this.context.menuActions.closeMenu();
   }
 
   getName() {
