@@ -99,6 +99,7 @@ Menu can by opened by clicking on `<MenuTrigger />` or by calling context method
 | Option | Type | Opt/Required | Default | Note |
 |---|---|---|---|---|
 |`disabled`|`Boolean`|Optional|`false`|Indicates if trigger can be pressed|
+|`children`|`Elements`|Optional||React elements to render as menu trigger. Exclusive with `text` property|
 |`text`|`String`|Optional||Text to be rendered. When this prop is provided, trigger's children won't be rendered|
 |`customStyles`|`Object`|Optional||Object defining wrapper, touchable and text styles|
 
@@ -165,6 +166,7 @@ Wrapper component of menu option.
 | Option | Type | Opt/Required | Default | Note |
 |---|---|---|---|---|
 |`value`|`Any`|Optional||Value of option|
+|`children`|`Elements`|Optional||React elements to render as menu option. Exclusive with `text` property|
 |`text`|`String`|Optional||Text to be rendered. When this prop is provided, option's children won't be rendered|
 |`disabled`|`Boolean`|Optional|`false`|Indicates if option can be pressed|
 |`disableTouchable`|`Boolean`|Optional|`false`|Disables Touchable wrapper (no on press effect and no onSelect execution) Note: Alternatively you don't have to use `MenuOption` at all if you want render something "non-selectable" in the menu (e.g. divider)|
