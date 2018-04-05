@@ -27,8 +27,9 @@ export const makeName = (function() {
  */
 export function makeTouchable(TouchableComponent) {
   const Touchable = TouchableComponent || Platform.select({
-    ios: TouchableHighlight,
     android: TouchableNativeFeedback,
+    ios: TouchableHighlight,
+    web: TouchableHighlight,
     windows:TouchableHighlight,
   });
   let defaultTouchableProps = {};
