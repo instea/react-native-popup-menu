@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { debug } from './logger.js';
 import { makeTouchable } from './helpers';
+import { withCtx } from './MenuProvider';
 
-export default class MenuTrigger extends Component {
+class MenuTrigger extends Component {
 
   _onPress() {
     debug('trigger onPress');
     this.props.onPress && this.props.onPress();
-    this.context.menuActions.openMenu(this.props.menuName);
+    this.props.ctx.menuActions.openMenu(this.props.menuName);
   }
 
   render() {
@@ -45,7 +46,4 @@ MenuTrigger.defaultProps = {
   customStyles: {},
 };
 
-MenuTrigger.contextTypes = {
-  menuActions: PropTypes.object,
-};
-
+export default withCtx(MenuTrigger)

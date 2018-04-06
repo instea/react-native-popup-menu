@@ -57,7 +57,7 @@ describe('MenuTrigger', () => {
       <MenuTrigger menuName='menu1' />
     );
     const menuActions = { openMenu: createSpy() };
-    instance.context = { menuActions };
+    instance.props.ctx = { menuActions };
     nthChild(output, 1).props.onPress();
     expect(menuActions.openMenu).toHaveBeenCalledWith('menu1');
     expect(menuActions.openMenu.calls.count()).toEqual(1);
@@ -68,7 +68,7 @@ describe('MenuTrigger', () => {
       <MenuTrigger menuName='menu1' disabled={true} />
     );
     const menuActions = { openMenu: createSpy() };
-    instance.context = { menuActions };
+    instance.props.ctx = { menuActions };
     nthChild(output, 1).props.onPress();
     expect(menuActions.openMenu).not.toHaveBeenCalled();
   });

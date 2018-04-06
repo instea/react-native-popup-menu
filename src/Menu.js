@@ -5,17 +5,19 @@ import { MenuOptions, MenuTrigger } from './index';
 import ContextMenu from './renderers/ContextMenu';
 import { makeName } from './helpers';
 import { debug } from './logger';
+import { withCtx } from './MenuProvider';
 
 const isRegularComponent = c => c.type !== MenuOptions && c.type !== MenuTrigger;
 const isTrigger = c => c.type === MenuTrigger;
 const isMenuOptions = c => c.type === MenuOptions;
 
-export default class Menu extends Component {
+class Menu extends Component {
 
-  constructor(props, ctx) {
-    super(props, ctx);
+  constructor(props) {
+    super(props);
     this._name = this.props.name || makeName();
     this._forceClose = false;
+    const { ctx } = props;
     if(!(ctx && ctx.menuActions)) {
       throw new Error("Menu component must be ancestor of MenuProvider");
     }
@@ -26,24 +28,24 @@ export default class Menu extends Component {
       return;
     }
     debug('subscribing menu', this._name);
-    this.context.menuRegistry.subscribe(this);
-    this.context.menuActions._notify();
+    this.props.ctx.menuRegistry.subscribe(this);
+    this.props.ctx.menuActions._notify();
   }
 
   componentDidUpdate() {
     // force update if menu is opened as its content might have changed
     const force = this._isOpen();
     debug('component did update', this._name, force);
-    this.context.menuActions._notify(force);
+    this.props.ctx.menuActions._notify(force);
   }
 
   componentWillUnmount() {
     debug('unsubscribing menu', this._name);
     if (this._isOpen()) {
       this._forceClose = true;
-      this.context.menuActions._notify();
+      this.props.ctx.menuActions._notify();
     }
-    this.context.menuRegistry.unsubscribe(this);
+    this.props.ctx.menuRegistry.unsubscribe(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -53,11 +55,11 @@ export default class Menu extends Component {
   }
 
   open() {
-    return this.context.menuActions.openMenu(this._name);
+    return this.props.ctx.menuActions.openMenu(this._name);
   }
 
   close() {
-    return this.context.menuActions.closeMenu();
+    return this.props.ctx.menuActions.closeMenu();
   }
 
   getName() {
@@ -156,7 +158,4 @@ Menu.defaultProps = {
   onBackdropPress: () => {},
 };
 
-Menu.contextTypes = {
-  menuRegistry: PropTypes.object,
-  menuActions: PropTypes.object,
-};
+export default withCtx(Menu);

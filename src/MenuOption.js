@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet, Text } from 'react-native';
 import { debug } from './logger';
 import { makeTouchable } from './helpers';
+import { withCtx } from './MenuProvider';
 
-export default class MenuOption extends Component {
+
+class MenuOption extends Component {
 
   _onSelect() {
     const { value } = this.props;
@@ -12,17 +14,17 @@ export default class MenuOption extends Component {
     const shouldClose = onSelect(value) !== false;
     debug('select option', value, shouldClose);
     if (shouldClose) {
-        this.context.menuActions.closeMenu();
+        this.props.ctx.menuActions.closeMenu();
     }
   }
 
   _getMenusOnSelect() {
-    const menu = this.context.menuActions._getOpenedMenu();
+    const menu = this.props.ctx.menuActions._getOpenedMenu();
     return menu.instance.props.onSelect;
   }
 
   _getCustomStyles() {
-    const { optionsCustomStyles } = this.context.menuActions._getOpenedMenu();
+    const { optionsCustomStyles } = this.props.ctx.menuActions._getOpenedMenu();
     return {
       ...optionsCustomStyles,
       ...this.props.customStyles,
@@ -81,10 +83,6 @@ MenuOption.defaultProps = {
   customStyles: {},
 };
 
-MenuOption.contextTypes = {
-  menuActions: PropTypes.object,
-};
-
 const defaultStyles = StyleSheet.create({
   option: {
     padding: 5,
@@ -94,3 +92,5 @@ const defaultStyles = StyleSheet.create({
     color: '#ccc',
   },
 });
+
+export default withCtx(MenuOption);
