@@ -1,5 +1,5 @@
 import React from 'react';
-import { I18nManager, Animated, Easing, StyleSheet } from 'react-native';
+import { I18nManager, Animated, Easing, StyleSheet, PixelRatio } from 'react-native';
 import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION } from '../constants';
 
 const axisPosition = (oDim, wDim, tPos, tDim) => {
@@ -92,7 +92,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     borderRadius: 2,
     backgroundColor: 'white',
-    width: 200,
+    width: PixelRatio.roundToNearestPixel(200),
 
     // Shadow only works on iOS.
     shadowColor: 'black',
