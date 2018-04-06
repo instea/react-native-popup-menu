@@ -1,7 +1,7 @@
 # react-native-popup-menu
 [![](https://img.shields.io/npm/dm/react-native-popup-menu.svg?style=flat-square)](https://www.npmjs.com/package/react-native-popup-menu)
 
-Extensible popup menu component for React Native for Android, iOS and (unofficially) UWP.
+Extensible popup menu component for React Native for Android, iOS and (unofficially) UWP and react-native-web.
 
 Features:
 * Simple to use popup/context menu
