@@ -32,7 +32,10 @@ class Menu extends Component {
     this.props.ctx.menuActions._notify();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    if (this.props.name !== prevProps.name) {
+      console.warn('Menu name cannot be changed');
+    }
     // force update if menu is opened as its content might have changed
     const force = this._isOpen();
     debug('component did update', this._name, force);
@@ -46,12 +49,6 @@ class Menu extends Component {
       this.props.ctx.menuActions._notify();
     }
     this.props.ctx.menuRegistry.unsubscribe(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.name !== nextProps.name) {
-      console.warn('Menu name cannot be changed');
-    }
   }
 
   open() {
