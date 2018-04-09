@@ -12,11 +12,11 @@ class _MenuOptions extends React.Component {
     this.props.ctx.menuRegistry.setOptionsCustomStyles(menuName, customStyles)
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.updateCustomStyles(nextProps)
+  componentDidMount() {
+    this.updateCustomStyles(this.props)
   }
 
-  componentWillMount() {
+  componentDidUpdate() {
     this.updateCustomStyles(this.props)
   }
 
