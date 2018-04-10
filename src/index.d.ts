@@ -124,7 +124,7 @@ declare module 'react-native-popup-menu' {
    * Menu renderers
    * @see https://github.com/instea/react-native-popup-menu/blob/master/doc/api.md#renderers
    */
-  export const ContextMenu: Readonly<{
+  export const renderers: Readonly<{
     ContextMenu: Function;
     NotAnimatedContextMenu: Function;
     SlideInMenu: Function;
