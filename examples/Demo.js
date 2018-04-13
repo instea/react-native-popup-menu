@@ -4,7 +4,6 @@ import Menu from 'react-native-popup-menu';
 
 import Example from './Example';
 import BasicExample from './BasicExample';
-import OriginalExample from './OriginalExample';
 import ControlledExample from './ControlledExample';
 import ExtensionExample from './ExtensionExample';
 import ModalExample from './ModalExample';
@@ -20,7 +19,6 @@ import PopoverExample from './PopoverExample';
 const demos = [
   { Component: BasicExample, name: 'Basic example' },
   { Component: Example, name: 'Advanced example' },
-  { Component: OriginalExample, name: 'Original example' },
   { Component: ControlledExample, name: 'Controlled example' },
   { Component: MenuMethodsExample, name: 'Controlling menu using menu methods' },
   { Component: ExtensionExample, name: 'Extensions example' },
