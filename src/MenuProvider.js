@@ -232,7 +232,9 @@ export default class MenuProvider extends Component {
 
   _getOpenedMenu() {
     const name = this._placeholderRef && this._placeholderRef.state.openedMenuName;
-    return name ? this._menuRegistry.getMenu(name) : undefined;
+    const menu = name ? this._menuRegistry.getMenu(name) : undefined;
+    debug('_getOpenedMenu', name, !!menu)
+    return menu
   }
 
   _onBackdropPress = () => {

@@ -24,7 +24,9 @@ class MenuOption extends Component {
   }
 
   _getCustomStyles() {
-    const { optionsCustomStyles } = this.props.ctx.menuActions._getOpenedMenu();
+    // FIXME react 16.3 workaround for ControlledExample!
+    const menu = this.props.ctx.menuActions._getOpenedMenu() || {}
+    const { optionsCustomStyles } = menu;
     return {
       ...optionsCustomStyles,
       ...this.props.customStyles,

@@ -8,6 +8,8 @@ class _MenuOptions extends React.Component {
   updateCustomStyles(_props) {
     const { customStyles } = _props
     const menu = this.props.ctx.menuActions._getOpenedMenu()
+    // FIXME react 16.3 workaround for ControlledExample!
+    if (!menu) return
     const menuName = menu.instance.getName()
     this.props.ctx.menuRegistry.setOptionsCustomStyles(menuName, customStyles)
   }
