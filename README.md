@@ -31,7 +31,7 @@ npm install react-native-popup-menu --save
 ```
 If you are using older RN versions check our compatibility table.
 
-If you are using RN 0.55+, you might want to check our beta version (see #90 for details and please leave us the feedback)
+If you are using RN 0.55+, you might want to check our beta version (see [#90](https://github.com/instea/react-native-popup-menu/issues/90) for details and please leave us the feedback)
 
 ## Basic Usage
 Wrap your application inside `MenuProvider` and then simply use `Menu` component where you need it. Below you can find a simple example.
