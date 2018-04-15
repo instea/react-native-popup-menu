@@ -46,6 +46,9 @@ const ScrollView = () => false;
 const Platform = {
   select: jest.fn(o => o.ios),
 };
+const PixelRatio = {
+  roundToNearestPixel: n => n,
+}
 
 ReactNative.View = View;
 ReactNative.ScrollView = ScrollView;
@@ -61,5 +64,6 @@ ReactNative.AppRegistry = AppRegistry;
 ReactNative.Animated = Animated;
 ReactNative.I18nManager = I18nManager;
 ReactNative.Platform = Platform;
+ReactNative.PixelRatio = PixelRatio;
 
 module.exports = ReactNative;
