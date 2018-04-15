@@ -14,6 +14,12 @@ Features:
 * Different lifecycle hooks
 * RTL layout support
 
+Community driven features:
+* Support for UWP and react-native-web
+* Typescript definitions
+
+We thank our community for maintaining features that goes over our scope.
+
 | Context Menu, Slide-in Menu | Popover |
 |---|---|
 |![Popup menu demo](./android.demo.gif)|![Popup menu demo](./android.demo-popover.gif)|
