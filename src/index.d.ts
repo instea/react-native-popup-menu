@@ -88,7 +88,7 @@ declare module 'react-native-popup-menu' {
   interface MenuOptionsProps {
     optionsContainerStyle?: StyleProp<ViewStyle>;
     renderOptionsContainer?: Function;
-    customStyles?: MenuOptionCustomStyle;
+    customStyles?: MenuOptionsCustomStyle;
   }
 
   interface MenuOptionsCustomStyle extends MenuOptionCustomStyle {
