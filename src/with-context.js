@@ -32,9 +32,9 @@ export function withContext(Context, propName = "context") {
 
     enhanceForwardRef.displayName = `enhanceContext-${consumerName}(${name})`;
 
-    enhanceForwardRef.defaultProps = Component.defaultProps;
-    enhanceForwardRef.propTypes = Component.propTypes;
-
-    return React.forwardRef(enhanceForwardRef);
+    const FC = React.forwardRef(enhanceForwardRef);
+    FC.defaultProps = Component.defaultProps;
+    FC.propTypes = Component.propTypes;
+    return FC
   };
 }

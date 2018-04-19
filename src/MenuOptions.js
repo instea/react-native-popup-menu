@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { withCtx } from './MenuProvider';
 
-class _MenuOptions extends React.Component {
+class MenuOptions extends React.Component {
 
   updateCustomStyles(_props) {
     const { customStyles } = _props
@@ -32,8 +32,6 @@ class _MenuOptions extends React.Component {
   }
 }
 
-const MenuOptions = withCtx(_MenuOptions)
-
 MenuOptions.propTypes = {
   customStyles: PropTypes.object,
   renderOptionsContainer: PropTypes.func,
@@ -48,4 +46,4 @@ MenuOptions.defaultProps = {
   customStyles: {},
 };
 
-export default MenuOptions;
+export default withCtx(MenuOptions);

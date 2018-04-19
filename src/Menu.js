@@ -127,14 +127,6 @@ class Menu extends Component {
 
 }
 
-Menu.debug = false;
-Menu.setDefaultRenderer = (renderer) => {
-  Menu.defaultProps.renderer = renderer;
-}
-Menu.setDefaultRendererProps = (rendererProps) => {
-  Menu.defaultProps.rendererProps = rendererProps;
-}
-
 Menu.propTypes = {
   name: PropTypes.string,
   renderer: PropTypes.func,
@@ -155,4 +147,12 @@ Menu.defaultProps = {
   onBackdropPress: () => {},
 };
 
-export default withCtx(Menu);
+const MenuExternal = withCtx(Menu);
+MenuExternal.debug = false;
+MenuExternal.setDefaultRenderer = (renderer) => {
+  Menu.defaultProps.renderer = renderer;
+}
+MenuExternal.setDefaultRendererProps = (rendererProps) => {
+  Menu.defaultProps.rendererProps = rendererProps;
+}
+export default MenuExternal;
