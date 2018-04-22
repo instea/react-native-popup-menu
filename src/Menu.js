@@ -11,7 +11,7 @@ const isRegularComponent = c => c.type !== MenuOptions && c.type !== MenuTrigger
 const isTrigger = c => c.type === MenuTrigger;
 const isMenuOptions = c => c.type === MenuOptions;
 
-class Menu extends Component {
+export class Menu extends Component {
 
   constructor(props) {
     super(props);

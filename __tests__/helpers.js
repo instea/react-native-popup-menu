@@ -1,12 +1,16 @@
+import React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow';
 
 /**
  * Renders component and returns instance object and rendered output.
  */
-export function render(Component, ctx) {
+export function render(element, ctx) {
   const renderer = new ShallowRenderer();
-  renderer.render(Component, ctx);
-  const instance = renderer._instance._instance;
+  if (ctx) {
+    element = React.cloneElement(element, { ctx })
+  }
+  renderer.render(element);
+  const instance = renderer.getMountedInstance();
   const output = renderer.getRenderOutput();
   return { output, instance, renderer };
 }

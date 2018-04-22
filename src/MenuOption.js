@@ -6,7 +6,7 @@ import { makeTouchable } from './helpers';
 import { withCtx } from './MenuProvider';
 
 
-class MenuOption extends Component {
+export class MenuOption extends Component {
 
   _onSelect() {
     const { value } = this.props;

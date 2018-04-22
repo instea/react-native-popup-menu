@@ -5,7 +5,7 @@ import { debug } from './logger.js';
 import { makeTouchable } from './helpers';
 import { withCtx } from './MenuProvider';
 
-class MenuTrigger extends Component {
+export class MenuTrigger extends Component {
 
   _onPress() {
     debug('trigger onPress');

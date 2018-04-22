@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { withCtx } from './MenuProvider';
 
-class MenuOptions extends React.Component {
+export class MenuOptions extends React.Component {
 
   updateCustomStyles(_props) {
     const { customStyles } = _props

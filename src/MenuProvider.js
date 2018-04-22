@@ -19,7 +19,7 @@ const isFunctional = Component => !Component.prototype.render;
 if (!createContext) {
   console.warn('New React context API not available - are you using RN 0.55+ ?')
 }
-const PopupMenuContext = createContext({})
+export const PopupMenuContext = createContext({})
 export const withCtx = withContext(PopupMenuContext, "ctx");
 
 export default class MenuProvider extends Component {

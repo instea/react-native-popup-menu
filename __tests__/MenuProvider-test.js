@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { render, waitFor, mockReactInstance } from './helpers';
+import { render, waitFor, mockReactInstance, nthChild } from './helpers';
 import { MenuOptions, MenuTrigger } from '../src/index';
 import MenuOutside from '../src/renderers/MenuOutside';
 import Backdrop from '../src/Backdrop';
@@ -25,7 +25,7 @@ jest.mock('../src/helpers', () => ({
   iterator2array: it => [...it],
 }));
 
-const MenuProvider = require('../src/MenuProvider').default;
+const {default: MenuProvider, PopupMenuContext} = require('../src/MenuProvider');
 
 describe('MenuProvider', () => {
 
@@ -69,9 +69,14 @@ describe('MenuProvider', () => {
     const rendered = render(
       <MenuProvider {...props}/>
     );
-    const { instance } = rendered;
+    const { instance, output } = rendered;
     rendered.placeholder = mockReactInstance();
     instance._onPlaceholderRef(rendered.placeholder);
+    // for tests mimic old ctx api
+    const ctx = output.props.value
+    instance.getChildContext = () => ctx
+    // and "strip" context provider
+    rendered.output = nthChild(output, 1)
     return rendered;
   }
 
@@ -92,7 +97,19 @@ describe('MenuProvider', () => {
     expect(typeof instance.closeMenu).toEqual('function');
     expect(typeof instance.toggleMenu).toEqual('function');
     expect(typeof instance.isMenuOpen).toEqual('function');
-    const { menuRegistry, menuActions } = instance.getChildContext();
+    // context is now "renderer" -> see 'should render child components'
+  });
+
+  it('should render child components', () => {
+    let { output } = render(
+      <MenuProvider>
+        <View />
+        <Text>Some text</Text>
+      </MenuProvider>
+    );
+    // check context
+    expect(output.type).toEqual(PopupMenuContext.Provider);
+    const { menuRegistry, menuActions }=output.props.value;
     expect(typeof menuRegistry).toEqual('object');
     expect(typeof menuActions).toEqual('object');
     expect(typeof menuActions.openMenu).toEqual('function');
@@ -101,15 +118,8 @@ describe('MenuProvider', () => {
     expect(typeof menuActions.isMenuOpen).toEqual('function');
     // plus internal methods
     expect(typeof menuActions._notify).toEqual('function');
-  });
-
-  it('should render child components', () => {
-    const { output } = render(
-      <MenuProvider>
-        <View />
-        <Text>Some text</Text>
-      </MenuProvider>
-    );
+    // check the rest
+    output = nthChild(output, 1)
     expect(output.type).toEqual(View);
     expect(typeof output.props.onLayout).toEqual('function');
     expect(output.props.children.length).toEqual(2);
