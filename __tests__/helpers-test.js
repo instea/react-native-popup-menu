@@ -70,6 +70,24 @@ describe('helpers test', () => {
       expect(defaultTouchableProps).to.be.an('object');
     });
 
+    it('should create TouchableHighlight for web', () => {
+      Platform.select.mockImplementationOnce(o => {
+        return o.web;
+      });
+      const { Touchable, defaultTouchableProps } = makeTouchable();
+      expect(Touchable).to.be.equal(TouchableHighlight);
+      expect(defaultTouchableProps).to.be.an('object');
+    });
+
+    it('should create TouchableHighlight for windows', () => {
+      Platform.select.mockImplementationOnce(o => {
+        return o.windows;
+      });
+      const { Touchable, defaultTouchableProps } = makeTouchable();
+      expect(Touchable).to.be.equal(TouchableHighlight);
+      expect(defaultTouchableProps).to.be.an('object');
+    });
+
     it('should return passed component', () => {
       const MyTouchable = () => null;
       const { Touchable, defaultTouchableProps } = makeTouchable(MyTouchable);

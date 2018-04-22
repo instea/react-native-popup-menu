@@ -1,7 +1,7 @@
 # react-native-popup-menu
 [![](https://img.shields.io/npm/dm/react-native-popup-menu.svg?style=flat-square)](https://www.npmjs.com/package/react-native-popup-menu)
 
-Extensible popup menu component for React Native for Android, iOS and (unofficially) UWP.
+Extensible popup menu component for React Native for Android, iOS and (unofficially) UWP and react-native-web.
 
 Features:
 * Simple to use popup/context menu
@@ -14,6 +14,12 @@ Features:
 * Different lifecycle hooks
 * RTL layout support
 
+Community driven features:
+* Support for UWP and react-native-web
+* Typescript definitions
+
+We thank our community for maintaining features that goes over our scope.
+
 | Context Menu, Slide-in Menu | Popover |
 |---|---|
 |![Popup menu demo](./android.demo.gif)|![Popup menu demo](./android.demo-popover.gif)|
@@ -24,6 +30,8 @@ Features:
 npm install react-native-popup-menu --save
 ```
 If you are using older RN versions check our compatibility table.
+
+If you are using RN 0.55+, you might want to check our beta version (see [#90](https://github.com/instea/react-native-popup-menu/issues/90) for details and please leave us the feedback)
 
 ## Basic Usage
 Wrap your application inside `MenuProvider` and then simply use `Menu` component where you need it. Below you can find a simple example.

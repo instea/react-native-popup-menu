@@ -1,6 +1,6 @@
 {
   "name": "react-native-popup-menu",
-  "version": "0.13.0-beta.1",
+  "version": "0.13.0-rc.1",
   "description": "extensible popup/context menu for react native",
   "main": "src/index.js",
   "directories": {
@@ -20,6 +20,7 @@
     "url": "https://github.com/instea/react-native-popup-menu/issues"
   },
   "homepage": "https://github.com/instea/react-native-popup-menu",
+  "typings": "src/index.d.ts",
   "jest": {
     "transform": {
       ".*": "<rootDir>/node_modules/babel-jest"
