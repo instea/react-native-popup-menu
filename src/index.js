@@ -2,7 +2,7 @@ import './polyfills';
 import { deprecatedComponent } from './helpers'
 
 import Menu from './Menu';
-import MenuProvider from './MenuProvider';
+import MenuProvider, { withCtx } from './MenuProvider';
 import MenuOption from './MenuOption';
 import MenuOptions from './MenuOptions';
 import MenuTrigger from './MenuTrigger';
@@ -27,4 +27,5 @@ export {
   MenuOptions,
   MenuTrigger,
   renderers,
+  withCtx as withMenuContext,
 };

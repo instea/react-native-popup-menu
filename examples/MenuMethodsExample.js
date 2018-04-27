@@ -4,8 +4,18 @@ import Menu, {
   MenuProvider,
   MenuOptions,
   MenuOption,
-  MenuTrigger
+  MenuTrigger,
+  withMenuContext,
 } from 'react-native-popup-menu';
+
+const Openner = (props) => (
+  <TouchableOpacity style={{ paddingTop: 50 }}
+    onPress={() => props.ctx.menuActions.openMenu('menu-1')}>
+    <Text>Open menu from context</Text>
+  </TouchableOpacity>
+);
+
+const ContextOpenner = withMenuContext(Openner);
 
 export default class ControlledExample extends Component {
 
@@ -28,7 +38,8 @@ export default class ControlledExample extends Component {
   render() {
     return (
       <MenuProvider style={{flexDirection: 'column', padding: 30}}>
-        <Menu onSelect={value => this.onOptionSelect(value)} ref={this.onRef}>
+        <Menu onSelect={value => this.onOptionSelect(value)}
+          name="menu-1" ref={this.onRef}>
           <MenuTrigger text='Select option'/>
           <MenuOptions>
             <MenuOption value={1} text='One' />
@@ -38,6 +49,7 @@ export default class ControlledExample extends Component {
         <TouchableOpacity style={{ paddingTop: 50 }} onPress={() => this.openMenu()}>
           <Text>Open menu from outside</Text>
         </TouchableOpacity>
+        <ContextOpenner />
       </MenuProvider>
     );
   }
