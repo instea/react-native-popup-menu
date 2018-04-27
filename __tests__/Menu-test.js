@@ -10,7 +10,8 @@ jest.mock('../src/helpers', () => ({
 }));
 
 jest.dontMock('../src/Menu');
-const Menu = require('../src/Menu').default;
+const exported = require('../src/Menu');
+const { Menu, default: ExportedMenu } = exported;
 
 const { objectContaining, createSpy, any } = jasmine;
 
@@ -36,8 +37,8 @@ describe('Menu', () => {
   }
 
   it('should export api', () => {
-    expect(typeof Menu.debug).toEqual('boolean');
-    expect(typeof Menu.setDefaultRenderer).toEqual('function');
+    expect(typeof ExportedMenu.debug).toEqual('boolean');
+    expect(typeof ExportedMenu.setDefaultRenderer).toEqual('function');
   });
 
   it('should render component and preserve children order', () => {
@@ -163,7 +164,7 @@ describe('Menu', () => {
         <MenuOptions />
       </Menu>
     );
-    instance.componentDidUpdate();
+    instance.componentDidUpdate({});
     expect(ctx.menuActions._notify).toHaveBeenCalled();
   });
 

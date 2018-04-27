@@ -4,7 +4,7 @@ import { render } from './helpers';
 import { MenuOption } from '../src/index';
 
 jest.dontMock('../src/MenuOptions');
-const MenuOptions = require('../src/MenuOptions').default;
+const { MenuOptions } = require('../src/MenuOptions');
 
 describe('MenuOptions', () => {
 
@@ -75,13 +75,15 @@ describe('MenuOptions', () => {
       optionsWrapper: { backgroundColor: 'blue' },
     };
     const ctx = mockCtx();
-    const { instance } = render(
+    const { instance, renderer } = render(
       <MenuOptions customStyles={customStyles} />,
       ctx
     );
+    instance.componentDidMount();
     expect(ctx.menuRegistry.setOptionsCustomStyles)
       .toHaveBeenLastCalledWith('menu1', customStyles)
-    instance.componentWillReceiveProps({ customStyles: customStyles2 })
+    renderer.render(<MenuOptions customStyles={customStyles2} ctx={ctx} />)
+    instance.componentDidUpdate();
     expect(ctx.menuRegistry.setOptionsCustomStyles)
       .toHaveBeenLastCalledWith('menu1', customStyles2)
   });

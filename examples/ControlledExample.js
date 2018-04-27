@@ -28,12 +28,14 @@ export default class ControlledExample extends Component {
   }
 
   render() {
+    const { opened } = this.state;
+    console.log('ControlledExample - opened', opened)
     return (
       <MenuProvider
         style={{flexDirection: 'column', padding: 30}}>
         <Text>Hello world!</Text>
         <Menu
-          opened={this.state.opened}
+          opened={opened}
           onBackdropPress={() => this.onBackdropPress()}
           onSelect={value => this.onOptionSelect(value)}>
           <MenuTrigger

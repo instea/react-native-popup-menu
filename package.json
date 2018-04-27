@@ -1,6 +1,6 @@
 {
   "name": "react-native-popup-menu",
-  "version": "0.12.6",
+  "version": "0.13.0-rc.1",
   "description": "extensible popup/context menu for react native",
   "main": "src/index.js",
   "directories": {
@@ -58,9 +58,10 @@
     "jest-cli": "^20.0.1",
     "mocha": "^3.3.0",
     "prop-types": "^15.5.10",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
-    "react-test-renderer": "^15.6.1",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
+    "react-test-renderer": "^16.3.1",
     "sinon": "^2.2.0"
-  }
+  },
+  "dependencies": {}
 }

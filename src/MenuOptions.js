@@ -1,21 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
+import { withCtx } from './MenuProvider';
 
-class MenuOptions extends React.Component {
+export class MenuOptions extends React.Component {
 
   updateCustomStyles(_props) {
     const { customStyles } = _props
-    const menu = this.context.menuActions._getOpenedMenu()
+    const menu = this.props.ctx.menuActions._getOpenedMenu()
+    // FIXME react 16.3 workaround for ControlledExample!
+    if (!menu) return
     const menuName = menu.instance.getName()
-    this.context.menuRegistry.setOptionsCustomStyles(menuName, customStyles)
+    this.props.ctx.menuRegistry.setOptionsCustomStyles(menuName, customStyles)
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.updateCustomStyles(nextProps)
+  componentDidMount() {
+    this.updateCustomStyles(this.props)
   }
 
-  componentWillMount() {
+  componentDidUpdate() {
     this.updateCustomStyles(this.props)
   }
 
@@ -43,9 +46,4 @@ MenuOptions.defaultProps = {
   customStyles: {},
 };
 
-MenuOptions.contextTypes = {
-  menuRegistry: PropTypes.object,
-  menuActions: PropTypes.object,
-};
-
-export default MenuOptions;
+export default withCtx(MenuOptions);

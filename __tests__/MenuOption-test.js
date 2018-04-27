@@ -4,7 +4,7 @@ import { render, normalizeStyle, nthChild } from './helpers';
 
 jest.dontMock('../src/MenuOption');
 jest.dontMock('../src/helpers');
-const MenuOption = require('../src/MenuOption').default;
+const { MenuOption } = require('../src/MenuOption');
 const { createSpy, objectContaining } = jasmine;
 
 describe('MenuOption', () => {

@@ -2,7 +2,7 @@
 
 ## MenuProvider
 
-It provides methods to handle popup menus imperatively.  The same methods are exposed to the child context with name `menuActions`.
+It provides methods to handle popup menus imperatively.  The same methods are exposed to the context property `menuActions`. This can be retrieved by HOC `withMenuContext` that adds `ctx` property to your component. Then simply call `props.ctx.menuActions.method()`.
 
 **Note:** It is important that `<MenuProvider />` is on the top of the component hierarchy (e.g. `ScrollView` should be inside of `MenuProvider`) and wraps all `<Menu />` components.
 This is needed in order to solve z-index issues.

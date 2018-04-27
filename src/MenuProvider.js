@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, createContext } from 'react';
 import PropTypes from 'prop-types';
 import { View, BackHandler } from 'react-native';
+
+import { withContext } from './with-context';
 import makeMenuRegistry from './menuRegistry';
 import MenuPlaceholder from './MenuPlaceholder';
 import { measure } from './helpers';
@@ -14,15 +16,18 @@ const layoutsEqual = (a, b) => (
 
 const isFunctional = Component => !Component.prototype.render;
 
+if (!createContext) {
+  console.warn('New React context API not available - are you using RN 0.55+ ?')
+}
+export const PopupMenuContext = createContext({})
+export const withCtx = withContext(PopupMenuContext, "ctx");
+
 export default class MenuProvider extends Component {
 
   constructor(props) {
     super(props);
     this._menuRegistry = makeMenuRegistry();
     this._isMenuClosing = false;
-  }
-
-  getChildContext() {
     const menuActions = {
       openMenu: name => this.openMenu(name),
       closeMenu: () => this.closeMenu(),
@@ -31,8 +36,7 @@ export default class MenuProvider extends Component {
       _getOpenedMenu: () => this._getOpenedMenu(),
       _notify: force => this._notify(force),
     };
-    const menuRegistry = this._menuRegistry;
-    return { menuRegistry, menuActions };
+    this.menuCtx = { menuRegistry: this._menuRegistry, menuActions }
   }
 
   _handleBackButton = () => {
@@ -196,21 +200,23 @@ export default class MenuProvider extends Component {
     const { style, customStyles } = this.props;
     debug('render menu', this.isMenuOpen(), this._ownLayout);
     return (
-      <View style={{flex:1}} onLayout={this._onLayout}>
-        <View style={[
-          {flex:1},
-          customStyles.menuContextWrapper,
-          customStyles.menuProviderWrapper,
-          style,
-        ]}>
-          { this.props.children }
+      <PopupMenuContext.Provider value={this.menuCtx}>
+        <View style={{flex:1}} onLayout={this._onLayout}>
+          <View style={[
+            {flex:1},
+            customStyles.menuContextWrapper,
+            customStyles.menuProviderWrapper,
+            style,
+          ]}>
+            { this.props.children }
+          </View>
+          <MenuPlaceholder
+            ctx={this}
+            backdropStyles={customStyles.backdrop}
+            ref={this._onPlaceholderRef}
+            />
         </View>
-        <MenuPlaceholder
-          ctx={this}
-          backdropStyles={customStyles.backdrop}
-          ref={this._onPlaceholderRef}
-          />
-      </View>
+      </PopupMenuContext.Provider>
     );
   }
 
@@ -226,7 +232,9 @@ export default class MenuProvider extends Component {
 
   _getOpenedMenu() {
     const name = this._placeholderRef && this._placeholderRef.state.openedMenuName;
-    return name ? this._menuRegistry.getMenu(name) : undefined;
+    const menu = name ? this._menuRegistry.getMenu(name) : undefined;
+    debug('_getOpenedMenu', name, !!menu)
+    return menu
   }
 
   _onBackdropPress = () => {
@@ -235,7 +243,6 @@ export default class MenuProvider extends Component {
     if (menu) {
       menu.instance.props.onBackdropPress();
     }
-    
     this.closeMenu();
   }
 
@@ -310,9 +317,4 @@ MenuProvider.propTypes = {
 MenuProvider.defaultProps = {
   customStyles: {},
   backHandler: false,
-};
-
-MenuProvider.childContextTypes = {
-  menuRegistry: PropTypes.object,
-  menuActions: PropTypes.object,
 };

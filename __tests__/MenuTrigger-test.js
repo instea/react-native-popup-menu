@@ -4,7 +4,7 @@ import { render, normalizeStyle, nthChild } from './helpers';
 
 jest.dontMock('../src/MenuTrigger');
 jest.dontMock('../src/helpers');
-const MenuTrigger = require('../src/MenuTrigger').default;
+const { MenuTrigger } = require('../src/MenuTrigger');
 const { createSpy, objectContaining } = jasmine;
 
 describe('MenuTrigger', () => {
@@ -53,11 +53,10 @@ describe('MenuTrigger', () => {
   });
 
   it('should open menu', () => {
-    const { output, instance } = render(
-      <MenuTrigger menuName='menu1' />
-    );
     const menuActions = { openMenu: createSpy() };
-    instance.context = { menuActions };
+    const { output } = render(
+      <MenuTrigger menuName='menu1' ctx={{menuActions}} />
+    );
     nthChild(output, 1).props.onPress();
     expect(menuActions.openMenu).toHaveBeenCalledWith('menu1');
     expect(menuActions.openMenu.calls.count()).toEqual(1);
@@ -68,7 +67,7 @@ describe('MenuTrigger', () => {
       <MenuTrigger menuName='menu1' disabled={true} />
     );
     const menuActions = { openMenu: createSpy() };
-    instance.context = { menuActions };
+    instance.props.ctx = { menuActions };
     nthChild(output, 1).props.onPress();
     expect(menuActions.openMenu).not.toHaveBeenCalled();
   });
