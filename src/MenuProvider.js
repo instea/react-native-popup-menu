@@ -16,8 +16,8 @@ const layoutsEqual = (a, b) => (
 
 const isFunctional = Component => !Component.prototype.render;
 
-if (!createContext) {
-  console.warn('New React context API not available - are you using RN 0.55+ ?')
+if (!React.forwardRef) {
+  throw new Error('This version of popup-menu requires RN 0.55+. Check our compatibility table.')
 }
 export const PopupMenuContext = createContext({})
 export const withCtx = withContext(PopupMenuContext, "ctx");
