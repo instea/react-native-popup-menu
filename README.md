@@ -84,9 +84,9 @@ Contributions are welcome! Just open an issues with any idea or pull-request if 
 ## React Native Compatibility
 We keep compatibility on best effort basis.
 
-| popup-menu version | min RN version |
+| popup-menu version | min RN (React) version |
 | ------------------ | -------------- |
-| 0.13               | 0.55           |
+| 0.13               | 0.55 (16.3.1)  |
 | 0.9                | 0.40           |
 | 0.8                | 0.38           |
 | 0.7                | 0.18           |
