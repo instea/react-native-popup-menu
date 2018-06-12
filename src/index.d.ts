@@ -1,10 +1,10 @@
 /**
- * TypeScript decleartion for https://github.com/instea/react-native-popup-menu
+ * TypeScript declaration for https://github.com/instea/react-native-popup-menu
  *
  * @author Wang Guan <momocraft@gmail>
  */
-declare module 'react-native-popup-menu' {
-  import * as React from 'react';
+declare module "react-native-popup-menu" {
+  import * as React from "react";
   import { StyleProp, ViewStyle } from "react-native";
 
   /**
@@ -14,7 +14,7 @@ declare module 'react-native-popup-menu' {
 
   interface MenuProviderProps {
     style?: StyleProp<ViewStyle>;
-    customStyle?: {
+    customStyles?: {
       menuProviderWrapper?: StyleProp<ViewStyle>;
       backdrop?: StyleProp<ViewStyle>;
     };
@@ -108,6 +108,8 @@ declare module 'react-native-popup-menu' {
     disabled?: boolean;
     disableTouchable?: boolean;
     customStyles?: MenuOptionCustomStyle;
+
+    style?: StyleProp<ViewStyle>;
 
     onSelect?(): any;
   }
