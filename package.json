@@ -1,6 +1,6 @@
 {
   "name": "react-native-popup-menu",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "description": "extensible popup/context menu for react native",
   "main": "src/index.js",
   "directories": {
