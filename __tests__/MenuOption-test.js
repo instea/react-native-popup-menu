@@ -13,7 +13,7 @@ describe('MenuOption', () => {
     menuActions: {
       _getOpenedMenu: () => ({
         optionsCustomStyles: optionsCustomStyles || {},
-        instance: { props: { onSelect: onSelect } }
+        instance: { props: { onSelect: onSelect } },
       }),
       closeMenu: closeMenu || createSpy(),
     },

@@ -6,13 +6,10 @@
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true,
-      "modules": true,
-      "experimentalObjectRestSpread": true
+      "modules": true
     }
   },
-  "plugins": [
-    "react"
-  ],
+  "plugins": ["react"],
 
   "env": {
     "node": true,
@@ -22,7 +19,7 @@
 
   "rules": {
     "no-console": 0,
-    "comma-dangle": 0,
+    "comma-dangle": ["error", "always-multiline"],
     "no-unused-vars": ["error", { "ignoreRestSiblings": true }],
     "react/prop-types": 0,
     "react/no-did-mount-set-state": 0,

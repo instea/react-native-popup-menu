@@ -28,7 +28,7 @@ describe('Popover', () => {
       expect(content.type).toEqual(View);
       expect(content.props.children).toEqual([
         <Text>Some text</Text>,
-        <Text>Other text</Text>
+        <Text>Other text</Text>,
       ]);
     });
   });

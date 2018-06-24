@@ -23,12 +23,12 @@ describe('helpers test', () => {
 
     it('should promisify measure callback', done => {
       const ref = {
-        measure: callback => callback(0, 0, 100, 200, 50, 20)
+        measure: callback => callback(0, 0, 100, 200, 50, 20),
       };
       measure(ref).then(layout => {
         expect(layout).to.be.an('object');
         expect(layout).to.eql({
-          x: 50, y: 20, width: 100, height: 200
+          x: 50, y: 20, width: 100, height: 200,
         });
         done();
       }).catch((err = 'promise rejected') => done(err));

@@ -79,7 +79,7 @@ export class Menu extends Component {
         r.push(React.cloneElement(child, {
           key: null,
           menuName: this._name,
-          onRef: (t => this._trigger = t)
+          onRef: (t => this._trigger = t),
         }));
       }
       if (isRegularComponent(child)) {

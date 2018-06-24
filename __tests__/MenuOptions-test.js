@@ -12,7 +12,7 @@ describe('MenuOptions', () => {
     return {
       menuActions: {
         _getOpenedMenu: () => ({
-          instance: { getName: () => 'menu1' }
+          instance: { getName: () => 'menu1' },
         }),
       },
       menuRegistry: {

@@ -18,8 +18,8 @@ jest.mock('../src/helpers', () => ({
       x: 0,
       y: 0,
       width: 100,
-      height: 50
-    })
+      height: 50,
+    }),
   }),
   lo: x => x,
   iterator2array: it => [...it],
@@ -53,9 +53,9 @@ describe('MenuProvider', () => {
     nativeEvent: {
       layout: {
         width: 400,
-        height: 600
-      }
-    }
+        height: 600,
+      },
+    },
   };
 
   let menu1;
@@ -128,7 +128,7 @@ describe('MenuProvider', () => {
     expect(placeholder.type).toEqual(MenuPlaceholder);
     expect(components.props.children).toEqual([
       <View />,
-      <Text>Some text</Text>
+      <Text>Some text</Text>,
     ]);
   });
 
@@ -227,16 +227,16 @@ describe('MenuProvider', () => {
         nativeEvent: {
           layout: {
             width: 22,
-            height: 33
-          }
-        }
+            height: 33,
+          },
+        },
       });
       expect(menuRegistry.getMenu('menu1')).toEqual(objectContaining({
         optionsLayout: {
           width: 22,
           isOutside: true,
-          height: 33
-        }
+          height: 33,
+        },
       }));
     });
   });

@@ -32,7 +32,7 @@ describe('Menu', () => {
       },
       menuActions: {
         _notify: createSpy(),
-      }
+      },
     }
   }
 
@@ -64,8 +64,8 @@ describe('Menu', () => {
     expect(output.props.children[1]).toEqual(objectContaining({
       type: MenuTrigger,
       props: objectContaining({
-        onRef: any(Function)
-      })
+        onRef: any(Function),
+      }),
     }));
     expect(output.props.children[2]).toEqual(expectedChildren[3]);
   });
@@ -99,7 +99,7 @@ describe('Menu', () => {
     ]);
     expect(output.props.children[0]).toEqual(
       objectContaining({
-        type: MenuTrigger
+        type: MenuTrigger,
       })
     );
     expect(output.props.children[1]).toEqual(expectedChildren[1]);

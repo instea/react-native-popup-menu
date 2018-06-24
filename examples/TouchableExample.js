@@ -16,7 +16,7 @@ class TouchableExample extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      Touchable: Button
+      Touchable: Button,
     };
   }
 
@@ -30,7 +30,7 @@ class TouchableExample extends React.Component {
           <MenuTrigger
             customStyles={{
               TriggerTouchableComponent: Button,
-              triggerTouchable: { title: 'Select (Custom Touchables)' }
+              triggerTouchable: { title: 'Select (Custom Touchables)' },
             }}
           />
         <MenuOptions>
@@ -54,7 +54,7 @@ class TouchableExample extends React.Component {
             />
             <MenuOption customStyles={{
                 OptionTouchableComponent: Button,
-                optionTouchable: { title: 'Button' }
+                optionTouchable: { title: 'Button' },
               }}
               value={Button}
             />
@@ -65,7 +65,7 @@ class TouchableExample extends React.Component {
           <MenuTrigger
             customStyles={{
               TriggerTouchableComponent: Touchable,
-              triggerTouchable: { title: buttonText }
+              triggerTouchable: { title: buttonText },
             }}
             text={buttonText}
           />

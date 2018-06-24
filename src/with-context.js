@@ -11,7 +11,7 @@ export function withContext(Context, propName = "context") {
             {value => {
               const custom = {
                 [propName]: value,
-                ref: forwardedRef
+                ref: forwardedRef,
               };
               return <Component {...custom} {...rest} />;
             }}

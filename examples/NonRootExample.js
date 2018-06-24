@@ -4,7 +4,7 @@ import Menu, {
   MenuProvider,
   MenuOptions,
   MenuOption,
-  MenuTrigger
+  MenuTrigger,
 } from 'react-native-popup-menu';
 
 const NonRootExample = () => (

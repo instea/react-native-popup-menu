@@ -24,7 +24,7 @@ describe('menuRegistry tests', () => {
   describe('getMenu', () => {
     it('should return menu', () => {
       const menus = new Map([
-        ['menu1', {instance: menu1}]
+        ['menu1', {instance: menu1}],
       ]);
       const registry = makeMenuRegistry(menus);
       expect(registry.getMenu('menu1').instance).to.eql(menu1);
@@ -43,7 +43,7 @@ describe('menuRegistry tests', () => {
     it('should unsubscribe menu', () => {
       const menus = new Map([
         ['menu1', {name:'menu1', instance: menu1}],
-        ['menu2', {name:'menu2', instance: menu2}]
+        ['menu2', {name:'menu2', instance: menu2}],
       ]);
       const registry = makeMenuRegistry(menus);
       registry.unsubscribe(menu1);
@@ -109,7 +109,7 @@ describe('menuRegistry tests', () => {
     it('should return all registered menus with its associated data', () => {
       const menus = new Map([
         ['menu1', {name: 'menu1', instance: menu1}],
-        ['menu2', {name: 'menu2', instance: menu2, triggerLayout: 5}]
+        ['menu2', {name: 'menu2', instance: menu2, triggerLayout: 5}],
       ]);
       const registry = makeMenuRegistry(menus);
       const allMenus = registry.getAll();

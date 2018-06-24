@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 
 export const computePosition = ({ windowLayout }) => ({
   top: windowLayout.height,
-  left: windowLayout.width
+  left: windowLayout.width,
 });
 
 

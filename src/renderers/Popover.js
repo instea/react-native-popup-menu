@@ -235,7 +235,7 @@ export default class Popover extends React.Component {
       anchorStyle,
       preferredPlacement,
       placement: userPlacement,
-      ...other,
+      ...other
     } = this.props;
     const isRTL = I18nManager.isRTL;
     const animation = {

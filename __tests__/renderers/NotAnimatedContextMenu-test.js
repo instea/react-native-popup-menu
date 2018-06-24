@@ -24,7 +24,7 @@ describe('NotAnimatedContextMenu', () => {
       expect(output.type).toEqual(View);
       expect(output.props.children).toEqual([
         <Text>Some text</Text>,
-        <Text>Other text</Text>
+        <Text>Other text</Text>,
       ]);
     });
   });

@@ -7,6 +7,6 @@ require('jasmine-reporters');
 const reporters = require('jasmine-reporters');
 const junitReporter = new reporters.JUnitXmlReporter({
     savePath: __dirname + '/target/',
-    consolidateAll: false
+    consolidateAll: false,
 });
 jasmine.getEnv().addReporter(junitReporter);

@@ -5,7 +5,7 @@ import Menu, {
   MenuTrigger,
   MenuOptions,
   MenuOption,
-  renderers
+  renderers,
 } from 'react-native-popup-menu';
 
 let unique = 0;
@@ -32,8 +32,8 @@ export default class Example extends Component {
     this.setState({
       log: [...this.state.log, {
         value,
-        id: ++unique
-      }]
+        id: ++unique,
+      }],
     });
   }
 
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     marginHorizontal: 2,
     borderBottomWidth: 1,
-    borderColor: '#ccc'
+    borderColor: '#ccc',
   },
   logView: {
     flex: 1,
@@ -157,5 +157,5 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 18,
-  }
+  },
 });

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, View, } from 'react-native';
+import { Text, View } from 'react-native';
 import Menu, {
   MenuProvider,
   MenuOptions,
   MenuOption,
-  MenuTrigger
+  MenuTrigger,
 } from 'react-native-popup-menu';
 
 import {Scene, Router, Actions} from 'react-native-router-flux';

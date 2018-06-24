@@ -24,7 +24,7 @@ describe('MenuOutside', () => {
       expect(output.type).toEqual(View);
       expect(output.props.children).toEqual([
         <Text>Some text</Text>,
-        <Text>Other text</Text>
+        <Text>Other text</Text>,
       ]);
     });
   });
@@ -34,7 +34,7 @@ describe('MenuOutside', () => {
       const windowLayout = { width: 400, height: 600 };
       const layouts = { windowLayout };
       expect(computePosition(layouts)).toEqual({
-        top: 600, left: 400
+        top: 600, left: 400,
       });
     });
   });

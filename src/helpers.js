@@ -8,7 +8,7 @@ export const measure = ref => new Promise((resolve) => {
   ref.measure((x, y, width, height, pageX, pageY) => {
     resolve({
       x: pageX, y: pageY,
-      width, height
+      width, height,
     })
   });
 });

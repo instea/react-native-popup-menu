@@ -41,7 +41,7 @@ Creates a mock of react instance
 */
 export function mockReactInstance() {
   const instance = {
-    state: {}
+    state: {},
   };
   instance.setState = (newState, after) => {
     Object.assign(instance.state, newState);

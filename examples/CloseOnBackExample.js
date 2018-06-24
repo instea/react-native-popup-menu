@@ -5,7 +5,7 @@ import {
   MenuProvider,
   MenuOptions,
   MenuOption,
-  MenuTrigger
+  MenuTrigger,
 } from 'react-native-popup-menu';
 
 class CloseOnBackExample extends Component {

@@ -4,7 +4,7 @@ const ReactNative = React;
 ReactNative.StyleSheet = {
   create: function create(styles) {
       return styles;
-  }
+  },
 };
 
 class View extends React.Component {
@@ -12,7 +12,7 @@ class View extends React.Component {
 }
 
 View.propTypes = {
-  style: () => null
+  style: () => null,
 };
 
 class ListView extends React.Component {
@@ -28,7 +28,7 @@ class AppRegistry {
 const Animated = {
   timing: () => ({ start: () => undefined }),
   Value: () => ({ interpolate: () => false }),
-  View: View
+  View: View,
 };
 
 const I18nManager = {
