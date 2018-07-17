@@ -14,6 +14,7 @@ import TouchableExample from './TouchableExample';
 import MenuMethodsExample from './MenuMethodsExample';
 import CloseOnBackExample from './CloseOnBackExample';
 import FlatListExample from './FlatListExample';
+import InFlatListExample from './InFlatListExample';
 import PopoverExample from './PopoverExample';
 
 const demos = [
@@ -30,6 +31,7 @@ const demos = [
   // { Component: NavigatorExample, name: 'Example with react-native-router-flux' },
   { Component: CloseOnBackExample, name: 'Close on back button press example' },
   { Component: FlatListExample, name: 'Using FlatList' },
+  { Component: InFlatListExample, name: 'Menu in FlatList' },
   { Component: PopoverExample, name: 'Popover renderer' },
 ];
 
