@@ -123,7 +123,9 @@ describe('MenuProvider', () => {
     expect(output.type).toEqual(View);
     expect(typeof output.props.onLayout).toEqual('function');
     expect(output.props.children.length).toEqual(2);
-    const [ components, placeholder ] = output.props.children;
+    const [ components, safeArea ] = output.props.children;
+    expect(safeArea.props.children.length).toEqual(2);
+    const placeholder = safeArea.props.children[1];
     expect(components.type).toEqual(View);
     expect(placeholder.type).toEqual(MenuPlaceholder);
     expect(components.props.children).toEqual([
