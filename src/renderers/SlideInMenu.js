@@ -1,13 +1,16 @@
 import React from 'react';
 import { Animated, StyleSheet, Easing } from 'react-native';
 import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION } from '../constants';
+import { fitPositionIntoSafeArea } from './ContextMenu';
 
-export const computePosition = ({ windowLayout, optionsLayout }) => {
+export const computePosition = (layouts) => {
+  const { windowLayout, optionsLayout } = layouts
   const { height: wHeight } = windowLayout;
   const { height: oHeight } = optionsLayout;
   const top  = wHeight - oHeight;
   const left = 0;
-  return { top, left };
+  const position = { top, left };
+  return fitPositionIntoSafeArea(position, layouts);
 }
 
 export default class SlideInMenu extends React.Component {

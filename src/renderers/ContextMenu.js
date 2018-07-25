@@ -29,10 +29,34 @@ const axisPosition = (oDim, wDim, tPos, tDim) => {
   return pos;
 };
 
+function fit(pos, len, minPos, maxPos) {
+  if (pos + len > maxPos) {
+    pos = maxPos - len;
+  }
+  if (pos < minPos) {
+    pos = minPos;
+  }
+  return pos;
+}
 // fits options (position) into safeArea
-export const fitPositionIntoSafeArea = (position, {optionsLayout, safeAreaLayout }) => {
-  // TODO
-  return position;
+export const fitPositionIntoSafeArea = (position, layouts) => {
+  const { windowLayout, safeAreaLayout, optionsLayout } = layouts;
+  if (!safeAreaLayout) {
+    return position;
+  }
+  const { x: saX, y: saY, height: saHeight, width: saWidth } = safeAreaLayout;
+  const { height: oHeight, width: oWidth } = optionsLayout;
+  const { width: wWidth } = windowLayout;
+  let { top, left, right } = position;
+  top = fit(top, oHeight, saY, saY + saHeight);
+  if (right === undefined) {
+    // LTR
+    left = fit(left, oWidth, saX, saX + saWidth)
+  } else {
+    // RTL
+    right = fit(right, oWidth, wWidth - saX - saWidth, saX)
+  }
+  return { top, left, right };
 }
 
 export const computePosition = (layouts, isRTL) => {

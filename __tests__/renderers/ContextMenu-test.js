@@ -182,15 +182,15 @@ describe('ContextMenu', () => {
       const position = { top: 10, right: 10 };
       expect(fitPositionIntoSafeArea(position, defaultLayouts)).toEqual({
         top: 30,
-        right: 100,
+        right: 80, // window - safeArea end
       });
     });
 
     it('should avoid bottom/right edge', () => {
-      const position = { top: 290, left: 490 };
+      const position = { top: 490, left: 290 };
       expect(fitPositionIntoSafeArea(position, defaultLayouts)).toEqual({
-        top: 270,
-        left: 480,
+        top: 480,
+        left: 270,
       });
     });
 
