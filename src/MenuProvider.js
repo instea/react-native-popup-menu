@@ -1,6 +1,6 @@
 import React, { Component, createContext } from 'react';
 import PropTypes from 'prop-types';
-import { View, BackHandler } from 'react-native';
+import { View, BackHandler, SafeAreaView, StyleSheet } from 'react-native';
 
 import { withContext } from './with-context';
 import makeMenuRegistry from './menuRegistry';
@@ -201,20 +201,30 @@ export default class MenuProvider extends Component {
     debug('render menu', this.isMenuOpen(), this._ownLayout);
     return (
       <PopupMenuContext.Provider value={this.menuCtx}>
-        <View style={{flex:1}} onLayout={this._onLayout}>
+        <View style={styles.flex1} onLayout={this._onLayout}>
           <View style={[
-            {flex:1},
+            styles.flex1,
             customStyles.menuContextWrapper,
             customStyles.menuProviderWrapper,
             style,
           ]}>
             { this.props.children }
           </View>
-          <MenuPlaceholder
-            ctx={this}
-            backdropStyles={customStyles.backdrop}
-            ref={this._onPlaceholderRef}
-            />
+          <SafeAreaView
+            style={styles.safeArea}
+            pointerEvents="box-none"
+          >
+            <View
+              style={styles.flex1}
+              collapsable={false}
+              pointerEvents="box-none"
+              onLayout={this._onSafeAreaLayout}/>
+            <MenuPlaceholder
+              ctx={this}
+              backdropStyles={customStyles.backdrop}
+              ref={this._onPlaceholderRef}
+              />
+          </SafeAreaView>
         </View>
       </PopupMenuContext.Provider>
     );
@@ -274,12 +284,13 @@ export default class MenuProvider extends Component {
     const options = instance._getOptions();
     const { renderer, rendererProps } = instance.props;
     const windowLayout = this._ownLayout;
+    const safeAreaLayout = this._safeAreaLayout;
     const { optionsContainerStyle, renderOptionsContainer, customStyles } = options.props;
     const optionsRenderer = renderOptionsContainer || defaultOptionsContainerRenderer;
     const isOutside = !triggerLayout || !optionsLayout;
     const onLayout = e => this._onOptionsLayout(e, instance.getName(), isOutside);
     const style = [optionsContainerStyle, customStyles.optionsContainer];
-    const layouts = { windowLayout, triggerLayout, optionsLayout };
+    const layouts = { windowLayout, triggerLayout, optionsLayout, safeAreaLayout };
     const props = { ...rendererProps, style, onLayout, layouts };
     const optionsType = isOutside ? MenuOutside : renderer;
     if (!isFunctional(optionsType)) {
@@ -307,6 +318,18 @@ export default class MenuProvider extends Component {
     });
   }
 
+  _onSafeAreaLayout = ({ nativeEvent: { layout } }) => {
+    if (layoutsEqual(this._safeAreaLayout, layout)) {
+      return;
+    }
+    this._safeAreaLayout = layout;
+    debug('safeArea layout has changed', this._safeAreaLayout);
+    if (!this.isMenuOpen()) {
+      return;
+    }
+    this._notify(true);
+  }
+
 }
 
 MenuProvider.propTypes = {
@@ -318,3 +341,16 @@ MenuProvider.defaultProps = {
   customStyles: {},
   backHandler: false,
 };
+
+const styles = StyleSheet.create({
+  flex1: {
+    flex: 1,
+  },
+  safeArea: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+});

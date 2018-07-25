@@ -3,7 +3,7 @@ import { Animated, Text } from 'react-native';
 import { render } from '../helpers';
 
 jest.dontMock('../../src/renderers/ContextMenu');
-const { default: ContextMenu, computePosition } = require('../../src/renderers/ContextMenu');
+const { default: ContextMenu, computePosition, fitPositionIntoSafeArea } = require('../../src/renderers/ContextMenu');
 
 describe('ContextMenu', () => {
 
@@ -150,6 +150,47 @@ describe('ContextMenu', () => {
       const layouts = { windowLayout, triggerLayout, optionsLayout };
       expect(computePosition(layouts)).toEqual({
         top: 70, left: 80,
+      });
+    });
+
+  });
+
+  describe('fitPositionIntoSafeArea', () => {
+    const optionsLayout = { width: 50, height: 50 };
+    const safeAreaLayout = { width: 300, height: 500, x: 20, y: 30 };
+    const defaultLayouts = { optionsLayout, windowLayout, safeAreaLayout};
+
+    it('should be exported', () => {
+        expect(typeof ContextMenu.fitPositionIntoSafeArea).toEqual('function');
+    });
+
+    it('should be identity without safe area', () => {
+      const layouts = { optionsLayout };
+      const position = { top: 70, left: 80 };
+      expect(fitPositionIntoSafeArea(position, layouts)).toEqual(position);
+    });
+
+    it('should avoid top/left edge', () => {
+      const position = { top: 10, left: 10 };
+      expect(fitPositionIntoSafeArea(position, defaultLayouts)).toEqual({
+        top: 30,
+        left: 20,
+      });
+    });
+
+    it('should avoid top/right edge (RTL)', () => {
+      const position = { top: 10, right: 10 };
+      expect(fitPositionIntoSafeArea(position, defaultLayouts)).toEqual({
+        top: 30,
+        right: 100,
+      });
+    });
+
+    it('should avoid bottom/right edge', () => {
+      const position = { top: 290, left: 490 };
+      expect(fitPositionIntoSafeArea(position, defaultLayouts)).toEqual({
+        top: 270,
+        left: 480,
       });
     });
 
