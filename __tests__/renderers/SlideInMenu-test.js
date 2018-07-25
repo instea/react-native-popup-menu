@@ -32,7 +32,7 @@ describe('SlideInMenu', () => {
       const optionsLayout = { width: 400, height: 100 };
       const layouts = { windowLayout, optionsLayout };
       expect(computePosition(layouts)).toEqual({
-        top: 500, left: 0,
+        top: 500, left: 0, right: 0,
       });
     });
   });

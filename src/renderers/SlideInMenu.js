@@ -1,16 +1,17 @@
 import React from 'react';
 import { Animated, StyleSheet, Easing } from 'react-native';
 import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION } from '../constants';
-import { fitPositionIntoSafeArea } from './ContextMenu';
 
 export const computePosition = (layouts) => {
   const { windowLayout, optionsLayout } = layouts
   const { height: wHeight } = windowLayout;
   const { height: oHeight } = optionsLayout;
   const top  = wHeight - oHeight;
-  const left = 0;
-  const position = { top, left };
-  return fitPositionIntoSafeArea(position, layouts);
+  const left = 0, right = 0;
+  const position = { top, left, right };
+  // TODO what is the best way to handle safeArea?
+  // most likely some extra paddings inside SlideInMenu 
+  return position;
 }
 
 export default class SlideInMenu extends React.Component {
@@ -45,7 +46,6 @@ export default class SlideInMenu extends React.Component {
   render() {
     const { style, children, layouts, ...other } = this.props;
     const { height: oHeight } = layouts.optionsLayout;
-    const { width } = layouts.windowLayout;
     const animation = {
       transform: [{
         translateY: this.state.slide.interpolate({
@@ -56,7 +56,7 @@ export default class SlideInMenu extends React.Component {
     };
     const position = computePosition(layouts);
     return (
-      <Animated.View style={[styles.options, { width }, style, animation, position]} {...other}>
+      <Animated.View style={[styles.options, style, animation, position]} {...other}>
         {children}
       </Animated.View>
     );

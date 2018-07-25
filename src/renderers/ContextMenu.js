@@ -30,6 +30,9 @@ const axisPosition = (oDim, wDim, tPos, tDim) => {
 };
 
 function fit(pos, len, minPos, maxPos) {
+  if (pos === undefined) {
+    return undefined;
+  }
   if (pos + len > maxPos) {
     pos = maxPos - len;
   }
@@ -49,13 +52,8 @@ export const fitPositionIntoSafeArea = (position, layouts) => {
   const { width: wWidth } = windowLayout;
   let { top, left, right } = position;
   top = fit(top, oHeight, saY, saY + saHeight);
-  if (right === undefined) {
-    // LTR
-    left = fit(left, oWidth, saX, saX + saWidth)
-  } else {
-    // RTL
-    right = fit(right, oWidth, wWidth - saX - saWidth, saX)
-  }
+  left = fit(left, oWidth, saX, saX + saWidth)
+  right = fit(right, oWidth, wWidth - saX - saWidth, saX)
   return { top, left, right };
 }
 
