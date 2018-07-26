@@ -29,9 +29,7 @@ export function makeTouchable(TouchableComponent) {
   const Touchable = TouchableComponent || Platform.select({
     android: TouchableNativeFeedback,
     ios: TouchableHighlight,
-    web: TouchableHighlight,
-    windows:TouchableHighlight,
-    desktop: TouchableHighlight,
+    default: TouchableHighlight,
   });
   let defaultTouchableProps = {};
   if (Touchable === TouchableHighlight) {
