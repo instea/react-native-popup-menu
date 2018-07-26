@@ -31,6 +31,7 @@ export function makeTouchable(TouchableComponent) {
     ios: TouchableHighlight,
     web: TouchableHighlight,
     windows:TouchableHighlight,
+    desktop: TouchableHighlight,
   });
   let defaultTouchableProps = {};
   if (Touchable === TouchableHighlight) {
