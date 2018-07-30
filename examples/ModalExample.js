@@ -25,7 +25,7 @@ class ModalExample extends Component {
           </MenuOptions>
         </Menu>
         <Modal visible={this.state.visible} onRequestClose={() => this.setState({ visible: false })}>
-          <MenuProvider style={{flexDirection: 'column', padding: 30, backgroundColor: 'white'}}>
+          <MenuProvider skipInstanceCheck style={{flexDirection: 'column', padding: 30, backgroundColor: 'white'}}>
             <Text>Modal window:</Text>
             <Menu onSelect={value => alert(`Selected number: ${value}`)}>
               <MenuTrigger text='Select option' />

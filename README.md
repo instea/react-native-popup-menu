@@ -15,7 +15,7 @@ Features:
 * RTL layout support
 
 Community driven features:
-* Support for UWP and react-native-web
+* Support for UWP, react-native-web and react-native-desktop
 * Typescript definitions
 
 We thank our community for maintaining features that goes over our scope.
