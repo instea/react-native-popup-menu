@@ -22,6 +22,9 @@ if (!React.forwardRef) {
 export const PopupMenuContext = createContext({})
 export const withCtx = withContext(PopupMenuContext, "ctx");
 
+// count of MenuProvider instances
+let instanceCount = 0;
+
 export default class MenuProvider extends Component {
 
   constructor(props) {
@@ -68,8 +71,15 @@ export default class MenuProvider extends Component {
         console.warn('backHandler prop cannot be used if BackHandler is not present (RN >= 0.44 required)');
       }
     }
-    if (this.props.customStyles.menuContextWrapper) {
+    const { customStyles, skipInstanceCheck } = this.props;
+    if (customStyles.menuContextWrapper) {
       console.warn('menuContextWrapper custom style is deprecated and it might be removed in future releases, use menuProviderWrapper instead.');
+    }
+    if (!skipInstanceCheck) {
+      instanceCount++;
+    }
+    if (instanceCount > 1) {
+      console.warn('In most cases you should not have more MenuProviders in your app (see API documentation). In other cases use skipInstanceCheck prop.');
     }
   }
 
@@ -77,6 +87,10 @@ export default class MenuProvider extends Component {
     debug('unmounting menu provider')
     if (BackHandler) {
       BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
+    }
+    const { skipInstanceCheck } = this.props;
+    if (!skipInstanceCheck) {
+      instanceCount--;
     }
   }
 
@@ -312,9 +326,11 @@ export default class MenuProvider extends Component {
 MenuProvider.propTypes = {
   customStyles: PropTypes.object,
   backHandler: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+  skipInstanceCheck: PropTypes.bool,
 }
 
 MenuProvider.defaultProps = {
   customStyles: {},
   backHandler: false,
+  skipInstanceCheck: false,
 };
