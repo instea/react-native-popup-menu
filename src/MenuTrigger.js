@@ -14,13 +14,14 @@ export class MenuTrigger extends Component {
   }
 
   render() {
-    const { disabled, onRef, text, children, style, customStyles, menuName, ...other } = this.props;
+    const { disabled, onRef, text, children, style, customStyles, menuName, triggerOnLongPress, ...other } = this.props;
     const onPress = () => !disabled && this._onPress();
     const { Touchable, defaultTouchableProps } = makeTouchable(customStyles.TriggerTouchableComponent);
     return (
       <View ref={onRef} collapsable={false} style={customStyles.triggerOuterWrapper}>
         <Touchable
-          onPress={onPress}
+          onPress={triggerOnLongPress ? null : onPress}
+          onLongPress={triggerOnLongPress ? onPress : null}
           {...defaultTouchableProps}
           {...customStyles.triggerTouchable}
         >
@@ -39,6 +40,7 @@ MenuTrigger.propTypes = {
   text: PropTypes.string,
   onPress: PropTypes.func,
   customStyles: PropTypes.object,
+  triggerOnLongPress: PropTypes.bool,
 };
 
 MenuTrigger.defaultProps = {
