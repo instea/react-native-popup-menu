@@ -103,6 +103,7 @@ Menu can by opened by clicking on `<MenuTrigger />` or by calling context method
 |`children`|`Elements`|Optional||React elements to render as menu trigger. Exclusive with `text` property|
 |`text`|`String`|Optional||Text to be rendered. When this prop is provided, trigger's children won't be rendered|
 |`customStyles`|`Object`|Optional||Object defining wrapper, touchable and text styles|
+|`triggerOnLongPress`|`Boolean`|Optional|`false`|If `true`, menu will trigger onLongPress instead of onPress|
 
 ### Events
 | Event Name | Arguments | Notes |
