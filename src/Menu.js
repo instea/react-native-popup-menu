@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import { MenuOptions, MenuTrigger } from './index';
+import MenuOptions from './MenuOptions';
+import MenuTrigger from './MenuTrigger';
 import ContextMenu from './renderers/ContextMenu';
 import { makeName } from './helpers';
 import { debug } from './logger';
