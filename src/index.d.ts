@@ -19,6 +19,7 @@ declare module "react-native-popup-menu" {
       backdrop?: StyleProp<ViewStyle>;
     };
     backHandler?: boolean | Function;
+    skipInstanceCheck?: boolean;
   }
 
   interface MenuProviderStatic extends React.ComponentClass<MenuProviderProps> {
