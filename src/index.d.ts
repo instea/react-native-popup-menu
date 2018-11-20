@@ -5,7 +5,7 @@
  */
 declare module "react-native-popup-menu" {
   import * as React from "react";
-  import { StyleProp, ViewStyle } from "react-native";
+  import { StyleProp, ViewStyle, TextStyle } from "react-native";
 
   /**
    * MenuProvider
@@ -72,7 +72,7 @@ declare module "react-native-popup-menu" {
     customStyles?: {
       triggerOuterWrapper?: StyleProp<ViewStyle>;
       triggerWrapper?: StyleProp<ViewStyle>;
-      triggerText?: StyleProp<ViewStyle>;
+      triggerText?: StyleProp<TextStyle>;
       TriggerTouchableComponent?: Function;
       triggerTouchable?: {};
     };
@@ -117,7 +117,7 @@ declare module "react-native-popup-menu" {
 
   interface MenuOptionCustomStyle {
     optionWrapper?: StyleProp<ViewStyle>;
-    optionText?: StyleProp<ViewStyle>;
+    optionText?: StyleProp<TextStyle>;
     optionTouchable?: {};
   }
 
