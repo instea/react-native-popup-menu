@@ -5,7 +5,7 @@ import MenuOptions from './MenuOptions';
 import MenuTrigger from './MenuTrigger';
 import ContextMenu from './renderers/ContextMenu';
 import { makeName } from './helpers';
-import { debug } from './logger';
+import { debug, CFG } from './logger';
 import { withCtx } from './MenuProvider';
 
 const isRegularComponent = c => c.type !== MenuOptions && c.type !== MenuTrigger;
@@ -149,7 +149,11 @@ Menu.defaultProps = {
 };
 
 const MenuExternal = withCtx(Menu);
-MenuExternal.debug = false;
+Object.defineProperty(MenuExternal, 'debug', 
+    { 
+      get: function() { return CFG.debug }, 
+      set: function(val) { CFG.debug = val }, 
+    });
 MenuExternal.setDefaultRenderer = (renderer) => {
   Menu.defaultProps.renderer = renderer;
 }
