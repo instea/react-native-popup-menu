@@ -1,6 +1,6 @@
 {
   "name": "react-native-popup-menu",
-  "version": "0.14.3",
+  "version": "0.15.0",
   "description": "extensible popup/context menu for react native",
   "main": "build/rnpm.js",
   "directories": {
@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "rollup -c rollup.config.babel.js",
+    "prepublishOnly": "yarn build",
     "test": "jest",
     "lint": "eslint ."
   },
