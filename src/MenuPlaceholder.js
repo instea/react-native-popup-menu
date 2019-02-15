@@ -1,25 +1,25 @@
-import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
-import Backdrop from './Backdrop';
-import { debug } from './logger.js';
+import React, { Component } from 'react'
+import { StyleSheet, View } from 'react-native'
+import Backdrop from './Backdrop'
+import { debug } from './logger.js'
 
 export default class MenuPlaceholder extends Component {
   constructor(props) {
     super(props)
-    this.state = {};
+    this.state = {}
   }
 
   shouldComponentUpdate() {
     // don't terminate closing animation
-    return !this.props.ctx._isMenuClosing;
+    return !this.props.ctx._isMenuClosing
   }
 
   render() {
-    const { ctx, backdropStyles } = this.props;
-    const shouldRenderMenu = ctx.isMenuOpen() && ctx._isInitialized();
-    debug('MenuPlaceholder should render', shouldRenderMenu);
+    const { ctx, backdropStyles } = this.props
+    const shouldRenderMenu = ctx.isMenuOpen() && ctx._isInitialized()
+    debug('MenuPlaceholder should render', shouldRenderMenu)
     if (!shouldRenderMenu) {
-      return null;
+      return null
     }
     return (
       <View style={styles.placeholder}>
@@ -28,11 +28,9 @@ export default class MenuPlaceholder extends Component {
           style={backdropStyles}
           ref={ctx.onBackdropRef}
         />
-        {
-          ctx._makeOptions()
-        }
+        {ctx._makeOptions()}
       </View>
-    );
+    )
   }
 }
 
@@ -43,5 +41,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    overflowY: 'hidden',
   },
-});
+})
