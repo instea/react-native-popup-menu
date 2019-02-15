@@ -1262,6 +1262,7 @@
             onPress = _this$props.onPress,
             style = _this$props.style;
         return React__default.createElement(reactNative.TouchableWithoutFeedback, {
+          style: styles.container,
           onPress: onPress
         }, React__default.createElement(reactNative.Animated.View, {
           style: [styles.fullscreen, {
@@ -1280,6 +1281,9 @@
     onPress: propTypes.func.isRequired
   };
   var styles = reactNative.StyleSheet.create({
+    container: {
+      overflowY: 'hidden'
+    },
     fullscreen: {
       opacity: 0,
       position: 'absolute',
