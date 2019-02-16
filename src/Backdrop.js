@@ -37,7 +37,7 @@ class Backdrop extends Component {
   render() {
     const { onPress, style } = this.props
     return (
-      <TouchableWithoutFeedback style={styles.container} onPress={onPress}>
+      <TouchableWithoutFeedback onPress={onPress}>
         <Animated.View style={[styles.fullscreen, { opacity: this.fadeAnim }]}>
           <View style={[styles.fullscreen, style]} />
         </Animated.View>
@@ -51,9 +51,6 @@ Backdrop.propTypes = {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    overflowY: 'hidden',
-  },
   fullscreen: {
     opacity: 0,
     position: 'absolute',
