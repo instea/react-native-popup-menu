@@ -264,7 +264,7 @@
 
           _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(DeprecatedComponent)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
-          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onRef", function (ref) {
+          _defineProperty(_assertThisInitialized(_this), "onRef", function (ref) {
             return _this.ref = ref;
           });
 
@@ -298,9 +298,269 @@
     };
   }
 
+  function unwrapExports (x) {
+  	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x.default : x;
+  }
+
   function createCommonjsModule(fn, module) {
   	return module = { exports: {} }, fn(module, module.exports), module.exports;
   }
+
+  var reactIs_development = createCommonjsModule(function (module, exports) {
+
+
+
+  {
+    (function() {
+
+  Object.defineProperty(exports, '__esModule', { value: true });
+
+  // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+  // nor polyfill, then a plain number is used for performance.
+  var hasSymbol = typeof Symbol === 'function' && Symbol.for;
+
+  var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
+  var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
+  var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
+  var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
+  var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
+  var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
+  var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace;
+  var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
+  var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
+  var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
+  var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
+  var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
+  var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
+
+  function isValidElementType(type) {
+    return typeof type === 'string' || typeof type === 'function' ||
+    // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+    type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE);
+  }
+
+  /**
+   * Forked from fbjs/warning:
+   * https://github.com/facebook/fbjs/blob/e66ba20ad5be433eb54423f2b097d829324d9de6/packages/fbjs/src/__forks__/warning.js
+   *
+   * Only change is we use console.warn instead of console.error,
+   * and do nothing when 'console' is not supported.
+   * This really simplifies the code.
+   * ---
+   * Similar to invariant but only logs a warning if the condition is not met.
+   * This can be used to log issues in development environments in critical
+   * paths. Removing the logging code for production environments will keep the
+   * same logic and follow the same code paths.
+   */
+
+  var lowPriorityWarning = function () {};
+
+  {
+    var printWarning = function (format) {
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
+
+      var argIndex = 0;
+      var message = 'Warning: ' + format.replace(/%s/g, function () {
+        return args[argIndex++];
+      });
+      if (typeof console !== 'undefined') {
+        console.warn(message);
+      }
+      try {
+        // --- Welcome to debugging React ---
+        // This error was thrown as a convenience so that you can use this stack
+        // to find the callsite that caused this warning to fire.
+        throw new Error(message);
+      } catch (x) {}
+    };
+
+    lowPriorityWarning = function (condition, format) {
+      if (format === undefined) {
+        throw new Error('`lowPriorityWarning(condition, format, ...args)` requires a warning ' + 'message argument');
+      }
+      if (!condition) {
+        for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+          args[_key2 - 2] = arguments[_key2];
+        }
+
+        printWarning.apply(undefined, [format].concat(args));
+      }
+    };
+  }
+
+  var lowPriorityWarning$1 = lowPriorityWarning;
+
+  function typeOf(object) {
+    if (typeof object === 'object' && object !== null) {
+      var $$typeof = object.$$typeof;
+      switch ($$typeof) {
+        case REACT_ELEMENT_TYPE:
+          var type = object.type;
+
+          switch (type) {
+            case REACT_ASYNC_MODE_TYPE:
+            case REACT_CONCURRENT_MODE_TYPE:
+            case REACT_FRAGMENT_TYPE:
+            case REACT_PROFILER_TYPE:
+            case REACT_STRICT_MODE_TYPE:
+            case REACT_SUSPENSE_TYPE:
+              return type;
+            default:
+              var $$typeofType = type && type.$$typeof;
+
+              switch ($$typeofType) {
+                case REACT_CONTEXT_TYPE:
+                case REACT_FORWARD_REF_TYPE:
+                case REACT_PROVIDER_TYPE:
+                  return $$typeofType;
+                default:
+                  return $$typeof;
+              }
+          }
+        case REACT_LAZY_TYPE:
+        case REACT_MEMO_TYPE:
+        case REACT_PORTAL_TYPE:
+          return $$typeof;
+      }
+    }
+
+    return undefined;
+  }
+
+  // AsyncMode is deprecated along with isAsyncMode
+  var AsyncMode = REACT_ASYNC_MODE_TYPE;
+  var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+  var ContextConsumer = REACT_CONTEXT_TYPE;
+  var ContextProvider = REACT_PROVIDER_TYPE;
+  var Element = REACT_ELEMENT_TYPE;
+  var ForwardRef = REACT_FORWARD_REF_TYPE;
+  var Fragment = REACT_FRAGMENT_TYPE;
+  var Lazy = REACT_LAZY_TYPE;
+  var Memo = REACT_MEMO_TYPE;
+  var Portal = REACT_PORTAL_TYPE;
+  var Profiler = REACT_PROFILER_TYPE;
+  var StrictMode = REACT_STRICT_MODE_TYPE;
+  var Suspense = REACT_SUSPENSE_TYPE;
+
+  var hasWarnedAboutDeprecatedIsAsyncMode = false;
+
+  // AsyncMode should be deprecated
+  function isAsyncMode(object) {
+    {
+      if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+        hasWarnedAboutDeprecatedIsAsyncMode = true;
+        lowPriorityWarning$1(false, 'The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
+      }
+    }
+    return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
+  }
+  function isConcurrentMode(object) {
+    return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
+  }
+  function isContextConsumer(object) {
+    return typeOf(object) === REACT_CONTEXT_TYPE;
+  }
+  function isContextProvider(object) {
+    return typeOf(object) === REACT_PROVIDER_TYPE;
+  }
+  function isElement(object) {
+    return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+  }
+  function isForwardRef(object) {
+    return typeOf(object) === REACT_FORWARD_REF_TYPE;
+  }
+  function isFragment(object) {
+    return typeOf(object) === REACT_FRAGMENT_TYPE;
+  }
+  function isLazy(object) {
+    return typeOf(object) === REACT_LAZY_TYPE;
+  }
+  function isMemo(object) {
+    return typeOf(object) === REACT_MEMO_TYPE;
+  }
+  function isPortal(object) {
+    return typeOf(object) === REACT_PORTAL_TYPE;
+  }
+  function isProfiler(object) {
+    return typeOf(object) === REACT_PROFILER_TYPE;
+  }
+  function isStrictMode(object) {
+    return typeOf(object) === REACT_STRICT_MODE_TYPE;
+  }
+  function isSuspense(object) {
+    return typeOf(object) === REACT_SUSPENSE_TYPE;
+  }
+
+  exports.typeOf = typeOf;
+  exports.AsyncMode = AsyncMode;
+  exports.ConcurrentMode = ConcurrentMode;
+  exports.ContextConsumer = ContextConsumer;
+  exports.ContextProvider = ContextProvider;
+  exports.Element = Element;
+  exports.ForwardRef = ForwardRef;
+  exports.Fragment = Fragment;
+  exports.Lazy = Lazy;
+  exports.Memo = Memo;
+  exports.Portal = Portal;
+  exports.Profiler = Profiler;
+  exports.StrictMode = StrictMode;
+  exports.Suspense = Suspense;
+  exports.isValidElementType = isValidElementType;
+  exports.isAsyncMode = isAsyncMode;
+  exports.isConcurrentMode = isConcurrentMode;
+  exports.isContextConsumer = isContextConsumer;
+  exports.isContextProvider = isContextProvider;
+  exports.isElement = isElement;
+  exports.isForwardRef = isForwardRef;
+  exports.isFragment = isFragment;
+  exports.isLazy = isLazy;
+  exports.isMemo = isMemo;
+  exports.isPortal = isPortal;
+  exports.isProfiler = isProfiler;
+  exports.isStrictMode = isStrictMode;
+  exports.isSuspense = isSuspense;
+    })();
+  }
+  });
+
+  unwrapExports(reactIs_development);
+  var reactIs_development_1 = reactIs_development.typeOf;
+  var reactIs_development_2 = reactIs_development.AsyncMode;
+  var reactIs_development_3 = reactIs_development.ConcurrentMode;
+  var reactIs_development_4 = reactIs_development.ContextConsumer;
+  var reactIs_development_5 = reactIs_development.ContextProvider;
+  var reactIs_development_6 = reactIs_development.Element;
+  var reactIs_development_7 = reactIs_development.ForwardRef;
+  var reactIs_development_8 = reactIs_development.Fragment;
+  var reactIs_development_9 = reactIs_development.Lazy;
+  var reactIs_development_10 = reactIs_development.Memo;
+  var reactIs_development_11 = reactIs_development.Portal;
+  var reactIs_development_12 = reactIs_development.Profiler;
+  var reactIs_development_13 = reactIs_development.StrictMode;
+  var reactIs_development_14 = reactIs_development.Suspense;
+  var reactIs_development_15 = reactIs_development.isValidElementType;
+  var reactIs_development_16 = reactIs_development.isAsyncMode;
+  var reactIs_development_17 = reactIs_development.isConcurrentMode;
+  var reactIs_development_18 = reactIs_development.isContextConsumer;
+  var reactIs_development_19 = reactIs_development.isContextProvider;
+  var reactIs_development_20 = reactIs_development.isElement;
+  var reactIs_development_21 = reactIs_development.isForwardRef;
+  var reactIs_development_22 = reactIs_development.isFragment;
+  var reactIs_development_23 = reactIs_development.isLazy;
+  var reactIs_development_24 = reactIs_development.isMemo;
+  var reactIs_development_25 = reactIs_development.isPortal;
+  var reactIs_development_26 = reactIs_development.isProfiler;
+  var reactIs_development_27 = reactIs_development.isStrictMode;
+  var reactIs_development_28 = reactIs_development.isSuspense;
+
+  var reactIs = createCommonjsModule(function (module) {
+
+  {
+    module.exports = reactIs_development;
+  }
+  });
 
   /*
   object-assign
@@ -407,6 +667,7 @@
   {
     var ReactPropTypesSecret$1 = ReactPropTypesSecret_1;
     var loggedTypeFailures = {};
+    var has = Function.call.bind(Object.prototype.hasOwnProperty);
 
     printWarning = function(text) {
       var message = 'Warning: ' + text;
@@ -436,7 +697,7 @@
   function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
     {
       for (var typeSpecName in typeSpecs) {
-        if (typeSpecs.hasOwnProperty(typeSpecName)) {
+        if (has(typeSpecs, typeSpecName)) {
           var error;
           // Prop type validation may throw. In case they do, we don't want to
           // fail the render phase where it didn't fail before. So we log it.
@@ -465,7 +726,6 @@
               'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
               'shape all require an argument).'
             );
-
           }
           if (error instanceof Error && !(error.message in loggedTypeFailures)) {
             // Only monitor this failure once because there tends to be a lot of the
@@ -483,8 +743,20 @@
     }
   }
 
+  /**
+   * Resets warning cache when testing.
+   *
+   * @private
+   */
+  checkPropTypes.resetWarningCache = function() {
+    {
+      loggedTypeFailures = {};
+    }
+  };
+
   var checkPropTypes_1 = checkPropTypes;
 
+  var has$1 = Function.call.bind(Object.prototype.hasOwnProperty);
   var printWarning$1 = function() {};
 
   {
@@ -595,6 +867,7 @@
       any: createAnyTypeChecker(),
       arrayOf: createArrayOfTypeChecker,
       element: createElementTypeChecker(),
+      elementType: createElementTypeTypeChecker(),
       instanceOf: createInstanceTypeChecker,
       node: createNodeChecker(),
       objectOf: createObjectOfTypeChecker,
@@ -748,6 +1021,18 @@
       return createChainableTypeChecker(validate);
     }
 
+    function createElementTypeTypeChecker() {
+      function validate(props, propName, componentName, location, propFullName) {
+        var propValue = props[propName];
+        if (!reactIs.isValidElementType(propValue)) {
+          var propType = getPropType(propValue);
+          return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement type.'));
+        }
+        return null;
+      }
+      return createChainableTypeChecker(validate);
+    }
+
     function createInstanceTypeChecker(expectedClass) {
       function validate(props, propName, componentName, location, propFullName) {
         if (!(props[propName] instanceof expectedClass)) {
@@ -762,7 +1047,16 @@
 
     function createEnumTypeChecker(expectedValues) {
       if (!Array.isArray(expectedValues)) {
-        printWarning$1('Invalid argument supplied to oneOf, expected an instance of array.');
+        {
+          if (arguments.length > 1) {
+            printWarning$1(
+              'Invalid arguments supplied to oneOf, expected an array, got ' + arguments.length + ' arguments. ' +
+              'A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z]).'
+            );
+          } else {
+            printWarning$1('Invalid argument supplied to oneOf, expected an array.');
+          }
+        }
         return emptyFunctionThatReturnsNull;
       }
 
@@ -774,8 +1068,14 @@
           }
         }
 
-        var valuesString = JSON.stringify(expectedValues);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + propValue + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
+        var valuesString = JSON.stringify(expectedValues, function replacer(key, value) {
+          var type = getPreciseType(value);
+          if (type === 'symbol') {
+            return String(value);
+          }
+          return value;
+        });
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + String(propValue) + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
       }
       return createChainableTypeChecker(validate);
     }
@@ -791,7 +1091,7 @@
           return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
         }
         for (var key in propValue) {
-          if (propValue.hasOwnProperty(key)) {
+          if (has$1(propValue, key)) {
             var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
             if (error instanceof Error) {
               return error;
@@ -948,6 +1248,11 @@
         return true;
       }
 
+      // falsy value can't be a Symbol
+      if (!propValue) {
+        return false;
+      }
+
       // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
       if (propValue['@@toStringTag'] === 'Symbol') {
         return true;
@@ -1022,6 +1327,7 @@
     }
 
     ReactPropTypes.checkPropTypes = checkPropTypes_1;
+    ReactPropTypes.resetWarningCache = checkPropTypes_1.resetWarningCache;
     ReactPropTypes.PropTypes = ReactPropTypes;
 
     return ReactPropTypes;
@@ -1036,21 +1342,12 @@
    */
 
   {
-    var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
-      Symbol.for &&
-      Symbol.for('react.element')) ||
-      0xeac7;
-
-    var isValidElement = function(object) {
-      return typeof object === 'object' &&
-        object !== null &&
-        object.$$typeof === REACT_ELEMENT_TYPE;
-    };
+    var ReactIs = reactIs;
 
     // By explicitly using `prop-types` you are opting into new development behavior.
     // http://fb.me/prop-types-in-prod
     var throwOnDirectAccess = true;
-    module.exports = factoryWithTypeCheckers(isValidElement, throwOnDirectAccess);
+    module.exports = factoryWithTypeCheckers(ReactIs.isElement, throwOnDirectAccess);
   }
   });
 
@@ -1361,7 +1658,8 @@
       top: 0,
       left: 0,
       right: 0,
-      bottom: 0
+      bottom: 0,
+      overflowY: 'hidden'
     }
   });
 
@@ -1425,7 +1723,7 @@
 
       _this = _possibleConstructorReturn(this, _getPrototypeOf(MenuProvider).call(this, props));
 
-      _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "_handleBackButton", function () {
+      _defineProperty(_assertThisInitialized(_this), "_handleBackButton", function () {
         var backHandler = _this.props.backHandler;
         debug('_handleBackButton called', backHandler); // Default handler if true is passed
 
@@ -1439,25 +1737,25 @@
 
 
         if (typeof backHandler === 'function') {
-          return backHandler(_assertThisInitialized(_assertThisInitialized(_this)));
+          return backHandler(_assertThisInitialized(_this));
         }
 
         return false;
       });
 
-      _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onBackdropRef", function (r) {
+      _defineProperty(_assertThisInitialized(_this), "onBackdropRef", function (r) {
         _this.backdropRef = r;
       });
 
-      _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onOptionsRef", function (r) {
+      _defineProperty(_assertThisInitialized(_this), "onOptionsRef", function (r) {
         _this.optionsRef = r;
       });
 
-      _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "_onPlaceholderRef", function (r) {
+      _defineProperty(_assertThisInitialized(_this), "_onPlaceholderRef", function (r) {
         return _this._placeholderRef = r;
       });
 
-      _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "_onBackdropPress", function () {
+      _defineProperty(_assertThisInitialized(_this), "_onBackdropPress", function () {
         debug('on backdrop press');
 
         var menu = _this._getOpenedMenu();
@@ -1469,7 +1767,7 @@
         _this.closeMenu();
       });
 
-      _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "_onLayout", function (_ref) {
+      _defineProperty(_assertThisInitialized(_this), "_onLayout", function (_ref) {
         var layout = _ref.nativeEvent.layout;
 
         if (layoutsEqual(_this._ownLayout, layout)) {
@@ -1500,7 +1798,7 @@
         });
       });
 
-      _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "_onSafeAreaLayout", function (_ref2) {
+      _defineProperty(_assertThisInitialized(_this), "_onSafeAreaLayout", function (_ref2) {
         var layout = _ref2.nativeEvent.layout;
 
         if (layoutsEqual(_this._safeAreaLayout, layout)) {
