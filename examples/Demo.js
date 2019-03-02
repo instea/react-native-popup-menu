@@ -9,7 +9,6 @@ import ExtensionExample from './ExtensionExample';
 import ModalExample from './ModalExample';
 import StylingExample from './StylingExample';
 import NonRootExample from './NonRootExample';
-// import NavigatorExample from './NavigatorExample';
 import TouchableExample from './TouchableExample';
 import MenuMethodsExample from './MenuMethodsExample';
 import CloseOnBackExample from './CloseOnBackExample';
@@ -27,8 +26,6 @@ const demos = [
   { Component: StylingExample, name: 'Styling example' },
   { Component: TouchableExample, name: 'Touchable config example' },
   { Component: NonRootExample, name: 'Non root example' },
-  // FIXME demo is not working now
-  // { Component: NavigatorExample, name: 'Example with react-native-router-flux' },
   { Component: CloseOnBackExample, name: 'Close on back button press example' },
   { Component: FlatListExample, name: 'Using FlatList' },
   { Component: InFlatListExample, name: 'Menu in FlatList' },
