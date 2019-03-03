@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableWithoutFeedback, Animated } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, Animated, Platform } from 'react-native';
 import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION } from './constants';
 
 class Backdrop extends Component {
@@ -15,7 +15,7 @@ class Backdrop extends Component {
       Animated.timing(this.fadeAnim, {
         duration: OPEN_ANIM_DURATION,
         toValue: 1,
-        useNativeDriver: true,
+        useNativeDriver: (Platform.OS !== "web"),
       }).start(resolve);
     });
   }
@@ -25,7 +25,7 @@ class Backdrop extends Component {
       Animated.timing(this.fadeAnim, {
         duration: CLOSE_ANIM_DURATION,
         toValue: 0,
-        useNativeDriver: true,
+        useNativeDriver: (Platform.OS !== "web"),
       }).start(resolve);
     });
   }
