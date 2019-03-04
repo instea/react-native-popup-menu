@@ -1501,9 +1501,9 @@
     };
   }
 
-  // common durations of animation
   var OPEN_ANIM_DURATION = 225;
   var CLOSE_ANIM_DURATION = 195;
+  var USE_NATIVE_DRIVER = reactNative.Platform.OS !== "web";
 
   var Backdrop =
   /*#__PURE__*/
@@ -1535,7 +1535,7 @@
           reactNative.Animated.timing(_this2.fadeAnim, {
             duration: OPEN_ANIM_DURATION,
             toValue: 1,
-            useNativeDriver: true
+            useNativeDriver: USE_NATIVE_DRIVER
           }).start(resolve);
         });
       }
@@ -1548,7 +1548,7 @@
           reactNative.Animated.timing(_this3.fadeAnim, {
             duration: CLOSE_ANIM_DURATION,
             toValue: 0,
-            useNativeDriver: true
+            useNativeDriver: USE_NATIVE_DRIVER
           }).start(resolve);
         });
       }
@@ -2464,7 +2464,7 @@
           duration: OPEN_ANIM_DURATION,
           toValue: 1,
           easing: reactNative.Easing.out(reactNative.Easing.cubic),
-          useNativeDriver: true
+          useNativeDriver: USE_NATIVE_DRIVER
         }).start();
       }
     }, {
@@ -2477,7 +2477,7 @@
             duration: CLOSE_ANIM_DURATION,
             toValue: 0,
             easing: reactNative.Easing.in(reactNative.Easing.cubic),
-            useNativeDriver: true
+            useNativeDriver: USE_NATIVE_DRIVER
           }).start(resolve);
         });
       }
@@ -2926,7 +2926,7 @@
           duration: OPEN_ANIM_DURATION,
           toValue: 1,
           easing: reactNative.Easing.out(reactNative.Easing.cubic),
-          useNativeDriver: true
+          useNativeDriver: USE_NATIVE_DRIVER
         }).start();
       }
     }, {
@@ -2939,7 +2939,7 @@
             duration: CLOSE_ANIM_DURATION,
             toValue: 0,
             easing: reactNative.Easing.in(reactNative.Easing.cubic),
-            useNativeDriver: true
+            useNativeDriver: USE_NATIVE_DRIVER
           }).start(resolve);
         });
       }
@@ -3249,7 +3249,7 @@
           duration: OPEN_ANIM_DURATION,
           toValue: 1,
           easing: reactNative.Easing.out(reactNative.Easing.cubic),
-          useNativeDriver: true
+          useNativeDriver: USE_NATIVE_DRIVER
         }).start();
       }
     }, {
@@ -3262,7 +3262,7 @@
             duration: CLOSE_ANIM_DURATION,
             toValue: 0,
             easing: reactNative.Easing.in(reactNative.Easing.cubic),
-            useNativeDriver: true
+            useNativeDriver: USE_NATIVE_DRIVER
           }).start(resolve);
         });
       }
