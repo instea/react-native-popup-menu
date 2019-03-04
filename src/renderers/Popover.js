@@ -2,7 +2,7 @@ import { I18nManager, Animated, Easing, StyleSheet, View } from 'react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION } from '../constants.js';
+import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION, USE_NATIVE_DRIVER } from '../constants.js';
 
 const popoverPadding = 7;
 const anchorSize = 15;
@@ -212,7 +212,7 @@ export default class Popover extends React.Component {
       duration: OPEN_ANIM_DURATION,
       toValue: 1,
       easing: Easing.out(Easing.cubic),
-      useNativeDriver: true,
+      useNativeDriver: USE_NATIVE_DRIVER,
     }).start();
   }
 
@@ -222,7 +222,7 @@ export default class Popover extends React.Component {
         duration: CLOSE_ANIM_DURATION,
         toValue: 0,
         easing: Easing.in(Easing.cubic),
-        useNativeDriver: true,
+        useNativeDriver: USE_NATIVE_DRIVER,
       }).start(resolve);
     });
   }

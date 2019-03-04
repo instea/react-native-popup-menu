@@ -1,6 +1,6 @@
 import React from 'react';
 import { I18nManager, Animated, Easing, StyleSheet, PixelRatio } from 'react-native';
-import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION } from '../constants';
+import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION, USE_NATIVE_DRIVER } from '../constants';
 
 const axisPosition = (oDim, wDim, tPos, tDim) => {
   // if options are bigger than window dimension, then render at 0
@@ -83,7 +83,7 @@ export default class ContextMenu extends React.Component {
       duration: OPEN_ANIM_DURATION,
       toValue: 1,
       easing: Easing.out(Easing.cubic),
-      useNativeDriver: true,
+      useNativeDriver: USE_NATIVE_DRIVER,
     }).start();
   }
 
@@ -93,7 +93,7 @@ export default class ContextMenu extends React.Component {
         duration: CLOSE_ANIM_DURATION,
         toValue: 0,
         easing: Easing.in(Easing.cubic),
-        useNativeDriver: true,
+        useNativeDriver: USE_NATIVE_DRIVER,
       }).start(resolve);
     });
   }
