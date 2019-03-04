@@ -1,6 +1,6 @@
 import React from 'react';
 import { Animated, StyleSheet, Easing } from 'react-native';
-import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION } from '../constants';
+import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION, USE_NATIVE_DRIVER } from '../constants';
 
 export const computePosition = (layouts) => {
   const { windowLayout, optionsLayout } = layouts
@@ -28,7 +28,7 @@ export default class SlideInMenu extends React.Component {
       duration: OPEN_ANIM_DURATION,
       toValue: 1,
       easing: Easing.out(Easing.cubic),
-      useNativeDriver: true,
+      useNativeDriver: USE_NATIVE_DRIVER,
     }).start();
   }
 
@@ -38,7 +38,7 @@ export default class SlideInMenu extends React.Component {
         duration: CLOSE_ANIM_DURATION,
         toValue: 0,
         easing: Easing.in(Easing.cubic),
-        useNativeDriver: true,
+        useNativeDriver: USE_NATIVE_DRIVER,
       }).start(resolve);
     });
   }
