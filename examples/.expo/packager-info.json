@@ -1,8 +1,8 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 31792,
+  "packagerPort": null,
+  "packagerPid": null,
   "expoServerNgrokUrl": "https://w3-vvy.anonymous.examples.exp.direct",
   "packagerNgrokUrl": "https://packager.w3-vvy.anonymous.examples.exp.direct",
   "ngrokPid": 31843
