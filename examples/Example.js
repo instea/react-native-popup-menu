@@ -77,7 +77,9 @@ export default class Example extends Component {
               onOpen={() => this.addLog('menu is opening')}
               onClose={() => this.addLog('menu is closing')}
               >
-              <MenuTrigger style={styles.trigger}>
+              <MenuTrigger
+                onAlternativeAction={() => this.addLog('trigger longpressed')} 
+                style={styles.trigger}>
                 <Text style={[styles.text, styles.triggerText]}>Context menu...</Text>
               </MenuTrigger>
               <MenuOptions customStyles={{ optionText: styles.text }}>

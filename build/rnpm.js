@@ -2298,7 +2298,8 @@
             customStyles = _this$props.customStyles,
             menuName = _this$props.menuName,
             triggerOnLongPress = _this$props.triggerOnLongPress,
-            other = _objectWithoutProperties(_this$props, ["disabled", "onRef", "text", "children", "style", "customStyles", "menuName", "triggerOnLongPress"]);
+            onAlternativeAction = _this$props.onAlternativeAction,
+            other = _objectWithoutProperties(_this$props, ["disabled", "onRef", "text", "children", "style", "customStyles", "menuName", "triggerOnLongPress", "onAlternativeAction"]);
 
         var onPress = function onPress() {
           return !disabled && _this._onPress();
@@ -2313,8 +2314,8 @@
           collapsable: false,
           style: customStyles.triggerOuterWrapper
         }, React__default.createElement(Touchable, _extends({
-          onPress: triggerOnLongPress ? null : onPress,
-          onLongPress: triggerOnLongPress ? onPress : null
+          onPress: triggerOnLongPress ? onAlternativeAction : onPress,
+          onLongPress: triggerOnLongPress ? onPress : onAlternativeAction
         }, defaultTouchableProps, customStyles.triggerTouchable), React__default.createElement(reactNative.View, _extends({}, other, {
           style: [customStyles.triggerWrapper, style]
         }), text ? React__default.createElement(reactNative.Text, {
@@ -2329,6 +2330,7 @@
     disabled: propTypes.bool,
     text: propTypes.string,
     onPress: propTypes.func,
+    onAlternativeAction: propTypes.func,
     customStyles: propTypes.object,
     triggerOnLongPress: propTypes.bool
   };

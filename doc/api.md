@@ -108,7 +108,8 @@ Menu can by opened by clicking on `<MenuTrigger />` or by calling context method
 ### Events
 | Event Name | Arguments | Notes |
 |---|---|---|
-|`onPress`||Triggered when trigger is pressed|
+|`onPress`||Triggered when trigger is pressed (or longpressed depending on `triggerOnLongPress`)|
+|`onAlternativeAction`||Triggered when trigger is longpressed (or pressed depending on `triggerOnLongPress`)|
 
 ### Custom styles
 
