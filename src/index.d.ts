@@ -76,8 +76,10 @@ declare module "react-native-popup-menu" {
       TriggerTouchableComponent?: Function;
       triggerTouchable?: {};
     };
+    triggerOnLongPress?: boolean;
 
     onPress?(): void;
+    onAlternativeAction? (): void;
   }
 
   export const MenuTrigger: React.ComponentClass<MenuTriggerProps>;
