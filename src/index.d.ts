@@ -42,6 +42,7 @@ declare module "react-native-popup-menu" {
     opened?: boolean;
     renderer?: Function;
     rendererProps?: any;
+    style?: StyleProp<ViewStyle>;
 
     onSelect?(optionValue: any): any;
 
