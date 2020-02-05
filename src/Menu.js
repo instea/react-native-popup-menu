@@ -38,14 +38,14 @@ export class Menu extends Component {
       console.warn('Menu name cannot be changed');
     }
     // force update if menu is opened as its content might have changed
-    const force = this._isOpen();
+    const force = this.isOpen();
     debug('component did update', this._name, force);
     this.props.ctx.menuActions._notify(force);
   }
 
   componentWillUnmount() {
     debug('unsubscribing menu', this._name);
-    if (this._isOpen()) {
+    if (this.isOpen()) {
       this._forceClose = true;
       this.props.ctx.menuActions._notify();
     }
@@ -58,6 +58,13 @@ export class Menu extends Component {
 
   close() {
     return this.props.ctx.menuActions.closeMenu();
+  }
+
+  isOpen() {
+    if (this._forceClose) {
+      return false;
+    }
+    return this.props.hasOwnProperty('opened') ? this.props.opened : this._opened;
   }
 
   getName() {
@@ -88,13 +95,6 @@ export class Menu extends Component {
       }
       return r;
     }, []);
-  }
-
-  _isOpen() {
-    if (this._forceClose) {
-      return false;
-    }
-    return this.props.hasOwnProperty('opened') ? this.props.opened : this._opened;
   }
 
   _getTrigger() {
