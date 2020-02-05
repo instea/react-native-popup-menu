@@ -121,7 +121,7 @@ export default class MenuProvider extends Component {
     // invalidate layouts for closed menus,
     // both controlled and uncontrolled menus
     this._menuRegistry.getAll()
-      .filter(menu => !menu.instance._isOpen())
+      .filter(menu => !menu.instance.isOpen())
       .forEach(menu => {
         this._menuRegistry.updateLayoutInfo(menu.name, { triggerLayout: undefined });
       });
@@ -162,7 +162,7 @@ export default class MenuProvider extends Component {
   _notify(forceUpdate) {
     const NULL = {};
     const prev = this.openedMenu || NULL;
-    const next = this._menuRegistry.getAll().find(menu => menu.instance._isOpen()) || NULL;
+    const next = this._menuRegistry.getAll().find(menu => menu.instance.isOpen()) || NULL;
     // set newly opened menu before any callbacks are called
     this.openedMenu = next === NULL ? undefined : next;
     if (!forceUpdate && !this._isRenderNeeded(prev, next)) {
@@ -172,7 +172,7 @@ export default class MenuProvider extends Component {
     let afterSetState = undefined;
     let beforeSetState = () => Promise.resolve();
     if (prev.name !== next.name) {
-      if (prev !== NULL && !prev.instance._isOpen()) {
+      if (prev !== NULL && !prev.instance.isOpen()) {
         beforeSetState = () => this._beforeClose(prev)
           .then(() => prev.instance.props.onClose());
       }
