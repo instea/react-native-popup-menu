@@ -34,9 +34,9 @@ describe('MenuProvider', () => {
     let opened = false;
     return {
       getName: ()=>name,
+      isOpen: ()=>opened,
       _getOpened: ()=>opened,
       _setOpened: (value)=>opened=value,
-      _isOpen: ()=>opened,
       _getTrigger: ()=>(<MenuTrigger/>),
       _getOptions: ()=>(<MenuOptions/>),
       props : {
@@ -180,10 +180,10 @@ describe('MenuProvider', () => {
     menuRegistry.subscribe(menu1);
     return menuActions.toggleMenu('menu1').then(() => {
       expect(menuActions.isMenuOpen()).toEqual(true);
-      expect(menu1._isOpen()).toEqual(true);
+      expect(menu1.isOpen()).toEqual(true);
       return menuActions.toggleMenu('menu1').then(() => {
         expect(menuActions.isMenuOpen()).toEqual(false);
-        expect(menu1._isOpen()).toEqual(false);
+        expect(menu1.isOpen()).toEqual(false);
         return menuActions.toggleMenu('menu1').then(() => {
           expect(menuActions.isMenuOpen()).toEqual(true);
         });

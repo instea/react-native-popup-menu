@@ -185,7 +185,7 @@ describe('Menu', () => {
       <Menu opened={false}/>
     );
     instance._setOpened(true);
-    expect(instance._isOpen()).toEqual(false);
+    expect(instance.isOpen()).toEqual(false);
     expect(instance._getOpened()).toEqual(true);
   });
 
@@ -194,7 +194,7 @@ describe('Menu', () => {
       <Menu/>
     );
     instance._setOpened(true);
-    expect(instance._isOpen()).toEqual(true);
+    expect(instance.isOpen()).toEqual(true);
   });
 
   it('should be considered closed after unmount', () => {
@@ -204,9 +204,9 @@ describe('Menu', () => {
         <MenuOptions />
       </Menu>
     );
-    expect(instance._isOpen()).toEqual(true);
+    expect(instance.isOpen()).toEqual(true);
     instance.componentWillUnmount();
-    expect(instance._isOpen()).toEqual(false);
+    expect(instance.isOpen()).toEqual(false);
     expect(ctx.menuActions._notify).toHaveBeenCalled();
   });
 

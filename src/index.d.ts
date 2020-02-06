@@ -53,15 +53,20 @@ declare module "react-native-popup-menu" {
     onBackdropPress?(): void;
   }
 
-  interface MenuStatic {
-    debug: boolean;
+  export class Menu extends React.Component<MenuProps> {
+    static debug: boolean;
+    static setDefaultRenderer(renderer: Function): void;
+    static setDefaultRendererProps(defaultRendererProps: any): void;
 
-    setDefaultRenderer(renderer: Function): void;
+    /** Closes currently opened menu. */
+    close(): Promise<void>;
 
-    setDefaultRendererProps(defaultRendererProps: any): void;
+    /** Returns `true` if this menu is open. */
+    isOpen(): boolean;
+
+    /** Opens this menu. */
+    open(): Promise<void>;
   }
-
-  export const Menu: React.ComponentClass<MenuProps> & MenuStatic;
 
   /**
    * MenuTrigger

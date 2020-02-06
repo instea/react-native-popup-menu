@@ -60,6 +60,7 @@ Root menu component defining menu name and providing menu events.
 | Method Name | Arguments | Notes
 |---|---|---|
 |`open`||Opens menu. Returns promise|
+|`isOpen`||Returns wheter the menu is open or not|
 |`close`||Closes menu. Returns promise|
 
 ### Properties
