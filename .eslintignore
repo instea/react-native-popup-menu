@@ -3,3 +3,4 @@ coverage/*
 examples/node_modules/*
 examples/android/*
 examples/ios/*
+build/*
