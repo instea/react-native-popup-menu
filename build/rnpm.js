@@ -235,6 +235,11 @@
 
     return arr;
   }
+  /** checks if component is class component */
+
+  function isClassComponent(component) {
+    return component.prototype && !!component.prototype.render;
+  }
   /**
    * Higher order component to deprecate usage of component.
    * message - deprecate warning message
@@ -1401,10 +1406,6 @@
     return a === b || a && b && a.width === b.width && a.height === b.height;
   };
 
-  var isFunctional = function isFunctional(Component) {
-    return !Component.prototype.render;
-  };
-
   if (!React__default.forwardRef) {
     throw new Error('This version of popup-menu requires RN 0.55+. Check our compatibility table.');
   }
@@ -1878,7 +1879,7 @@
 
         var optionsType = isOutside ? MenuOutside : renderer;
 
-        if (!isFunctional(optionsType)) {
+        if (isClassComponent(optionsType)) {
           props.ref = this.onOptionsRef;
         }
 
