@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { I18nManager, View } from 'react-native';
 
 import { computePosition, styles } from './ContextMenu';
 
@@ -10,7 +10,7 @@ export default class NotAnimatedContextMenu extends React.Component {
 
   render() {
     const { style, children, layouts, ...other } = this.props;
-    const position = computePosition(layouts);
+    const position = computePosition(layouts, I18nManager.isRTL);
     return (
       <View {...other} style={[styles.options, style, position]}>
         {children}
