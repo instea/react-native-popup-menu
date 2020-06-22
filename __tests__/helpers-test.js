@@ -10,6 +10,7 @@ const {
   makeName,
   makeTouchable,
   lo,
+  isClassComponent,
   deprecatedComponent,
 } = require('../src/helpers');
 
@@ -129,5 +130,32 @@ describe('helpers test', () => {
       )
     })
   })
+
+});
+
+describe('isClassComponent', () => {
+  it('return true for React.Component', () => {
+    class TestComponent extends React.Component {
+      render() {
+        return null;
+      }
+    }
+    const result = isClassComponent(TestComponent);
+    expect(result).to.equal(true);
+  });
+
+  it('return false for functional componets', () => {
+    function FuncComponent() {
+        return null;
+    }
+    const result = isClassComponent(FuncComponent);
+    expect(result).to.equal(false);
+  });
+
+  it('return false for arrow functions', () => {
+    const ArrowComponent = () => null;
+    const result = isClassComponent(ArrowComponent);
+    expect(result).to.equal(false);
+  });
 
 });

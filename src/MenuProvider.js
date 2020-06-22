@@ -5,7 +5,7 @@ import { View, BackHandler, SafeAreaView, StyleSheet } from 'react-native';
 import { withContext } from './with-context';
 import makeMenuRegistry from './menuRegistry';
 import MenuPlaceholder from './MenuPlaceholder';
-import { measure } from './helpers';
+import { measure, isClassComponent } from './helpers';
 import { debug } from './logger.js';
 import MenuOutside from './renderers/MenuOutside';
 
@@ -13,8 +13,6 @@ const defaultOptionsContainerRenderer = options => options;
 const layoutsEqual = (a, b) => (
   a === b || (a && b && a.width === b.width && a.height === b.height)
 );
-
-const isFunctional = Component => !Component.prototype.render;
 
 if (!React.forwardRef) {
   throw new Error('This version of popup-menu requires RN 0.55+. Check our compatibility table.')
@@ -307,7 +305,7 @@ export default class MenuProvider extends Component {
     const layouts = { windowLayout, triggerLayout, optionsLayout, safeAreaLayout };
     const props = { ...rendererProps, style, onLayout, layouts };
     const optionsType = isOutside ? MenuOutside : renderer;
-    if (!isFunctional(optionsType)) {
+    if (isClassComponent(optionsType)) {
       props.ref = this.onOptionsRef;
     }
     return React.createElement(optionsType, props, optionsRenderer(options));

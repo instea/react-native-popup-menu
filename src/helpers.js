@@ -77,6 +77,11 @@ export function iterator2array(it) {
   return arr;
 }
 
+/** checks if component is class component */
+export function isClassComponent(component) {
+  return component.prototype && !!component.prototype.render;
+}
+
 /**
  * Higher order component to deprecate usage of component.
  * message - deprecate warning message

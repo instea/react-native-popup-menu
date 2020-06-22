@@ -22,6 +22,7 @@ jest.mock('../src/helpers', () => ({
     }),
   }),
   lo: x => x,
+  isClassComponent: () => false,
   iterator2array: it => [...it],
 }));
 
