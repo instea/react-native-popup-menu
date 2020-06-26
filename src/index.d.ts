@@ -141,4 +141,63 @@ declare module "react-native-popup-menu" {
     SlideInMenu: Function;
     Popover: Function;
   }>;
+
+  /**
+   * withMenuContext
+   * @see https://github.com/instea/react-native-popup-menu/blob/master/doc/api.md#menuprovider
+   */
+  interface TriggerLayoutType {
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+  }
+
+  interface OptionsLayoutType {
+    width?: number;
+    height?: number;
+  }
+
+  interface MenuEntry {
+    name: string;
+    instance: Menu;
+    triggerLayout?: TriggerLayoutType;
+    optionsLayout?: OptionsLayoutType;
+    optionsCustomStyles?: MenuOptionsCustomStyle;
+  }
+
+  interface MenuRegistry {
+    subscribe: (instance: Menu) => void;
+    unsubscribe: (instance: Menu) => void;
+    updateLayoutInfo: (
+      name: string,
+      layouts?: {
+        triggerLayout?: TriggerLayoutType;
+        optionsLayout?: OptionsLayoutType;
+      }
+    ) => void;
+    setOptionsCustomStyles: (name: string, optionsCustomStyles: MenuOptionsCustomStyle) => void;
+    getMenu: (name: string) => MenuEntry;
+    getAll: () => MenuEntry[];
+  }
+
+  interface MenuActions {
+    openMenu: (name: string) => Promise<void>;
+    closeMenu: () => Promise<void>;
+    toggleMenu: (name: string) => Promise<void>;
+    isMenuOpen: () => boolean;
+  }
+
+  export interface MenuContext {
+    menuRegistry: MenuRegistry;
+    menuActions: MenuActions;
+  }
+
+  interface MenuContextProps {
+    ctx: MenuContext;
+  }
+
+  export function withMenuContext<PropType extends MenuContextProps>(
+    component: React.ComponentType<PropType>
+  ): React.ComponentType<Omit<PropType, "ctx">>;
 }
