@@ -143,8 +143,7 @@ declare module "react-native-popup-menu" {
   }>;
 
   /**
-   * withMenuContext
-   * @see https://github.com/instea/react-native-popup-menu/blob/master/doc/api.md#menuprovider
+   * Types for MenuRegistry (which isn't exported)
    */
   interface TriggerLayoutType {
     x?: number;
@@ -181,15 +180,20 @@ declare module "react-native-popup-menu" {
     getAll: () => MenuEntry[];
   }
 
+  /**
+   * withMenuContext
+   * @see https://github.com/instea/react-native-popup-menu/blob/master/doc/api.md#menuprovider
+   */
   interface MenuActions {
     openMenu: (name: string) => Promise<void>;
     closeMenu: () => Promise<void>;
     toggleMenu: (name: string) => Promise<void>;
     isMenuOpen: () => boolean;
   }
-
+  
   export interface MenuContext {
-    menuRegistry: MenuRegistry;
+    // This part shouldn't be exported to the user so it's commented out
+    // menuRegistry: MenuRegistry;
     menuActions: MenuActions;
   }
 
