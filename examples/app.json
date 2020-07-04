@@ -3,7 +3,6 @@
     "name": "react-native-popup-menu-examples",
     "slug": "RNPopupMenuExamples",
     "privacy": "public",
-    "sdkVersion": "32.0.0",
     "platforms": [
       "ios",
       "android"

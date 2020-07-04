@@ -3,5 +3,6 @@
   "lanType": "ip",
   "dev": true,
   "minify": false,
-  "urlRandomness": "w3-vvy"
+  "urlRandomness": "w3-vvy",
+  "https": false
 }
