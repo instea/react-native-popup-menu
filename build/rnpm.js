@@ -2579,7 +2579,7 @@
             layouts = _this$props.layouts,
             other = _objectWithoutProperties(_this$props, ["style", "children", "layouts"]);
 
-        var position = computePosition$1(layouts);
+        var position = computePosition$1(layouts, reactNative.I18nManager.isRTL);
         return React__default.createElement(reactNative.View, _extends({}, other, {
           style: [styles$4.options, style, position]
         }), children);
