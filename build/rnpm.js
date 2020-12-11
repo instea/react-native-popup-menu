@@ -2003,7 +2003,8 @@
             menuName = _this$props.menuName,
             triggerOnLongPress = _this$props.triggerOnLongPress,
             onAlternativeAction = _this$props.onAlternativeAction,
-            other = _objectWithoutProperties(_this$props, ["disabled", "onRef", "text", "children", "style", "customStyles", "menuName", "triggerOnLongPress", "onAlternativeAction"]);
+            testID = _this$props.testID,
+            other = _objectWithoutProperties(_this$props, ["disabled", "onRef", "text", "children", "style", "customStyles", "menuName", "triggerOnLongPress", "onAlternativeAction", "testID"]);
 
         var onPress = function onPress() {
           return !disabled && _this._onPress();
@@ -2018,6 +2019,7 @@
           collapsable: false,
           style: customStyles.triggerOuterWrapper
         }, React__default.createElement(Touchable, _extends({
+          testID: testID,
           onPress: triggerOnLongPress ? onAlternativeAction : onPress,
           onLongPress: triggerOnLongPress ? onPress : onAlternativeAction
         }, defaultTouchableProps, customStyles.triggerTouchable), React__default.createElement(reactNative.View, _extends({}, other, {
@@ -2036,11 +2038,13 @@
     onPress: propTypes.func,
     onAlternativeAction: propTypes.func,
     customStyles: propTypes.object,
-    triggerOnLongPress: propTypes.bool
+    triggerOnLongPress: propTypes.bool,
+    testID: propTypes.string
   };
   MenuTrigger.defaultProps = {
     disabled: false,
-    customStyles: {}
+    customStyles: {},
+    testID: undefined
   };
   var MenuTrigger$1 = withCtx(MenuTrigger);
 
@@ -2490,7 +2494,8 @@
             disabled = _this$props.disabled,
             disableTouchable = _this$props.disableTouchable,
             children = _this$props.children,
-            style = _this$props.style;
+            style = _this$props.style,
+            testID = _this$props.testID;
 
         var customStyles = this._getCustomStyles();
 
@@ -2521,6 +2526,7 @@
               defaultTouchableProps = _makeTouchable.defaultTouchableProps;
 
           return React__default.createElement(Touchable, _extends({
+            testID: testID,
             onPress: function onPress() {
               return _this._onSelect();
             }
@@ -2537,12 +2543,14 @@
     onSelect: propTypes.func,
     text: propTypes.string,
     value: propTypes.any,
-    customStyles: propTypes.object
+    customStyles: propTypes.object,
+    testID: propTypes.string
   };
   MenuOption.defaultProps = {
     disabled: false,
     disableTouchable: false,
-    customStyles: {}
+    customStyles: {},
+    testID: undefined
   };
   var defaultStyles = reactNative.StyleSheet.create({
     option: {
