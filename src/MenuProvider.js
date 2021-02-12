@@ -1,6 +1,6 @@
 import React, { Component, createContext } from 'react';
 import PropTypes from 'prop-types';
-import { View, BackHandler, SafeAreaView, StyleSheet } from 'react-native';
+import { View, SafeAreaView, StyleSheet } from 'react-native';
 
 import { withContext } from './with-context';
 import makeMenuRegistry from './menuRegistry';
@@ -37,7 +37,7 @@ export default class MenuProvider extends Component {
       _getOpenedMenu: () => this._getOpenedMenu(),
       _notify: force => this._notify(force),
     };
-    this.menuCtx = { menuRegistry: this._menuRegistry, menuActions }
+    this.menuCtx = { menuRegistry: this._menuRegistry, menuActions, handleBackButton: this._handleBackButton }
   }
 
   _handleBackButton = () => {
@@ -61,14 +61,6 @@ export default class MenuProvider extends Component {
   }
 
   componentDidMount() {
-    if (BackHandler) {
-      BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
-    } else {
-      const { backHandler } = this.props;
-      if (backHandler === true || typeof backHandler === 'function') {
-        console.warn('backHandler prop cannot be used if BackHandler is not present (RN >= 0.44 required)');
-      }
-    }
     const { customStyles, skipInstanceCheck } = this.props;
     if (customStyles.menuContextWrapper) {
       console.warn('menuContextWrapper custom style is deprecated and it might be removed in future releases, use menuProviderWrapper instead.');
@@ -83,9 +75,6 @@ export default class MenuProvider extends Component {
 
   componentWillUnmount() {
     debug('unmounting menu provider')
-    if (BackHandler) {
-      BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
-    }
     const { skipInstanceCheck } = this.props;
     if (!skipInstanceCheck) {
       instanceCount--;

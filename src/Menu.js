@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { BackHandler, View } from 'react-native';
 import MenuOptions from './MenuOptions';
 import MenuTrigger from './MenuTrigger';
 import ContextMenu from './renderers/ContextMenu';
@@ -24,6 +24,10 @@ export class Menu extends Component {
     }
   }
 
+  // Wrap the MenuProvider's handler in a local function so we can unregister it for
+  // one Menu instance without affecting other instances
+  _handleBackButton = () => this.props.ctx.handleBackButton();
+
   componentDidMount() {
     if (!this._validateChildren()) {
       return;
@@ -31,6 +35,15 @@ export class Menu extends Component {
     debug('subscribing menu', this._name);
     this.props.ctx.menuRegistry.subscribe(this);
     this.props.ctx.menuActions._notify();
+
+    if (BackHandler) {
+      BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
+    } else {
+      const { backHandler } = this.props;
+      if (backHandler === true || typeof backHandler === 'function') {
+        console.warn('backHandler prop cannot be used if BackHandler is not present (RN >= 0.44 required)');
+      }
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -50,6 +63,10 @@ export class Menu extends Component {
       this.props.ctx.menuActions._notify();
     }
     this.props.ctx.menuRegistry.unsubscribe(this);
+
+    if (BackHandler) {
+      BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
+    }
   }
 
   open() {
