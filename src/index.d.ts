@@ -82,6 +82,7 @@ declare module "react-native-popup-menu" {
       TriggerTouchableComponent?: Function;
       triggerTouchable?: {};
     };
+    testID?: string;
     triggerOnLongPress?: boolean;
 
     onPress?(): void;
@@ -98,6 +99,7 @@ declare module "react-native-popup-menu" {
     optionsContainerStyle?: StyleProp<ViewStyle>;
     renderOptionsContainer?: Function;
     customStyles?: MenuOptionsCustomStyle;
+    testID?: string;
   }
 
   interface MenuOptionsCustomStyle extends MenuOptionCustomStyle {
