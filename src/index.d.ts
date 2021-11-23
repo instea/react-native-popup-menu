@@ -129,6 +129,7 @@ declare module "react-native-popup-menu" {
     optionWrapper?: StyleProp<ViewStyle>;
     optionText?: StyleProp<TextStyle>;
     optionTouchable?: {};
+    OptionTouchableComponent?: Function;
   }
 
   export const MenuOption: React.ComponentClass<MenuOptionProps>;
