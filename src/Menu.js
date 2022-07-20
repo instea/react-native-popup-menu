@@ -36,14 +36,7 @@ export class Menu extends Component {
     this.props.ctx.menuRegistry.subscribe(this);
     this.props.ctx.menuActions._notify();
 
-    if (BackHandler) {
-      BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
-    } else {
-      const { backHandler } = this.props;
-      if (backHandler === true || typeof backHandler === 'function') {
-        console.warn('backHandler prop cannot be used if BackHandler is not present (RN >= 0.44 required)');
-      }
-    }
+    BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
   }
 
   componentDidUpdate(prevProps) {
@@ -64,9 +57,7 @@ export class Menu extends Component {
     }
     this.props.ctx.menuRegistry.unsubscribe(this);
 
-    if (BackHandler) {
-      BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
-    }
+    BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
   }
 
   open() {
