@@ -20,6 +20,7 @@ declare module "react-native-popup-menu" {
     };
     backHandler?: boolean | Function;
     skipInstanceCheck?: boolean;
+    children: React.ReactNode;
   }
 
   interface MenuProviderStatic extends React.ComponentClass<MenuProviderProps> {
@@ -51,6 +52,7 @@ declare module "react-native-popup-menu" {
     onClose?(): void;
 
     onBackdropPress?(): void;
+    children?: React.ReactNode;
   }
 
   export class Menu extends React.Component<MenuProps> {
@@ -87,6 +89,8 @@ declare module "react-native-popup-menu" {
 
     onPress?(): void;
     onAlternativeAction? (): void;
+    children?: React.ReactNode;
+    style?: StyleProp<ViewStyle>;
   }
 
   export const MenuTrigger: React.ComponentClass<MenuTriggerProps>;
@@ -100,6 +104,7 @@ declare module "react-native-popup-menu" {
     renderOptionsContainer?: Function;
     customStyles?: MenuOptionsCustomStyle;
     testID?: string;
+    children?: React.ReactNode;
   }
 
   interface MenuOptionsCustomStyle extends MenuOptionCustomStyle {
@@ -123,6 +128,7 @@ declare module "react-native-popup-menu" {
     style?: StyleProp<ViewStyle>;
 
     onSelect?(): any;
+    children?: React.ReactNode;
   }
 
   interface MenuOptionCustomStyle {
