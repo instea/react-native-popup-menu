@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { BackHandler, View, Text } from 'react-native';
 import { render } from './helpers';
 
 import { MenuTrigger, MenuOptions } from '../src/index';
@@ -33,6 +33,7 @@ describe('Menu', () => {
       menuActions: {
         _notify: createSpy(),
       },
+      handleBackButton: jest.fn(),
     }
   }
 
@@ -222,5 +223,47 @@ describe('Menu', () => {
     expect(instance._getTrigger()).toEqual(triggerRef);
   });
 
+  it('should subscribe back handler', () => {
+    const { instance } = renderMenu(
+      <Menu>
+        <MenuTrigger />
+        <MenuOptions />
+      </Menu>
+    );
+    instance.componentDidMount();
+    expect(BackHandler.addEventListener).toHaveBeenCalled();
+  });
 
+  it('should unsubscribe back handler', () => {
+    const { instance } = renderMenu(
+      <Menu>
+        <MenuTrigger />
+        <MenuOptions />
+      </Menu>
+    );
+    instance.componentWillUnmount();
+    expect(BackHandler.removeEventListener).toHaveBeenCalled();
+  });
+
+  it('should invoke back handler on back press', () => {
+    let backPressCallback;
+
+    (BackHandler.addEventListener).mockImplementationOnce(
+      (event, callback) => {
+        backPressCallback = callback;
+      }
+    );
+
+    const { ctx, instance } = renderMenu(
+      <Menu>
+        <MenuTrigger />
+        <MenuOptions />
+      </Menu>
+    );
+    instance.componentDidMount();
+
+    backPressCallback();
+    
+    expect(ctx.handleBackButton).toHaveBeenCalled();
+  });
 });
