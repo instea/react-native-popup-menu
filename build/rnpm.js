@@ -1543,7 +1543,8 @@
       };
       _this.menuCtx = {
         menuRegistry: _this._menuRegistry,
-        menuActions: menuActions
+        menuActions: menuActions,
+        handleBackButton: _this._handleBackButton
       };
       return _this;
     }
@@ -1551,16 +1552,6 @@
     _createClass(MenuProvider, [{
       key: "componentDidMount",
       value: function componentDidMount() {
-        if (reactNative.BackHandler) {
-          reactNative.BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
-        } else {
-          var backHandler = this.props.backHandler;
-
-          if (backHandler === true || typeof backHandler === 'function') {
-            console.warn('backHandler prop cannot be used if BackHandler is not present (RN >= 0.44 required)');
-          }
-        }
-
         var _this$props = this.props,
             customStyles = _this$props.customStyles,
             skipInstanceCheck = _this$props.skipInstanceCheck;
@@ -1581,11 +1572,6 @@
       key: "componentWillUnmount",
       value: function componentWillUnmount() {
         debug('unmounting menu provider');
-
-        if (reactNative.BackHandler) {
-          reactNative.BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
-        }
-
         var skipInstanceCheck = this.props.skipInstanceCheck;
 
         if (!skipInstanceCheck) {
@@ -2259,6 +2245,11 @@
       _classCallCheck(this, Menu);
 
       _this = _possibleConstructorReturn(this, _getPrototypeOf(Menu).call(this, props));
+
+      _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "_handleBackButton", function () {
+        return _this.props.ctx.handleBackButton();
+      });
+
       _this._name = _this.props.name || makeName();
       _this._forceClose = false;
       var ctx = props.ctx;
@@ -2268,7 +2259,9 @@
       }
 
       return _this;
-    }
+    } // Wrap the MenuProvider's handler in a local function so we can unregister it for
+    // one Menu instance without affecting other instances
+
 
     _createClass(Menu, [{
       key: "componentDidMount",
@@ -2281,6 +2274,8 @@
         this.props.ctx.menuRegistry.subscribe(this);
 
         this.props.ctx.menuActions._notify();
+
+        reactNative.BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
       }
     }, {
       key: "componentDidUpdate",
@@ -2307,6 +2302,7 @@
         }
 
         this.props.ctx.menuRegistry.unsubscribe(this);
+        reactNative.BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
       }
     }, {
       key: "open",
