@@ -29,6 +29,7 @@ export default class MenuProvider extends Component {
     super(props);
     this._menuRegistry = makeMenuRegistry();
     this._isMenuClosing = false;
+    this._isBackHandlerRegistered = false;
     const menuActions = {
       openMenu: name => this.openMenu(name),
       closeMenu: () => this.closeMenu(),
@@ -61,7 +62,6 @@ export default class MenuProvider extends Component {
   }
 
   componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
     const { customStyles, skipInstanceCheck } = this.props;
     if (customStyles.menuContextWrapper) {
       console.warn('menuContextWrapper custom style is deprecated and it might be removed in future releases, use menuProviderWrapper instead.');
@@ -76,7 +76,9 @@ export default class MenuProvider extends Component {
 
   componentWillUnmount() {
     debug('unmounting menu provider')
-    BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
+    if (this._isBackHandlerRegistered) {
+      BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
+    }
     const { skipInstanceCheck } = this.props;
     if (!skipInstanceCheck) {
       instanceCount--;
@@ -94,6 +96,12 @@ export default class MenuProvider extends Component {
       return Promise.resolve();
     }
     debug('open menu', name);
+    if (!this._isBackHandlerRegistered) {
+      // delay menu registration until the menu is really opened (and thus this back handler will be called "sooner")
+      // too soon registration can cause another back handlers (e.g. react navigation) to be called instead of our back handler
+      BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
+      this._isBackHandlerRegistered = true;
+    }
     menu.instance._setOpened(true);
     return this._notify();
   }
