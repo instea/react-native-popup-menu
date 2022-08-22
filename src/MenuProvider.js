@@ -61,14 +61,7 @@ export default class MenuProvider extends Component {
   }
 
   componentDidMount() {
-    if (BackHandler) {
-      BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
-    } else {
-      const { backHandler } = this.props;
-      if (backHandler === true || typeof backHandler === 'function') {
-        console.warn('backHandler prop cannot be used if BackHandler is not present (RN >= 0.44 required)');
-      }
-    }
+    BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
     const { customStyles, skipInstanceCheck } = this.props;
     if (customStyles.menuContextWrapper) {
       console.warn('menuContextWrapper custom style is deprecated and it might be removed in future releases, use menuProviderWrapper instead.');
@@ -83,9 +76,7 @@ export default class MenuProvider extends Component {
 
   componentWillUnmount() {
     debug('unmounting menu provider')
-    if (BackHandler) {
-      BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
-    }
+    BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
     const { skipInstanceCheck } = this.props;
     if (!skipInstanceCheck) {
       instanceCount--;

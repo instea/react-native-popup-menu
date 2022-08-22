@@ -49,6 +49,10 @@ const Platform = {
 const PixelRatio = {
   roundToNearestPixel: n => n,
 }
+const BackHandler = {
+  addEventListener: jest.fn(),
+  removeEventListener: jest.fn(),
+}
 
 ReactNative.View = View;
 ReactNative.ScrollView = ScrollView;
@@ -65,5 +69,6 @@ ReactNative.Animated = Animated;
 ReactNative.I18nManager = I18nManager;
 ReactNative.Platform = Platform;
 ReactNative.PixelRatio = PixelRatio;
+ReactNative.BackHandler = BackHandler;
 
 module.exports = ReactNative;
