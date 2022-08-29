@@ -1911,6 +1911,7 @@
           // delay menu registration until the menu is really opened (and thus this back handler will be called "sooner")
           // too soon registration can cause another back handlers (e.g. react navigation) to be called instead of our back handler
           reactNative.BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
+          this._isBackHandlerRegistered = true;
         }
 
         menu.instance._setOpened(true);
