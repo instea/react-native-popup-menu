@@ -209,7 +209,7 @@ export default class Popover extends React.Component {
 
   componentDidMount() {
     Animated.timing(this.state.scaleAnim, {
-      duration: OPEN_ANIM_DURATION,
+      duration: this.props.openAnimationDuration !== undefined ? this.props.openAnimationDuration : OPEN_ANIM_DURATION,
       toValue: 1,
       easing: Easing.out(Easing.cubic),
       useNativeDriver: USE_NATIVE_DRIVER,
@@ -219,7 +219,7 @@ export default class Popover extends React.Component {
   close() {
     return new Promise(resolve => {
       Animated.timing(this.state.scaleAnim, {
-        duration: CLOSE_ANIM_DURATION,
+        duration: this.props.closeAnimationDuration !== undefined ? this.props.closeAnimationDuration : CLOSE_ANIM_DURATION,
         toValue: 0,
         easing: Easing.in(Easing.cubic),
         useNativeDriver: USE_NATIVE_DRIVER,
@@ -234,6 +234,8 @@ export default class Popover extends React.Component {
       layouts,
       anchorStyle,
       preferredPlacement,
+      openAnimationDuration,
+      closeAnimationDuration,
       placement: userPlacement,
       ...other
     } = this.props;
@@ -282,6 +284,8 @@ Popover.propTypes = {
   ]),
   placement: PropTypes.oneOf(['auto', 'top', 'right', 'bottom', 'left']),
   preferredPlacement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
+  openAnimationDuration: PropTypes.number,
+  closeAnimationDuration: PropTypes.number,
 };
 
 Popover.defaultProps = {
