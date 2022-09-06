@@ -14,6 +14,32 @@
     };
   }
 
+  function ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      enumerableOnly && (symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      })), keys.push.apply(keys, symbols);
+    }
+
+    return keys;
+  }
+
+  function _objectSpread2(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = null != arguments[i] ? arguments[i] : {};
+      i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+
+    return target;
+  }
+
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
@@ -33,6 +59,9 @@
   function _createClass(Constructor, protoProps, staticProps) {
     if (protoProps) _defineProperties(Constructor.prototype, protoProps);
     if (staticProps) _defineProperties(Constructor, staticProps);
+    Object.defineProperty(Constructor, "prototype", {
+      writable: false
+    });
     return Constructor;
   }
 
@@ -52,7 +81,7 @@
   }
 
   function _extends() {
-    _extends = Object.assign || function (target) {
+    _extends = Object.assign ? Object.assign.bind() : function (target) {
       for (var i = 1; i < arguments.length; i++) {
         var source = arguments[i];
 
@@ -65,27 +94,7 @@
 
       return target;
     };
-
     return _extends.apply(this, arguments);
-  }
-
-  function _objectSpread(target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i] != null ? arguments[i] : {};
-      var ownKeys = Object.keys(source);
-
-      if (typeof Object.getOwnPropertySymbols === 'function') {
-        ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
-          return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-        }));
-      }
-
-      ownKeys.forEach(function (key) {
-        _defineProperty(target, key, source[key]);
-      });
-    }
-
-    return target;
   }
 
   function _inherits(subClass, superClass) {
@@ -100,23 +109,38 @@
         configurable: true
       }
     });
+    Object.defineProperty(subClass, "prototype", {
+      writable: false
+    });
     if (superClass) _setPrototypeOf(subClass, superClass);
   }
 
   function _getPrototypeOf(o) {
-    _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
       return o.__proto__ || Object.getPrototypeOf(o);
     };
     return _getPrototypeOf(o);
   }
 
   function _setPrototypeOf(o, p) {
-    _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
       o.__proto__ = p;
       return o;
     };
-
     return _setPrototypeOf(o, p);
+  }
+
+  function _isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+
+    try {
+      Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   function _objectWithoutPropertiesLoose(source, excluded) {
@@ -166,9 +190,30 @@
   function _possibleConstructorReturn(self, call) {
     if (call && (typeof call === "object" || typeof call === "function")) {
       return call;
+    } else if (call !== void 0) {
+      throw new TypeError("Derived constructors may only return object or undefined");
     }
 
     return _assertThisInitialized(self);
+  }
+
+  function _createSuper(Derived) {
+    var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+    return function _createSuperInternal() {
+      var Super = _getPrototypeOf(Derived),
+          result;
+
+      if (hasNativeReflectConstruct) {
+        var NewTarget = _getPrototypeOf(this).constructor;
+
+        result = Reflect.construct(Super, arguments, NewTarget);
+      } else {
+        result = Super.apply(this, arguments);
+      }
+
+      return _possibleConstructorReturn(this, result);
+    };
   }
 
   /**
@@ -249,16 +294,12 @@
   function deprecatedComponent(message) {
     var methods = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
     return function deprecatedComponentHOC(Component) {
-      var _temp;
-
-      return _temp =
-      /*#__PURE__*/
-      function (_React$Component) {
+      return /*#__PURE__*/function (_React$Component) {
         _inherits(DeprecatedComponent, _React$Component);
 
-        function DeprecatedComponent() {
-          var _getPrototypeOf2;
+        var _super = _createSuper(DeprecatedComponent);
 
+        function DeprecatedComponent() {
           var _this;
 
           _classCallCheck(this, DeprecatedComponent);
@@ -267,9 +308,9 @@
             args[_key2] = arguments[_key2];
           }
 
-          _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(DeprecatedComponent)).call.apply(_getPrototypeOf2, [this].concat(args)));
+          _this = _super.call.apply(_super, [this].concat(args));
 
-          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onRef", function (ref) {
+          _defineProperty(_assertThisInitialized(_this), "onRef", function (ref) {
             return _this.ref = ref;
           });
 
@@ -287,7 +328,7 @@
         _createClass(DeprecatedComponent, [{
           key: "render",
           value: function render() {
-            return React__default.createElement(Component, _extends({}, this.props, {
+            return /*#__PURE__*/React__default.createElement(Component, _extends({}, this.props, {
               ref: this.onRef
             }));
           }
@@ -299,13 +340,221 @@
         }]);
 
         return DeprecatedComponent;
-      }(React__default.Component), _temp;
+      }(React__default.Component);
     };
   }
 
   function createCommonjsModule(fn, module) {
   	return module = { exports: {} }, fn(module, module.exports), module.exports;
   }
+
+  var reactIs_development = createCommonjsModule(function (module, exports) {
+
+
+
+  {
+    (function() {
+
+  // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+  // nor polyfill, then a plain number is used for performance.
+  var hasSymbol = typeof Symbol === 'function' && Symbol.for;
+  var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
+  var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
+  var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
+  var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
+  var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
+  var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
+  var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
+  // (unstable) APIs that have been removed. Can we remove the symbols?
+
+  var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
+  var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
+  var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
+  var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
+  var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
+  var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
+  var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
+  var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9;
+  var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
+  var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
+  var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
+
+  function isValidElementType(type) {
+    return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+    type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE);
+  }
+
+  function typeOf(object) {
+    if (typeof object === 'object' && object !== null) {
+      var $$typeof = object.$$typeof;
+
+      switch ($$typeof) {
+        case REACT_ELEMENT_TYPE:
+          var type = object.type;
+
+          switch (type) {
+            case REACT_ASYNC_MODE_TYPE:
+            case REACT_CONCURRENT_MODE_TYPE:
+            case REACT_FRAGMENT_TYPE:
+            case REACT_PROFILER_TYPE:
+            case REACT_STRICT_MODE_TYPE:
+            case REACT_SUSPENSE_TYPE:
+              return type;
+
+            default:
+              var $$typeofType = type && type.$$typeof;
+
+              switch ($$typeofType) {
+                case REACT_CONTEXT_TYPE:
+                case REACT_FORWARD_REF_TYPE:
+                case REACT_LAZY_TYPE:
+                case REACT_MEMO_TYPE:
+                case REACT_PROVIDER_TYPE:
+                  return $$typeofType;
+
+                default:
+                  return $$typeof;
+              }
+
+          }
+
+        case REACT_PORTAL_TYPE:
+          return $$typeof;
+      }
+    }
+
+    return undefined;
+  } // AsyncMode is deprecated along with isAsyncMode
+
+  var AsyncMode = REACT_ASYNC_MODE_TYPE;
+  var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+  var ContextConsumer = REACT_CONTEXT_TYPE;
+  var ContextProvider = REACT_PROVIDER_TYPE;
+  var Element = REACT_ELEMENT_TYPE;
+  var ForwardRef = REACT_FORWARD_REF_TYPE;
+  var Fragment = REACT_FRAGMENT_TYPE;
+  var Lazy = REACT_LAZY_TYPE;
+  var Memo = REACT_MEMO_TYPE;
+  var Portal = REACT_PORTAL_TYPE;
+  var Profiler = REACT_PROFILER_TYPE;
+  var StrictMode = REACT_STRICT_MODE_TYPE;
+  var Suspense = REACT_SUSPENSE_TYPE;
+  var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
+
+  function isAsyncMode(object) {
+    {
+      if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+        hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
+
+        console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
+      }
+    }
+
+    return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
+  }
+  function isConcurrentMode(object) {
+    return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
+  }
+  function isContextConsumer(object) {
+    return typeOf(object) === REACT_CONTEXT_TYPE;
+  }
+  function isContextProvider(object) {
+    return typeOf(object) === REACT_PROVIDER_TYPE;
+  }
+  function isElement(object) {
+    return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+  }
+  function isForwardRef(object) {
+    return typeOf(object) === REACT_FORWARD_REF_TYPE;
+  }
+  function isFragment(object) {
+    return typeOf(object) === REACT_FRAGMENT_TYPE;
+  }
+  function isLazy(object) {
+    return typeOf(object) === REACT_LAZY_TYPE;
+  }
+  function isMemo(object) {
+    return typeOf(object) === REACT_MEMO_TYPE;
+  }
+  function isPortal(object) {
+    return typeOf(object) === REACT_PORTAL_TYPE;
+  }
+  function isProfiler(object) {
+    return typeOf(object) === REACT_PROFILER_TYPE;
+  }
+  function isStrictMode(object) {
+    return typeOf(object) === REACT_STRICT_MODE_TYPE;
+  }
+  function isSuspense(object) {
+    return typeOf(object) === REACT_SUSPENSE_TYPE;
+  }
+
+  exports.AsyncMode = AsyncMode;
+  exports.ConcurrentMode = ConcurrentMode;
+  exports.ContextConsumer = ContextConsumer;
+  exports.ContextProvider = ContextProvider;
+  exports.Element = Element;
+  exports.ForwardRef = ForwardRef;
+  exports.Fragment = Fragment;
+  exports.Lazy = Lazy;
+  exports.Memo = Memo;
+  exports.Portal = Portal;
+  exports.Profiler = Profiler;
+  exports.StrictMode = StrictMode;
+  exports.Suspense = Suspense;
+  exports.isAsyncMode = isAsyncMode;
+  exports.isConcurrentMode = isConcurrentMode;
+  exports.isContextConsumer = isContextConsumer;
+  exports.isContextProvider = isContextProvider;
+  exports.isElement = isElement;
+  exports.isForwardRef = isForwardRef;
+  exports.isFragment = isFragment;
+  exports.isLazy = isLazy;
+  exports.isMemo = isMemo;
+  exports.isPortal = isPortal;
+  exports.isProfiler = isProfiler;
+  exports.isStrictMode = isStrictMode;
+  exports.isSuspense = isSuspense;
+  exports.isValidElementType = isValidElementType;
+  exports.typeOf = typeOf;
+    })();
+  }
+  });
+  var reactIs_development_1 = reactIs_development.AsyncMode;
+  var reactIs_development_2 = reactIs_development.ConcurrentMode;
+  var reactIs_development_3 = reactIs_development.ContextConsumer;
+  var reactIs_development_4 = reactIs_development.ContextProvider;
+  var reactIs_development_5 = reactIs_development.Element;
+  var reactIs_development_6 = reactIs_development.ForwardRef;
+  var reactIs_development_7 = reactIs_development.Fragment;
+  var reactIs_development_8 = reactIs_development.Lazy;
+  var reactIs_development_9 = reactIs_development.Memo;
+  var reactIs_development_10 = reactIs_development.Portal;
+  var reactIs_development_11 = reactIs_development.Profiler;
+  var reactIs_development_12 = reactIs_development.StrictMode;
+  var reactIs_development_13 = reactIs_development.Suspense;
+  var reactIs_development_14 = reactIs_development.isAsyncMode;
+  var reactIs_development_15 = reactIs_development.isConcurrentMode;
+  var reactIs_development_16 = reactIs_development.isContextConsumer;
+  var reactIs_development_17 = reactIs_development.isContextProvider;
+  var reactIs_development_18 = reactIs_development.isElement;
+  var reactIs_development_19 = reactIs_development.isForwardRef;
+  var reactIs_development_20 = reactIs_development.isFragment;
+  var reactIs_development_21 = reactIs_development.isLazy;
+  var reactIs_development_22 = reactIs_development.isMemo;
+  var reactIs_development_23 = reactIs_development.isPortal;
+  var reactIs_development_24 = reactIs_development.isProfiler;
+  var reactIs_development_25 = reactIs_development.isStrictMode;
+  var reactIs_development_26 = reactIs_development.isSuspense;
+  var reactIs_development_27 = reactIs_development.isValidElementType;
+  var reactIs_development_28 = reactIs_development.typeOf;
+
+  var reactIs = createCommonjsModule(function (module) {
+
+  {
+    module.exports = reactIs_development;
+  }
+  });
 
   /*
   object-assign
@@ -407,11 +656,14 @@
 
   var ReactPropTypesSecret_1 = ReactPropTypesSecret;
 
+  var has = Function.call.bind(Object.prototype.hasOwnProperty);
+
   var printWarning = function() {};
 
   {
     var ReactPropTypesSecret$1 = ReactPropTypesSecret_1;
     var loggedTypeFailures = {};
+    var has$1 = has;
 
     printWarning = function(text) {
       var message = 'Warning: ' + text;
@@ -423,7 +675,7 @@
         // This error was thrown as a convenience so that you can use this stack
         // to find the callsite that caused this warning to fire.
         throw new Error(message);
-      } catch (x) {}
+      } catch (x) { /**/ }
     };
   }
 
@@ -441,7 +693,7 @@
   function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
     {
       for (var typeSpecName in typeSpecs) {
-        if (typeSpecs.hasOwnProperty(typeSpecName)) {
+        if (has$1(typeSpecs, typeSpecName)) {
           var error;
           // Prop type validation may throw. In case they do, we don't want to
           // fail the render phase where it didn't fail before. So we log it.
@@ -452,7 +704,8 @@
             if (typeof typeSpecs[typeSpecName] !== 'function') {
               var err = Error(
                 (componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' +
-                'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.'
+                'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.' +
+                'This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`.'
               );
               err.name = 'Invariant Violation';
               throw err;
@@ -470,7 +723,6 @@
               'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
               'shape all require an argument).'
             );
-
           }
           if (error instanceof Error && !(error.message in loggedTypeFailures)) {
             // Only monitor this failure once because there tends to be a lot of the
@@ -487,6 +739,17 @@
       }
     }
   }
+
+  /**
+   * Resets warning cache when testing.
+   *
+   * @private
+   */
+  checkPropTypes.resetWarningCache = function() {
+    {
+      loggedTypeFailures = {};
+    }
+  };
 
   var checkPropTypes_1 = checkPropTypes;
 
@@ -590,6 +853,7 @@
     // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
     var ReactPropTypes = {
       array: createPrimitiveTypeChecker('array'),
+      bigint: createPrimitiveTypeChecker('bigint'),
       bool: createPrimitiveTypeChecker('boolean'),
       func: createPrimitiveTypeChecker('function'),
       number: createPrimitiveTypeChecker('number'),
@@ -600,6 +864,7 @@
       any: createAnyTypeChecker(),
       arrayOf: createArrayOfTypeChecker,
       element: createElementTypeChecker(),
+      elementType: createElementTypeTypeChecker(),
       instanceOf: createInstanceTypeChecker,
       node: createNodeChecker(),
       objectOf: createObjectOfTypeChecker,
@@ -634,8 +899,9 @@
      * is prohibitively expensive if they are created too often, such as what
      * happens in oneOfType() for any type before the one that matched.
      */
-    function PropTypeError(message) {
+    function PropTypeError(message, data) {
       this.message = message;
+      this.data = data && typeof data === 'object' ? data: {};
       this.stack = '';
     }
     // Make `instanceof Error` still work for returned errors.
@@ -670,7 +936,7 @@
             ) {
               printWarning$1(
                 'You are manually calling a React.PropTypes validation ' +
-                'function for the `' + propFullName + '` prop on `' + componentName  + '`. This is deprecated ' +
+                'function for the `' + propFullName + '` prop on `' + componentName + '`. This is deprecated ' +
                 'and will throw in the standalone `prop-types` package. ' +
                 'You may be seeing this warning due to a third-party PropTypes ' +
                 'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.'
@@ -709,7 +975,10 @@
           // 'of type `object`'.
           var preciseType = getPreciseType(propValue);
 
-          return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'));
+          return new PropTypeError(
+            'Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'),
+            {expectedType: expectedType}
+          );
         }
         return null;
       }
@@ -753,6 +1022,18 @@
       return createChainableTypeChecker(validate);
     }
 
+    function createElementTypeTypeChecker() {
+      function validate(props, propName, componentName, location, propFullName) {
+        var propValue = props[propName];
+        if (!reactIs.isValidElementType(propValue)) {
+          var propType = getPropType(propValue);
+          return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement type.'));
+        }
+        return null;
+      }
+      return createChainableTypeChecker(validate);
+    }
+
     function createInstanceTypeChecker(expectedClass) {
       function validate(props, propName, componentName, location, propFullName) {
         if (!(props[propName] instanceof expectedClass)) {
@@ -767,7 +1048,16 @@
 
     function createEnumTypeChecker(expectedValues) {
       if (!Array.isArray(expectedValues)) {
-        printWarning$1('Invalid argument supplied to oneOf, expected an instance of array.');
+        {
+          if (arguments.length > 1) {
+            printWarning$1(
+              'Invalid arguments supplied to oneOf, expected an array, got ' + arguments.length + ' arguments. ' +
+              'A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z]).'
+            );
+          } else {
+            printWarning$1('Invalid argument supplied to oneOf, expected an array.');
+          }
+        }
         return emptyFunctionThatReturnsNull;
       }
 
@@ -779,8 +1069,14 @@
           }
         }
 
-        var valuesString = JSON.stringify(expectedValues);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + propValue + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
+        var valuesString = JSON.stringify(expectedValues, function replacer(key, value) {
+          var type = getPreciseType(value);
+          if (type === 'symbol') {
+            return String(value);
+          }
+          return value;
+        });
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + String(propValue) + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
       }
       return createChainableTypeChecker(validate);
     }
@@ -796,7 +1092,7 @@
           return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
         }
         for (var key in propValue) {
-          if (propValue.hasOwnProperty(key)) {
+          if (has(propValue, key)) {
             var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
             if (error instanceof Error) {
               return error;
@@ -826,14 +1122,19 @@
       }
 
       function validate(props, propName, componentName, location, propFullName) {
+        var expectedTypes = [];
         for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
           var checker = arrayOfTypeCheckers[i];
-          if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret_1) == null) {
+          var checkerResult = checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret_1);
+          if (checkerResult == null) {
             return null;
           }
+          if (checkerResult.data && has(checkerResult.data, 'expectedType')) {
+            expectedTypes.push(checkerResult.data.expectedType);
+          }
         }
-
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`.'));
+        var expectedTypesMessage = (expectedTypes.length > 0) ? ', expected one of type [' + expectedTypes.join(', ') + ']': '';
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`' + expectedTypesMessage + '.'));
       }
       return createChainableTypeChecker(validate);
     }
@@ -848,6 +1149,13 @@
       return createChainableTypeChecker(validate);
     }
 
+    function invalidValidatorError(componentName, location, propFullName, key, type) {
+      return new PropTypeError(
+        (componentName || 'React class') + ': ' + location + ' type `' + propFullName + '.' + key + '` is invalid; ' +
+        'it must be a function, usually from the `prop-types` package, but received `' + type + '`.'
+      );
+    }
+
     function createShapeTypeChecker(shapeTypes) {
       function validate(props, propName, componentName, location, propFullName) {
         var propValue = props[propName];
@@ -857,8 +1165,8 @@
         }
         for (var key in shapeTypes) {
           var checker = shapeTypes[key];
-          if (!checker) {
-            continue;
+          if (typeof checker !== 'function') {
+            return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
           }
           var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
           if (error) {
@@ -877,16 +1185,18 @@
         if (propType !== 'object') {
           return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
         }
-        // We need to check all keys in case some are required but missing from
-        // props.
+        // We need to check all keys in case some are required but missing from props.
         var allKeys = objectAssign({}, props[propName], shapeTypes);
         for (var key in allKeys) {
           var checker = shapeTypes[key];
+          if (has(shapeTypes, key) && typeof checker !== 'function') {
+            return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
+          }
           if (!checker) {
             return new PropTypeError(
               'Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' +
               '\nBad object: ' + JSON.stringify(props[propName], null, '  ') +
-              '\nValid keys: ' +  JSON.stringify(Object.keys(shapeTypes), null, '  ')
+              '\nValid keys: ' + JSON.stringify(Object.keys(shapeTypes), null, '  ')
             );
           }
           var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
@@ -951,6 +1261,11 @@
       // Native Symbol.
       if (propType === 'symbol') {
         return true;
+      }
+
+      // falsy value can't be a Symbol
+      if (!propValue) {
+        return false;
       }
 
       // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
@@ -1027,6 +1342,7 @@
     }
 
     ReactPropTypes.checkPropTypes = checkPropTypes_1;
+    ReactPropTypes.resetWarningCache = checkPropTypes_1.resetWarningCache;
     ReactPropTypes.PropTypes = ReactPropTypes;
 
     return ReactPropTypes;
@@ -1041,36 +1357,28 @@
    */
 
   {
-    var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
-      Symbol.for &&
-      Symbol.for('react.element')) ||
-      0xeac7;
-
-    var isValidElement = function(object) {
-      return typeof object === 'object' &&
-        object !== null &&
-        object.$$typeof === REACT_ELEMENT_TYPE;
-    };
+    var ReactIs = reactIs;
 
     // By explicitly using `prop-types` you are opting into new development behavior.
     // http://fb.me/prop-types-in-prod
     var throwOnDirectAccess = true;
-    module.exports = factoryWithTypeCheckers(isValidElement, throwOnDirectAccess);
+    module.exports = factoryWithTypeCheckers(ReactIs.isElement, throwOnDirectAccess);
   }
   });
 
+  var _excluded = ["forwardedRef"];
   function withContext(Context) {
     var propName = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "context";
     return function wrap(Component) {
-      var EnhanceContext =
-      /*#__PURE__*/
-      function (_React$Component) {
+      var EnhanceContext = /*#__PURE__*/function (_React$Component) {
         _inherits(EnhanceContext, _React$Component);
+
+        var _super = _createSuper(EnhanceContext);
 
         function EnhanceContext() {
           _classCallCheck(this, EnhanceContext);
 
-          return _possibleConstructorReturn(this, _getPrototypeOf(EnhanceContext).apply(this, arguments));
+          return _super.apply(this, arguments);
         }
 
         _createClass(EnhanceContext, [{
@@ -1078,13 +1386,13 @@
           value: function render() {
             var _this$props = this.props,
                 forwardedRef = _this$props.forwardedRef,
-                rest = _objectWithoutProperties(_this$props, ["forwardedRef"]);
+                rest = _objectWithoutProperties(_this$props, _excluded);
 
-            return React__default.createElement(Context.Consumer, null, function (value) {
+            return /*#__PURE__*/React__default.createElement(Context.Consumer, null, function (value) {
               var _custom;
 
               var custom = (_custom = {}, _defineProperty(_custom, propName, value), _defineProperty(_custom, "ref", forwardedRef), _custom);
-              return React__default.createElement(Component, _extends({}, custom, rest));
+              return /*#__PURE__*/React__default.createElement(Component, _extends({}, custom, rest));
             });
           }
         }]);
@@ -1096,7 +1404,7 @@
       var consumerName = Context.Consumer.displayName || Context.Consumer.name || "Context.Consumer";
 
       function enhanceForwardRef(props, ref) {
-        return React__default.createElement(EnhanceContext, _extends({}, props, {
+        return /*#__PURE__*/React__default.createElement(EnhanceContext, _extends({}, props, {
           forwardedRef: ref
         }));
       }
@@ -1176,7 +1484,7 @@
         return;
       }
 
-      var menu = _objectSpread({}, menus.get(name), {
+      var menu = _objectSpread2(_objectSpread2({}, menus.get(name)), {}, {
         optionsCustomStyles: optionsCustomStyles
       });
 
@@ -1213,14 +1521,12 @@
   var CLOSE_ANIM_DURATION = 195;
   var USE_NATIVE_DRIVER = reactNative.Platform.OS !== "web";
 
-  var Backdrop =
-  /*#__PURE__*/
-  function (_Component) {
+  var Backdrop = /*#__PURE__*/function (_Component) {
     _inherits(Backdrop, _Component);
 
-    function Backdrop() {
-      var _getPrototypeOf2;
+    var _super = _createSuper(Backdrop);
 
+    function Backdrop() {
       var _this;
 
       _classCallCheck(this, Backdrop);
@@ -1229,7 +1535,7 @@
         args[_key] = arguments[_key];
       }
 
-      _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Backdrop)).call.apply(_getPrototypeOf2, [this].concat(args)));
+      _this = _super.call.apply(_super, [this].concat(args));
       _this.fadeAnim = new reactNative.Animated.Value(0.001);
       return _this;
     }
@@ -1266,13 +1572,13 @@
         var _this$props = this.props,
             onPress = _this$props.onPress,
             style = _this$props.style;
-        return React__default.createElement(reactNative.TouchableWithoutFeedback, {
+        return /*#__PURE__*/React__default.createElement(reactNative.TouchableWithoutFeedback, {
           onPress: onPress
-        }, React__default.createElement(reactNative.Animated.View, {
+        }, /*#__PURE__*/React__default.createElement(reactNative.Animated.View, {
           style: [styles.fullscreen, {
             opacity: this.fadeAnim
           }]
-        }, React__default.createElement(reactNative.View, {
+        }, /*#__PURE__*/React__default.createElement(reactNative.View, {
           style: [styles.fullscreen, style]
         })));
       }
@@ -1297,11 +1603,11 @@
 
   var CFG = {
     debug: false
-    /**
-     * Debug logger depending on `Menu.debug` static porperty.
-     */
-
   };
+  /**
+   * Debug logger depending on `Menu.debug` static porperty.
+   */
+
   var debug = function debug() {
     var _console;
 
@@ -1312,17 +1618,17 @@
     CFG.debug && (_console = console).log.apply(_console, ['react-native-popup-menu'].concat(args));
   };
 
-  var MenuPlaceholder =
-  /*#__PURE__*/
-  function (_Component) {
+  var MenuPlaceholder = /*#__PURE__*/function (_Component) {
     _inherits(MenuPlaceholder, _Component);
+
+    var _super = _createSuper(MenuPlaceholder);
 
     function MenuPlaceholder(props) {
       var _this;
 
       _classCallCheck(this, MenuPlaceholder);
 
-      _this = _possibleConstructorReturn(this, _getPrototypeOf(MenuPlaceholder).call(this, props));
+      _this = _super.call(this, props);
       _this.state = {};
       return _this;
     }
@@ -1348,9 +1654,9 @@
           return null;
         }
 
-        return React__default.createElement(reactNative.View, {
+        return /*#__PURE__*/React__default.createElement(reactNative.View, {
           style: styles$1.placeholder
-        }, React__default.createElement(Backdrop, {
+        }, /*#__PURE__*/React__default.createElement(Backdrop, {
           onPress: ctx._onBackdropPress,
           style: backdropStyles,
           ref: ctx.onBackdropRef
@@ -1371,6 +1677,7 @@
     }
   });
 
+  var _excluded$1 = ["style", "children", "layouts"];
   var computePosition = function computePosition(_ref) {
     var windowLayout = _ref.windowLayout;
     return {
@@ -1383,10 +1690,10 @@
     var style = props.style,
         children = props.children,
         layouts = props.layouts,
-        other = _objectWithoutProperties(props, ["style", "children", "layouts"]);
+        other = _objectWithoutProperties(props, _excluded$1);
 
     var position = computePosition(layouts);
-    return React__default.createElement(reactNative.View, _extends({}, other, {
+    return /*#__PURE__*/React__default.createElement(reactNative.View, _extends({}, other, {
       style: [styles$2.options, style, position],
       collapsable: false
     }), children);
@@ -1415,19 +1722,19 @@
 
   var instanceCount = 0;
 
-  var MenuProvider =
-  /*#__PURE__*/
-  function (_Component) {
+  var MenuProvider = /*#__PURE__*/function (_Component) {
     _inherits(MenuProvider, _Component);
+
+    var _super = _createSuper(MenuProvider);
 
     function MenuProvider(props) {
       var _this;
 
       _classCallCheck(this, MenuProvider);
 
-      _this = _possibleConstructorReturn(this, _getPrototypeOf(MenuProvider).call(this, props));
+      _this = _super.call(this, props);
 
-      _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "_handleBackButton", function () {
+      _defineProperty(_assertThisInitialized(_this), "_handleBackButton", function () {
         var backHandler = _this.props.backHandler;
         debug('_handleBackButton called', backHandler); // Default handler if true is passed
 
@@ -1441,25 +1748,25 @@
 
 
         if (typeof backHandler === 'function') {
-          return backHandler(_assertThisInitialized(_assertThisInitialized(_this)));
+          return backHandler(_assertThisInitialized(_this));
         }
 
         return false;
       });
 
-      _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onBackdropRef", function (r) {
+      _defineProperty(_assertThisInitialized(_this), "onBackdropRef", function (r) {
         _this.backdropRef = r;
       });
 
-      _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onOptionsRef", function (r) {
+      _defineProperty(_assertThisInitialized(_this), "onOptionsRef", function (r) {
         _this.optionsRef = r;
       });
 
-      _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "_onPlaceholderRef", function (r) {
+      _defineProperty(_assertThisInitialized(_this), "_onPlaceholderRef", function (r) {
         return _this._placeholderRef = r;
       });
 
-      _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "_onBackdropPress", function () {
+      _defineProperty(_assertThisInitialized(_this), "_onBackdropPress", function () {
         debug('on backdrop press');
 
         var menu = _this._getOpenedMenu();
@@ -1471,7 +1778,7 @@
         _this.closeMenu();
       });
 
-      _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "_onLayout", function (_ref) {
+      _defineProperty(_assertThisInitialized(_this), "_onLayout", function (_ref) {
         var layout = _ref.nativeEvent.layout;
 
         if (layoutsEqual(_this._ownLayout, layout)) {
@@ -1502,7 +1809,7 @@
         });
       });
 
-      _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "_onSafeAreaLayout", function (_ref2) {
+      _defineProperty(_assertThisInitialized(_this), "_onSafeAreaLayout", function (_ref2) {
         var layout = _ref2.nativeEvent.layout;
 
         if (layoutsEqual(_this._safeAreaLayout, layout)) {
@@ -1765,22 +2072,22 @@
             style = _this$props2.style,
             customStyles = _this$props2.customStyles;
         debug('render menu', this.isMenuOpen(), this._ownLayout);
-        return React__default.createElement(PopupMenuContext.Provider, {
+        return /*#__PURE__*/React__default.createElement(PopupMenuContext.Provider, {
           value: this.menuCtx
-        }, React__default.createElement(reactNative.View, {
+        }, /*#__PURE__*/React__default.createElement(reactNative.View, {
           style: styles$3.flex1,
           onLayout: this._onLayout
-        }, React__default.createElement(reactNative.View, {
+        }, /*#__PURE__*/React__default.createElement(reactNative.View, {
           style: [styles$3.flex1, customStyles.menuContextWrapper, customStyles.menuProviderWrapper, style]
-        }, this.props.children), React__default.createElement(reactNative.SafeAreaView, {
+        }, this.props.children), /*#__PURE__*/React__default.createElement(reactNative.SafeAreaView, {
           style: styles$3.safeArea,
           pointerEvents: "box-none"
-        }, React__default.createElement(reactNative.View, {
+        }, /*#__PURE__*/React__default.createElement(reactNative.View, {
           style: styles$3.flex1,
           collapsable: false,
           pointerEvents: "box-none",
           onLayout: this._onSafeAreaLayout
-        }), React__default.createElement(MenuPlaceholder, {
+        }), /*#__PURE__*/React__default.createElement(MenuPlaceholder, {
           ctx: this,
           backdropStyles: customStyles.backdrop,
           ref: this._onPlaceholderRef
@@ -1869,7 +2176,7 @@
           safeAreaLayout: safeAreaLayout
         };
 
-        var props = _objectSpread({}, rendererProps, {
+        var props = _objectSpread2(_objectSpread2({}, rendererProps), {}, {
           style: style,
           onLayout: onLayout,
           layouts: layouts
@@ -1910,15 +2217,15 @@
     }
   });
 
-  var MenuOptions =
-  /*#__PURE__*/
-  function (_React$Component) {
+  var MenuOptions = /*#__PURE__*/function (_React$Component) {
     _inherits(MenuOptions, _React$Component);
+
+    var _super = _createSuper(MenuOptions);
 
     function MenuOptions() {
       _classCallCheck(this, MenuOptions);
 
-      return _possibleConstructorReturn(this, _getPrototypeOf(MenuOptions).apply(this, arguments));
+      return _super.apply(this, arguments);
     }
 
     _createClass(MenuOptions, [{
@@ -1950,7 +2257,7 @@
             customStyles = _this$props.customStyles,
             style = _this$props.style,
             children = _this$props.children;
-        return React__default.createElement(reactNative.View, {
+        return /*#__PURE__*/React__default.createElement(reactNative.View, {
           style: [customStyles.optionsWrapper, style]
         }, children);
       }
@@ -1968,15 +2275,16 @@
   };
   var MenuOptions$1 = withCtx(MenuOptions);
 
-  var MenuTrigger =
-  /*#__PURE__*/
-  function (_Component) {
+  var _excluded$2 = ["disabled", "onRef", "text", "children", "style", "customStyles", "menuName", "triggerOnLongPress", "onAlternativeAction", "testID"];
+  var MenuTrigger = /*#__PURE__*/function (_Component) {
     _inherits(MenuTrigger, _Component);
+
+    var _super = _createSuper(MenuTrigger);
 
     function MenuTrigger() {
       _classCallCheck(this, MenuTrigger);
 
-      return _possibleConstructorReturn(this, _getPrototypeOf(MenuTrigger).apply(this, arguments));
+      return _super.apply(this, arguments);
     }
 
     _createClass(MenuTrigger, [{
@@ -2002,7 +2310,7 @@
             triggerOnLongPress = _this$props.triggerOnLongPress,
             onAlternativeAction = _this$props.onAlternativeAction,
             testID = _this$props.testID,
-            other = _objectWithoutProperties(_this$props, ["disabled", "onRef", "text", "children", "style", "customStyles", "menuName", "triggerOnLongPress", "onAlternativeAction", "testID"]);
+            other = _objectWithoutProperties(_this$props, _excluded$2);
 
         var onPress = function onPress() {
           return !disabled && _this._onPress();
@@ -2012,17 +2320,17 @@
             Touchable = _makeTouchable.Touchable,
             defaultTouchableProps = _makeTouchable.defaultTouchableProps;
 
-        return React__default.createElement(reactNative.View, {
+        return /*#__PURE__*/React__default.createElement(reactNative.View, {
           ref: onRef,
           collapsable: false,
           style: customStyles.triggerOuterWrapper
-        }, React__default.createElement(Touchable, _extends({
+        }, /*#__PURE__*/React__default.createElement(Touchable, _extends({
           testID: testID,
           onPress: triggerOnLongPress ? onAlternativeAction : onPress,
           onLongPress: triggerOnLongPress ? onPress : onAlternativeAction
-        }, defaultTouchableProps, customStyles.triggerTouchable), React__default.createElement(reactNative.View, _extends({}, other, {
+        }, defaultTouchableProps, customStyles.triggerTouchable), /*#__PURE__*/React__default.createElement(reactNative.View, _extends({}, other, {
           style: [customStyles.triggerWrapper, style]
-        }), text ? React__default.createElement(reactNative.Text, {
+        }), text ? /*#__PURE__*/React__default.createElement(reactNative.Text, {
           style: customStyles.triggerText
         }, text) : children)));
       }
@@ -2045,6 +2353,8 @@
     testID: undefined
   };
   var MenuTrigger$1 = withCtx(MenuTrigger);
+
+  var _excluded$3 = ["style", "children", "layouts"];
 
   var axisPosition = function axisPosition(oDim, wDim, tPos, tDim) {
     // if options are bigger than window dimension, then render at 0
@@ -2148,17 +2458,17 @@
     return fitPositionIntoSafeArea(position, layouts);
   };
 
-  var ContextMenu =
-  /*#__PURE__*/
-  function (_React$Component) {
+  var ContextMenu = /*#__PURE__*/function (_React$Component) {
     _inherits(ContextMenu, _React$Component);
+
+    var _super = _createSuper(ContextMenu);
 
     function ContextMenu(props) {
       var _this;
 
       _classCallCheck(this, ContextMenu);
 
-      _this = _possibleConstructorReturn(this, _getPrototypeOf(ContextMenu).call(this, props));
+      _this = _super.call(this, props);
       _this.state = {
         scaleAnim: new reactNative.Animated.Value(0.1)
       };
@@ -2196,7 +2506,7 @@
             style = _this$props.style,
             children = _this$props.children,
             layouts = _this$props.layouts,
-            other = _objectWithoutProperties(_this$props, ["style", "children", "layouts"]);
+            other = _objectWithoutProperties(_this$props, _excluded$3);
 
         var animation = {
           transform: [{
@@ -2205,7 +2515,7 @@
           opacity: this.state.scaleAnim
         };
         var position = computePosition$1(layouts, reactNative.I18nManager.isRTL);
-        return React__default.createElement(reactNative.Animated.View, _extends({}, other, {
+        return /*#__PURE__*/React__default.createElement(reactNative.Animated.View, _extends({}, other, {
           style: [styles$4.options, style, animation, position]
         }), children);
       }
@@ -2246,17 +2556,17 @@
     return c.type === MenuOptions$1;
   };
 
-  var Menu =
-  /*#__PURE__*/
-  function (_Component) {
+  var Menu = /*#__PURE__*/function (_Component) {
     _inherits(Menu, _Component);
+
+    var _super = _createSuper(Menu);
 
     function Menu(props) {
       var _this;
 
       _classCallCheck(this, Menu);
 
-      _this = _possibleConstructorReturn(this, _getPrototypeOf(Menu).call(this, props));
+      _this = _super.call(this, props);
       _this._name = _this.props.name || makeName();
       _this._forceClose = false;
       var ctx = props.ctx;
@@ -2337,7 +2647,7 @@
 
         var children = this._reduceChildren();
 
-        return React__default.createElement(reactNative.View, {
+        return /*#__PURE__*/React__default.createElement(reactNative.View, {
           style: style
         }, children);
       }
@@ -2442,15 +2752,15 @@
     Menu.defaultProps.rendererProps = rendererProps;
   };
 
-  var MenuOption =
-  /*#__PURE__*/
-  function (_Component) {
+  var MenuOption = /*#__PURE__*/function (_Component) {
     _inherits(MenuOption, _Component);
+
+    var _super = _createSuper(MenuOption);
 
     function MenuOption() {
       _classCallCheck(this, MenuOption);
 
-      return _possibleConstructorReturn(this, _getPrototypeOf(MenuOption).apply(this, arguments));
+      return _super.apply(this, arguments);
     }
 
     _createClass(MenuOption, [{
@@ -2480,7 +2790,7 @@
         // FIXME react 16.3 workaround for ControlledExample!
         var menu = this.props.ctx.menuActions._getOpenedMenu() || {};
         var optionsCustomStyles = menu.optionsCustomStyles;
-        return _objectSpread({}, optionsCustomStyles, this.props.customStyles);
+        return _objectSpread2(_objectSpread2({}, optionsCustomStyles), this.props.customStyles);
       }
     }, {
       key: "render",
@@ -2503,16 +2813,16 @@
 
         if (disabled) {
           var disabledStyles = [defaultStyles.optionTextDisabled, customStyles.optionText];
-          return React__default.createElement(reactNative.View, {
+          return /*#__PURE__*/React__default.createElement(reactNative.View, {
             style: [defaultStyles.option, customStyles.optionWrapper, style]
-          }, text ? React__default.createElement(reactNative.Text, {
+          }, text ? /*#__PURE__*/React__default.createElement(reactNative.Text, {
             style: disabledStyles
           }, text) : children);
         }
 
-        var rendered = React__default.createElement(reactNative.View, {
+        var rendered = /*#__PURE__*/React__default.createElement(reactNative.View, {
           style: [defaultStyles.option, customStyles.optionWrapper, style]
-        }, text ? React__default.createElement(reactNative.Text, {
+        }, text ? /*#__PURE__*/React__default.createElement(reactNative.Text, {
           style: customStyles.optionText
         }, text) : children);
 
@@ -2523,7 +2833,7 @@
               Touchable = _makeTouchable.Touchable,
               defaultTouchableProps = _makeTouchable.defaultTouchableProps;
 
-          return React__default.createElement(Touchable, _extends({
+          return /*#__PURE__*/React__default.createElement(Touchable, _extends({
             testID: testID,
             onPress: function onPress() {
               return _this._onSelect();
@@ -2561,19 +2871,20 @@
   });
   var MenuOption$1 = withCtx(MenuOption);
 
+  var _excluded$4 = ["style", "children", "layouts"];
   /**
   Simplified version of ContextMenu without animation.
   */
 
-  var NotAnimatedContextMenu =
-  /*#__PURE__*/
-  function (_React$Component) {
+  var NotAnimatedContextMenu = /*#__PURE__*/function (_React$Component) {
     _inherits(NotAnimatedContextMenu, _React$Component);
+
+    var _super = _createSuper(NotAnimatedContextMenu);
 
     function NotAnimatedContextMenu() {
       _classCallCheck(this, NotAnimatedContextMenu);
 
-      return _possibleConstructorReturn(this, _getPrototypeOf(NotAnimatedContextMenu).apply(this, arguments));
+      return _super.apply(this, arguments);
     }
 
     _createClass(NotAnimatedContextMenu, [{
@@ -2583,10 +2894,10 @@
             style = _this$props.style,
             children = _this$props.children,
             layouts = _this$props.layouts,
-            other = _objectWithoutProperties(_this$props, ["style", "children", "layouts"]);
+            other = _objectWithoutProperties(_this$props, _excluded$4);
 
         var position = computePosition$1(layouts, reactNative.I18nManager.isRTL);
-        return React__default.createElement(reactNative.View, _extends({}, other, {
+        return /*#__PURE__*/React__default.createElement(reactNative.View, _extends({}, other, {
           style: [styles$4.options, style, position]
         }), children);
       }
@@ -2595,6 +2906,7 @@
     return NotAnimatedContextMenu;
   }(React__default.Component);
 
+  var _excluded$5 = ["style", "children", "layouts"];
   var computePosition$2 = function computePosition(layouts) {
     var windowLayout = layouts.windowLayout,
         optionsLayout = layouts.optionsLayout;
@@ -2613,17 +2925,17 @@
     return position;
   };
 
-  var SlideInMenu =
-  /*#__PURE__*/
-  function (_React$Component) {
+  var SlideInMenu = /*#__PURE__*/function (_React$Component) {
     _inherits(SlideInMenu, _React$Component);
+
+    var _super = _createSuper(SlideInMenu);
 
     function SlideInMenu(props) {
       var _this;
 
       _classCallCheck(this, SlideInMenu);
 
-      _this = _possibleConstructorReturn(this, _getPrototypeOf(SlideInMenu).call(this, props));
+      _this = _super.call(this, props);
       _this.state = {
         slide: new reactNative.Animated.Value(0)
       };
@@ -2661,7 +2973,7 @@
             style = _this$props.style,
             children = _this$props.children,
             layouts = _this$props.layouts,
-            other = _objectWithoutProperties(_this$props, ["style", "children", "layouts"]);
+            other = _objectWithoutProperties(_this$props, _excluded$5);
 
         var oHeight = layouts.optionsLayout.height;
         var animation = {
@@ -2673,7 +2985,7 @@
           }]
         };
         var position = computePosition$2(layouts);
-        return React__default.createElement(reactNative.Animated.View, _extends({
+        return /*#__PURE__*/React__default.createElement(reactNative.Animated.View, _extends({
           style: [styles$5.options, style, animation, position]
         }, other), children);
       }
@@ -2698,6 +3010,7 @@
     }
   });
 
+  var _excluded$6 = ["style", "children", "layouts", "anchorStyle", "preferredPlacement", "openAnimationDuration", "closeAnimationDuration", "placement"];
   var popoverPadding = 7;
   var anchorSize = 15;
   var anchorHyp = Math.sqrt(anchorSize * anchorSize + anchorSize * anchorSize);
@@ -2936,17 +3249,17 @@
     return propertiesByPlacement[bestPlacement](hOptions, vOptions, isRTL);
   }
 
-  var Popover =
-  /*#__PURE__*/
-  function (_React$Component) {
+  var Popover = /*#__PURE__*/function (_React$Component) {
     _inherits(Popover, _React$Component);
+
+    var _super = _createSuper(Popover);
 
     function Popover(props) {
       var _this;
 
       _classCallCheck(this, Popover);
 
-      _this = _possibleConstructorReturn(this, _getPrototypeOf(Popover).call(this, props));
+      _this = _super.call(this, props);
       _this.state = {
         scaleAnim: new reactNative.Animated.Value(0.1)
       };
@@ -2989,7 +3302,7 @@
             openAnimationDuration = _this$props.openAnimationDuration,
             closeAnimationDuration = _this$props.closeAnimationDuration,
             userPlacement = _this$props.placement,
-            other = _objectWithoutProperties(_this$props, ["style", "children", "layouts", "anchorStyle", "preferredPlacement", "openAnimationDuration", "closeAnimationDuration", "placement"]);
+            other = _objectWithoutProperties(_this$props, _excluded$6);
 
         var isRTL = reactNative.I18nManager.isRTL;
         var animation = {
@@ -3004,19 +3317,19 @@
             placement = _computeProperties.placement,
             offset = _computeProperties.offset;
 
-        return React__default.createElement(reactNative.Animated.View, {
+        return /*#__PURE__*/React__default.createElement(reactNative.Animated.View, {
           style: [styles$6.animated, animation, position, getContainerStyle({
             placement: placement,
             isRTL: isRTL
           })],
           pointerEvents: "box-none"
-        }, React__default.createElement(reactNative.View, {
+        }, /*#__PURE__*/React__default.createElement(reactNative.View, {
           style: [styles$6.anchor, dynamicAnchorStyle({
             placement: placement,
             offset: offset,
             isRTL: isRTL
           }), anchorStyle]
-        }), React__default.createElement(reactNative.View, _extends({}, other, {
+        }), /*#__PURE__*/React__default.createElement(reactNative.View, _extends({}, other, {
           style: [styles$6.options, style]
         }), children));
       }
