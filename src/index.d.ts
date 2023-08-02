@@ -103,7 +103,6 @@ declare module "react-native-popup-menu" {
     optionsContainerStyle?: StyleProp<ViewStyle>;
     renderOptionsContainer?: Function;
     customStyles?: MenuOptionsCustomStyle;
-    testID?: string;
     children?: React.ReactNode;
   }
 
@@ -129,6 +128,7 @@ declare module "react-native-popup-menu" {
 
     onSelect?(): any;
     children?: React.ReactNode;
+    testID?: string;
   }
 
   interface MenuOptionCustomStyle {
