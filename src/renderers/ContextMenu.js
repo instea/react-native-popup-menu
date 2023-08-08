@@ -1,5 +1,5 @@
 import React from 'react';
-import { I18nManager, Animated, Easing, StyleSheet, PixelRatio } from 'react-native';
+import { I18nManager, Animated, Easing, StyleSheet, View } from 'react-native';
 import { OPEN_ANIM_DURATION, CLOSE_ANIM_DURATION, USE_NATIVE_DRIVER } from '../constants';
 
 const axisPosition = (oDim, wDim, tPos, tDim) => {
@@ -106,8 +106,10 @@ export default class ContextMenu extends React.Component {
     };
     const position = computePosition(layouts, I18nManager.isRTL);
     return (
-      <Animated.View {...other} style={[styles.options, style, animation, position]}>
-        {children}
+      <Animated.View style={[styles.options, animation, position]}>
+        <View {...other} style={[styles.options, style]}>
+          {children}
+        </View>
       </Animated.View>
     );
   }
@@ -123,7 +125,6 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     borderRadius: 2,
     backgroundColor: 'white',
-    width: PixelRatio.roundToNearestPixel(200),
 
     // Shadow only works on iOS.
     shadowColor: 'black',
