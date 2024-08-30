@@ -24,7 +24,7 @@ declare module "react-native-popup-menu" {
   }
 
   interface MenuProviderStatic extends React.ComponentClass<MenuProviderProps> {
-    // FIXME: these methods does not get included in ref, unlike WebView in react-native.d.ts
+    // FIXME: these methods do not get included in ref, unlike WebView in react-native.d.ts
     open(name: string): Promise<void>;
 
     toggleMenu(name: string): Promise<void>;
@@ -41,8 +41,24 @@ declare module "react-native-popup-menu" {
   interface MenuProps {
     name?: string;
     opened?: boolean;
+    /**
+     * Possible menu renderer options:
+     * - `renderer.ContextMenu`
+     * - `renderer.NotAnimatedContextMenu`
+     * - `renderer.SlideInMenu`
+     * - `renderer.Popover`
+     */
     renderer?: Function;
-    rendererProps?: any;
+    /**
+     * Optional customization if you passed `renderer.Popover` to the `renderer` prop
+     */
+    rendererProps?: {
+      placement?: "top" | "right" | "bottom" | "left" | "auto";
+      preferredPlacement?: "top" | "right" | "bottom" | "left";
+      anchorStyle?: StyleProp<ViewStyle>;
+      openAnimationDuration?: number;
+      closeAnimationDuration?: number;
+    };
     style?: StyleProp<ViewStyle>;
 
     onSelect?(optionValue: any): any;
@@ -88,7 +104,7 @@ declare module "react-native-popup-menu" {
     triggerOnLongPress?: boolean;
 
     onPress?(): void;
-    onAlternativeAction? (): void;
+    onAlternativeAction?(): void;
     children?: React.ReactNode;
     style?: StyleProp<ViewStyle>;
   }
@@ -199,7 +215,7 @@ declare module "react-native-popup-menu" {
     toggleMenu: (name: string) => Promise<void>;
     isMenuOpen: () => boolean;
   }
-  
+
   export interface MenuContext {
     // This part shouldn't be exported to the user so it's commented out
     // menuRegistry: MenuRegistry;
