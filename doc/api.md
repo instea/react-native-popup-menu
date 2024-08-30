@@ -122,7 +122,7 @@ To style `<MenuTrigger />` component you can pass `customStyles` object prop wit
 |`triggerOuterWrapper`|`Style`|Style of outer `View` component|
 |`triggerWrapper`|`Style`|Style of inner `View` component (can be overriden by `style` prop)|
 |`triggerText`|`Style`|Style of `Text` component (used when `text` shorthand option is defined)|
-|`TriggerTouchableComponent`|`Component`|Touchable component of trigger. Default value is `TouchableHighlight` for iOS and `TouchableNativeFeedvack` for Android|
+|`TriggerTouchableComponent`|`Component`|Touchable component of trigger. Default value is `TouchableHighlight` for iOS and `TouchableNativeFeedback` for Android|
 |`triggerTouchable`|`Object`|Properties passed to the touchable component (e.g. `activeOpacity`, `underlayColor` for `TouchableHighlight`)|
 
 **Note:** `Style` type is any valid RN style parameter.
@@ -152,7 +152,7 @@ To style `<MenuOptions />` and it's `<MenuOption />` components you can pass `cu
 |`optionsContainer`|`Style`|Style passed to the menu renderer (e.g. `Animated.View`)|
 |`optionWrapper`|`Style`|Style of `View` component wrapping single option|
 |`optionText`|`Style`|Style of `Text` component (when `text` shorthand option is defined)|
-|`OptionTouchableComponent`|`Component`|Touchable component of option. Default value is `TouchableHighlight` for iOS and `TouchableNativeFeedvack` for Android|
+|`OptionTouchableComponent`|`Component`|Touchable component of option. Default value is `TouchableHighlight` for iOS and `TouchableNativeFeedback` for Android|
 |`optionTouchable`|`Object`|Properties passed to the touchable component (e.g. `activeOpacity`, `underlayColor` for `TouchableHighlight`)|
 
 **Note:** `optionWrapper`, `optionTouchable` and `optionText` styles of particular menu option can be overriden by `customStyles` prop of `<MenuOption />` component.
@@ -190,7 +190,7 @@ To style `<MenuOption />` component you can pass `customStyles` object prop with
 |---|---|---|
 |`optionWrapper`|`Style`|Style of wrapping `View` component.|
 |`optionText`|`Style`|Style of `Text` component (when `text` shorthand option is defined)|
-|`OptionTouchableComponent`|`Component`|Touchable component of option. Default value is `TouchableHighlight` for iOS and `TouchableNativeFeedvack` for Android|
+|`OptionTouchableComponent`|`Component`|Touchable component of option. Default value is `TouchableHighlight` for iOS and `TouchableNativeFeedback` for Android|
 |`optionTouchable`|`Object`|Properties passed to the touchable component (e.g. `activeOpacity`, `underlayColor` for `TouchableHighlight`)|
 
 **Note:** `Style` type is any valid RN style parameter.
