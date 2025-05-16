@@ -1862,7 +1862,7 @@
           return _this6._onOptionsLayout(e, instance.getName(), isOutside);
         };
 
-        var style = [optionsContainerStyle, customStyles.optionsContainer];
+        var style = [optionsContainerStyle, customStyles ? customStyles.optionsContainer : {}];
         var layouts = {
           windowLayout: windowLayout,
           triggerLayout: triggerLayout,
