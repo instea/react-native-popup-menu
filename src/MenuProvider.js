@@ -62,7 +62,7 @@ export default class MenuProvider extends Component {
   }
 
   componentDidMount() {
-    const { customStyles, skipInstanceCheck } = this.props;
+    const { customStyles = {}, skipInstanceCheck } = this.props;
     if (customStyles.menuContextWrapper) {
       console.warn('menuContextWrapper custom style is deprecated and it might be removed in future releases, use menuProviderWrapper instead.');
     }
@@ -208,7 +208,7 @@ export default class MenuProvider extends Component {
   }
 
   render() {
-    const { style, customStyles } = this.props;
+    const { style, customStyles = {} } = this.props;
     debug('render menu', this.isMenuOpen(), this._ownLayout);
     return (
       <PopupMenuContext.Provider value={this.menuCtx}>
@@ -296,7 +296,7 @@ export default class MenuProvider extends Component {
     const { renderer, rendererProps } = instance.props;
     const windowLayout = this._ownLayout;
     const safeAreaLayout = this._safeAreaLayout;
-    const { optionsContainerStyle, renderOptionsContainer, customStyles } = options.props;
+    const { optionsContainerStyle, renderOptionsContainer, customStyles = {} } = options.props;
     const optionsRenderer = renderOptionsContainer || defaultOptionsContainerRenderer;
     const isOutside = !triggerLayout || !optionsLayout;
     const onLayout = e => this._onOptionsLayout(e, instance.getName(), isOutside);
@@ -348,12 +348,6 @@ MenuProvider.propTypes = {
   backHandler: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
   skipInstanceCheck: PropTypes.bool,
 }
-
-MenuProvider.defaultProps = {
-  customStyles: {},
-  backHandler: false,
-  skipInstanceCheck: false,
-};
 
 const styles = StyleSheet.create({
   flex1: {

@@ -14,7 +14,7 @@ export class MenuTrigger extends Component {
   }
 
   render() {
-    const { disabled, onRef, text, children, style, customStyles, menuName, 
+    const { disabled, onRef, text, children, style, customStyles = {}, menuName, 
       triggerOnLongPress, onAlternativeAction, testID, ...other } = this.props;
     const onPress = () => !disabled && this._onPress();
     const { Touchable, defaultTouchableProps } = makeTouchable(customStyles.TriggerTouchableComponent);
@@ -45,12 +45,6 @@ MenuTrigger.propTypes = {
   customStyles: PropTypes.object,
   triggerOnLongPress: PropTypes.bool,
   testID: PropTypes.string,
-};
-
-MenuTrigger.defaultProps = {
-  disabled: false,
-  customStyles: {},
-  testID: undefined,
 };
 
 export default withCtx(MenuTrigger)

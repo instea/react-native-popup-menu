@@ -81,13 +81,6 @@ MenuOption.propTypes = {
   testID: PropTypes.string,
 };
 
-MenuOption.defaultProps = {
-  disabled: false,
-  disableTouchable: false,
-  customStyles: {},
-  testID: undefined,
-};
-
 const defaultStyles = StyleSheet.create({
   option: {
     padding: 5,
