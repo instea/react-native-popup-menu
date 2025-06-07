@@ -8,6 +8,7 @@ import MenuPlaceholder from './MenuPlaceholder';
 import { measure, isClassComponent } from './helpers';
 import { debug } from './logger.js';
 import MenuOutside from './renderers/MenuOutside';
+import { menuConfig } from './config.js';
 
 const defaultOptionsContainerRenderer = options => options;
 const layoutsEqual = (a, b) => (
@@ -171,10 +172,10 @@ export default class MenuProvider extends Component {
     if (prev.name !== next.name) {
       if (prev !== NULL && !prev.instance.isOpen()) {
         beforeSetState = () => this._beforeClose(prev)
-          .then(() => prev.instance.props.onClose());
+          .then(() => prev.instance.props.onClose && prev.instance.props.onClose());
       }
       if (next !== NULL) {
-        next.instance.props.onOpen();
+        next.instance.props.onOpen && next.instance.props.onOpen();
         afterSetState = () => this._initOpen(next);
       }
     }
@@ -262,7 +263,7 @@ export default class MenuProvider extends Component {
     debug('on backdrop press');
     const menu = this._getOpenedMenu();
     if (menu) {
-      menu.instance.props.onBackdropPress();
+      menu.instance.props.onBackdropPress && menu.instance.props.onBackdropPress();
     }
     this.closeMenu();
   }
@@ -293,7 +294,7 @@ export default class MenuProvider extends Component {
   _makeOptions() {
     const { instance, triggerLayout, optionsLayout } = this._getOpenedMenu();
     const options = instance._getOptions();
-    const { renderer, rendererProps } = instance.props;
+    const { renderer = menuConfig.defRenderer, rendererProps = menuConfig.defRendererProps } = instance.props;
     const windowLayout = this._ownLayout;
     const safeAreaLayout = this._safeAreaLayout;
     const { optionsContainerStyle, renderOptionsContainer, customStyles = {} } = options.props;

@@ -5,6 +5,7 @@ import { debug } from './logger';
 import { makeTouchable } from './helpers';
 import { withCtx } from './MenuProvider';
 
+const noop = () => {};
 
 export class MenuOption extends Component {
 
@@ -20,7 +21,7 @@ export class MenuOption extends Component {
 
   _getMenusOnSelect() {
     const menu = this.props.ctx.menuActions._getOpenedMenu();
-    return menu.instance.props.onSelect;
+    return menu.instance.props.onSelect || noop;
   }
 
   _getCustomStyles() {
