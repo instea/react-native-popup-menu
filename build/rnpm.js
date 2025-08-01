@@ -2188,13 +2188,15 @@
             text = _this$props.text,
             children = _this$props.children,
             style = _this$props.style,
-            _this$props$customSty = _this$props.customStyles,
-            customStyles = _this$props$customSty === void 0 ? {} : _this$props$customSty,
+            customStyles = _this$props.customStyles,
             menuName = _this$props.menuName,
             triggerOnLongPress = _this$props.triggerOnLongPress,
             onAlternativeAction = _this$props.onAlternativeAction,
             testID = _this$props.testID,
-            other = _objectWithoutProperties(_this$props, ["disabled", "onRef", "text", "children", "style", "customStyles", "menuName", "triggerOnLongPress", "onAlternativeAction", "testID"]);
+            accessible = _this$props.accessible,
+            accessibilityRole = _this$props.accessibilityRole,
+            accessibilityLabel = _this$props.accessibilityLabel,
+            other = _objectWithoutProperties(_this$props, ["disabled", "onRef", "text", "children", "style", "customStyles", "menuName", "triggerOnLongPress", "onAlternativeAction", "testID", "accessible", "accessibilityRole", "accessibilityLabel"]);
 
         var onPress = function onPress() {
           return !disabled && _this._onPress();
@@ -2212,7 +2214,11 @@
           testID: testID,
           onPress: triggerOnLongPress ? onAlternativeAction : onPress,
           onLongPress: triggerOnLongPress ? onPress : onAlternativeAction
-        }, defaultTouchableProps, customStyles.triggerTouchable), React__default.createElement(reactNative.View, _extends({}, other, {
+        }, defaultTouchableProps, {
+          accessible: accessible,
+          accessibilityRole: accessibilityRole,
+          accessibilityLabel: accessibilityLabel
+        }, customStyles.triggerTouchable), React__default.createElement(reactNative.View, _extends({}, other, {
           style: [customStyles.triggerWrapper, style]
         }), text ? React__default.createElement(reactNative.Text, {
           style: customStyles.triggerText
@@ -2229,7 +2235,10 @@
     onAlternativeAction: propTypes.func,
     customStyles: propTypes.object,
     triggerOnLongPress: propTypes.bool,
-    testID: propTypes.string
+    testID: propTypes.string,
+    accessible: propTypes.bool,
+    accessibilityRole: propTypes.string,
+    accessibilityLabel: propTypes.string
   };
   var MenuTrigger$1 = withCtx(MenuTrigger);
 
@@ -2486,7 +2495,8 @@
             disableTouchable = _this$props.disableTouchable,
             children = _this$props.children,
             style = _this$props.style,
-            testID = _this$props.testID;
+            testID = _this$props.testID,
+            accessibilityProps = _objectWithoutProperties(_this$props, ["text", "disabled", "disableTouchable", "children", "style", "testID"]);
 
         var customStyles = this._getCustomStyles();
 
@@ -2521,7 +2531,7 @@
             onPress: function onPress() {
               return _this._onSelect();
             }
-          }, defaultTouchableProps, customStyles.optionTouchable), rendered);
+          }, defaultTouchableProps, accessibilityProps, customStyles.optionTouchable), rendered);
         }
       }
     }]);
@@ -2535,7 +2545,10 @@
     text: propTypes.string,
     value: propTypes.any,
     customStyles: propTypes.object,
-    testID: propTypes.string
+    testID: propTypes.string,
+    accessible: propTypes.bool,
+    accessibilityRole: propTypes.string,
+    accessibilityLabel: propTypes.string
   };
   var defaultStyles = reactNative.StyleSheet.create({
     option: {
