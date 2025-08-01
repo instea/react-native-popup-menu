@@ -14,7 +14,7 @@ export class MenuTrigger extends Component {
   }
 
   render() {
-    const { disabled, onRef, text, children, style, customStyles, menuName,
+    const { disabled, onRef, text, children, style, customStyles = {}, menuName,
       triggerOnLongPress, onAlternativeAction, testID, accessible, accessibilityRole, accessibilityLabel, ...other } = this.props;
 
     const onPress = () => !disabled && this._onPress();
