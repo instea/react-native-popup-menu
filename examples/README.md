@@ -25,26 +25,38 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-## Get a fresh project
+## Publish update
 
-When you're ready, run:
+### Prerequisites
 
-```bash
-npm run reset-project
+```
+# expo
+npm install -g eas-cli
+eas login
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Building
 
-## Learn more
+Update the version in `app.json`
 
-To learn more about developing your project with Expo, look at the following resources:
+```
+{
+  "expo": {
+    "version": "1.1.0",
+  }
+}
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```
+eas build --platform android --profile production
+```
 
-## Join the community
+You might need to configure project on your machine (use/download existing keystore)
 
-Join our community of developers creating universal apps.
+Then submit the application
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```
+eas submit --platform android
+```
+
+Then you can go to the google play console and publish the release.

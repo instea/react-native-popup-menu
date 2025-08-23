@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "react-native-popup-menu-examples",
-    "slug": "react-native-popup-menu-examples",
-    "version": "1.0.0",
+    "name": "RNPopupMenuExamples",
+    "slug": "RNPopupMenuExamples",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "reactnativepopupmenuexamples",
@@ -16,6 +16,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "package": "sk.instea.rnpopupmenuexamples",
       "edgeToEdgeEnabled": true
     },
     "web": {
@@ -37,6 +38,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "bb486290-87aa-4799-84e2-fe1d0e93c74d"
+      }
     }
   }
 }
