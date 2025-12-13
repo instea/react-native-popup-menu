@@ -7,19 +7,19 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 1. Install dependencies
 
    ```bash
-   yarn install
+   npm install
    ```
 
 2. Start the app
 
    ```bash
-   yarn expo start
+   npx expo start
    ```
 
   When using WSL, you might need to use tunnel
 
    ```bash
-  yarn expo start --tunnel
+  npx expo start --tunnel
    ```
 
 In the output, you'll find options to open the app in a
