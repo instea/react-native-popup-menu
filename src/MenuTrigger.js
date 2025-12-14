@@ -14,8 +14,9 @@ export class MenuTrigger extends Component {
   }
 
   render() {
-    const { disabled, onRef, text, children, style, customStyles = {}, menuName, 
-      triggerOnLongPress, onAlternativeAction, testID, ...other } = this.props;
+    const { disabled, onRef, text, children, style, customStyles = {}, menuName,
+      triggerOnLongPress, onAlternativeAction, testID, accessible, accessibilityRole, accessibilityLabel, ...other } = this.props;
+
     const onPress = () => !disabled && this._onPress();
     const { Touchable, defaultTouchableProps } = makeTouchable(customStyles.TriggerTouchableComponent);
     return (
@@ -25,6 +26,9 @@ export class MenuTrigger extends Component {
           onPress={triggerOnLongPress ? onAlternativeAction : onPress}
           onLongPress={triggerOnLongPress ? onPress : onAlternativeAction}
           {...defaultTouchableProps}
+          accessible={accessible}
+          accessibilityRole={accessibilityRole}
+          accessibilityLabel={accessibilityLabel}
           {...customStyles.triggerTouchable}
         >
           <View {...other} style={[customStyles.triggerWrapper, style]}>
@@ -45,6 +49,9 @@ MenuTrigger.propTypes = {
   customStyles: PropTypes.object,
   triggerOnLongPress: PropTypes.bool,
   testID: PropTypes.string,
+  accessible: PropTypes.bool,
+  accessibilityRole: PropTypes.string,
+  accessibilityLabel: PropTypes.string,
 };
 
 export default withCtx(MenuTrigger)
