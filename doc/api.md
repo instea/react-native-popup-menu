@@ -25,6 +25,7 @@ The only known exception is when you use [Modal](https://facebook.github.io/reac
 |`customStyles`|`Object`|Optional||Object defining wrapper, touchable and text styles|
 |`backHandler`|`boolean\|Function`|Optional|false|Whether to close the menu when the back button is pressed or custom back button handler if a function is passed (RN >= 0.44 is required)|
 |`skipInstanceCheck`|`boolean`|Optional|false|Normally your application should have only one menu provider (with exception as discussed above). If you really need more instances, set `skipInstanceCheck` to `true` to disable the check (and following warning message)|
+|`SafeAreaComponent`|`Component`|Optional|`View`|Component to use for safe area wrapper. Can be set to `SafeAreaView` from React Native to restore the old behavior or any 3rd component like `react-native-safe-area-context`|
 
 ### Custom styles
 
@@ -34,6 +35,7 @@ To style `<MenuProvider />` and backdrop component you can pass `customStyles` o
 |---|---|---|
 |`menuProviderWrapper`|`Style`|Style of wrapping `View` component (formerly `menuContextWrapper`)|
 |`backdrop`|`Style`|Backdrop `View` style|
+|`safeArea`|`Style`|Safe area wrapper style. When not provided, default padding of 30 is applied to top and bottom|
 
 **Note:** `Style` type is any valid RN style parameter.
 **Note:** In addition to these styles we add also `{flex:1}`. You can disable it by e.g. `style={{flex:0}}`.

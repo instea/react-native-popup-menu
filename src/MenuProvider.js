@@ -1,6 +1,6 @@
 import React, { Component, createContext } from 'react';
 import PropTypes from 'prop-types';
-import { View, BackHandler, SafeAreaView, StyleSheet } from 'react-native';
+import { View, BackHandler, StyleSheet } from 'react-native';
 
 import { withContext } from './with-context';
 import makeMenuRegistry from './menuRegistry';
@@ -210,6 +210,8 @@ export default class MenuProvider extends Component {
 
   render() {
     const { style, customStyles = {} } = this.props;
+    const SafeAreaComponent = this.props.SafeAreaComponent || View;
+    const safeAreaStyles = this._computeSafeAreaStyles();
     debug('render menu', this.isMenuOpen(), this._ownLayout);
     return (
       <PopupMenuContext.Provider value={this.menuCtx}>
@@ -222,8 +224,8 @@ export default class MenuProvider extends Component {
           ]}>
             { this.props.children }
           </View>
-          <SafeAreaView
-            style={styles.safeArea}
+          <SafeAreaComponent
+            style={safeAreaStyles}
             pointerEvents="box-none"
           >
             <View
@@ -236,7 +238,7 @@ export default class MenuProvider extends Component {
               backdropStyles={customStyles.backdrop}
               ref={this._onPlaceholderRef}
               />
-          </SafeAreaView>
+          </SafeAreaComponent>
         </View>
       </PopupMenuContext.Provider>
     );
@@ -342,12 +344,28 @@ export default class MenuProvider extends Component {
     this._notify(true);
   }
 
+  _computeSafeAreaStyles() {
+    const { customStyles = {} } = this.props;
+    const { safeArea: customSafeAreaStyle } = customStyles;
+
+    if (customSafeAreaStyle) {
+      return [styles.safeArea, customSafeAreaStyle];
+    } else {
+      const defaultSafeAreaStyles = {
+        paddingTop: 30,
+        paddingBottom: 30,
+      };
+      return [styles.safeArea, defaultSafeAreaStyles];
+    }
+  }
+
 }
 
 MenuProvider.propTypes = {
   customStyles: PropTypes.object,
   backHandler: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
   skipInstanceCheck: PropTypes.bool,
+  SafeAreaComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 }
 
 const styles = StyleSheet.create({
