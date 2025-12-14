@@ -5,7 +5,7 @@
  */
 declare module "react-native-popup-menu" {
   import * as React from "react";
-  import { StyleProp, ViewStyle, TextStyle } from "react-native";
+  import { StyleProp, ViewStyle, TextStyle, ViewProps } from "react-native";
 
   /**
    * MenuProvider
@@ -90,9 +90,12 @@ declare module "react-native-popup-menu" {
     triggerOnLongPress?: boolean;
 
     onPress?(): void;
-    onAlternativeAction? (): void;
+    onAlternativeAction?(): void;
     children?: React.ReactNode;
     style?: StyleProp<ViewStyle>;
+    accessible?: ViewProps["accessible"];
+    accessibilityRole?: ViewProps["accessibilityRole"];
+    accessibilityLabel?: ViewProps["accessibilityLabel"];
   }
 
   export const MenuTrigger: React.ComponentClass<MenuTriggerProps>;
@@ -130,7 +133,9 @@ declare module "react-native-popup-menu" {
 
     onSelect?(): any;
     children?: React.ReactNode;
-    testID?: string;
+    accessible?: ViewProps["accessible"];
+    accessibilityRole?: ViewProps["accessibilityRole"];
+    accessibilityLabel?: ViewProps["accessibilityLabel"];
   }
 
   interface MenuOptionCustomStyle {
@@ -186,7 +191,10 @@ declare module "react-native-popup-menu" {
         optionsLayout?: OptionsLayoutType;
       }
     ) => void;
-    setOptionsCustomStyles: (name: string, optionsCustomStyles: MenuOptionsCustomStyle) => void;
+    setOptionsCustomStyles: (
+      name: string,
+      optionsCustomStyles: MenuOptionsCustomStyle
+    ) => void;
     getMenu: (name: string) => MenuEntry;
     getAll: () => MenuEntry[];
   }
@@ -201,7 +209,7 @@ declare module "react-native-popup-menu" {
     toggleMenu: (name: string) => Promise<void>;
     isMenuOpen: () => boolean;
   }
-  
+
   export interface MenuContext {
     // This part shouldn't be exported to the user so it's commented out
     // menuRegistry: MenuRegistry;
