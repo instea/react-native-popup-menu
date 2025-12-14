@@ -1958,6 +1958,10 @@
             style = _this$props2.style,
             _this$props2$customSt = _this$props2.customStyles,
             customStyles = _this$props2$customSt === void 0 ? {} : _this$props2$customSt;
+        var SafeAreaComponent = this.props.SafeAreaComponent || reactNative.View;
+
+        var safeAreaStyles = this._computeSafeAreaStyles();
+
         debug('render menu', this.isMenuOpen(), this._ownLayout);
         return React__default.createElement(PopupMenuContext.Provider, {
           value: this.menuCtx
@@ -1966,8 +1970,8 @@
           onLayout: this._onLayout
         }, React__default.createElement(reactNative.View, {
           style: [styles$4.flex1, customStyles.menuContextWrapper, customStyles.menuProviderWrapper, style]
-        }, this.props.children), React__default.createElement(reactNative.SafeAreaView, {
-          style: styles$4.safeArea,
+        }, this.props.children), React__default.createElement(SafeAreaComponent, {
+          style: safeAreaStyles,
           pointerEvents: "box-none"
         }, React__default.createElement(reactNative.View, {
           style: styles$4.flex1,
@@ -2080,6 +2084,23 @@
 
         return React__default.createElement(optionsType, props, optionsRenderer(options));
       }
+    }, {
+      key: "_computeSafeAreaStyles",
+      value: function _computeSafeAreaStyles() {
+        var _this$props$customSty2 = this.props.customStyles,
+            customStyles = _this$props$customSty2 === void 0 ? {} : _this$props$customSty2;
+        var customSafeAreaStyle = customStyles.safeArea;
+
+        if (customSafeAreaStyle) {
+          return [styles$4.safeArea, customSafeAreaStyle];
+        } else {
+          var defaultSafeAreaStyles = {
+            paddingTop: 30,
+            paddingBottom: 30
+          };
+          return [styles$4.safeArea, defaultSafeAreaStyles];
+        }
+      }
     }]);
 
     return MenuProvider;
@@ -2087,7 +2108,8 @@
   MenuProvider.propTypes = {
     customStyles: propTypes.object,
     backHandler: propTypes.oneOfType([propTypes.bool, propTypes.func]),
-    skipInstanceCheck: propTypes.bool
+    skipInstanceCheck: propTypes.bool,
+    SafeAreaComponent: propTypes.oneOfType([propTypes.func, propTypes.object])
   };
   var styles$4 = reactNative.StyleSheet.create({
     flex1: {
