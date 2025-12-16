@@ -84,9 +84,18 @@ Contributions are welcome! Just open an issues with any idea or pull-request if 
 ## React Native Compatibility
 We keep compatibility on best effort basis.
 
+First table describes what minimal version of RN (or React) is needed to use version of popup menu.
+
 | popup-menu version | min RN (React) version |
 | ------------------ | -------------- |
 | 0.13               | 0.55 (16.3.1)  |
 | 0.9                | 0.40           |
 | 0.8                | 0.38           |
 | 0.7                | 0.18           |
+
+Second is other way round - which minimal version of popup-menu is required to work well with RN (or React version)
+
+| RN (React) version | popup-menu version |
+| ------------------ | -------------- |
+| 0.81+ (SafeAreaView depecation, see [#301](https://github.com/instea/react-native-popup-menu/issues/301)) | 0.19   |
+| 0.78 (19.0)        | 0.18           |
