@@ -17,9 +17,11 @@ declare module "react-native-popup-menu" {
     customStyles?: {
       menuProviderWrapper?: StyleProp<ViewStyle>;
       backdrop?: StyleProp<ViewStyle>;
+      safeArea?: StyleProp<ViewStyle>;
     };
     backHandler?: boolean | Function;
     skipInstanceCheck?: boolean;
+    SafeAreaComponent?: React.ComponentType<any>;
     children: React.ReactNode;
   }
 
