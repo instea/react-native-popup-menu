@@ -78,7 +78,11 @@ export default class MenuProvider extends Component {
   componentWillUnmount() {
     debug('unmounting menu provider')
     if (this._backHandlerSubscription != null) {
-      this._backHandlerSubscription.remove();
+      if (this._backHandlerSubscription.remove) {
+        this._backHandlerSubscription.remove();
+      } else if (BackHandler && BackHandler.removeEventListener) {
+        BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
+      }
       this._backHandlerSubscription = null;
     }
     const { skipInstanceCheck } = this.props;
