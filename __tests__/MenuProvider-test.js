@@ -13,20 +13,21 @@ jest.dontMock('../src/menuRegistry');
 
 jest.mock('../src/helpers', () => ({
   deprecatedComponent: jest.fn(() => jest.fn()),
-  measure: () => ({
+  measure: jest.fn(() => ({
     then: cb => cb({
       x: 0,
       y: 0,
       width: 100,
       height: 50,
     }),
-  }),
+  })),
   lo: x => x,
   isClassComponent: () => false,
   iterator2array: it => [...it],
 }));
 
 const {default: MenuProvider, PopupMenuContext} = require('../src/MenuProvider');
+const { measure } = require('../src/helpers');
 
 describe('MenuProvider', () => {
 
@@ -189,6 +190,18 @@ describe('MenuProvider', () => {
           expect(menuActions.isMenuOpen()).toEqual(true);
         });
       });
+    });
+  });
+
+  it('should not measure the trigger if it has been unmounted', () => {
+    const { output: initOutput, instance } = renderProvider();
+    const { menuRegistry, menuActions } = instance.getChildContext();
+    initOutput.props.onLayout(defaultLayout);
+    menu1._getTrigger = () => null;
+    menuRegistry.subscribe(menu1);
+    measure.mockClear();
+    return menuActions.openMenu('menu1').then(() => {
+      expect(measure).not.toHaveBeenCalled();
     });
   });
 
