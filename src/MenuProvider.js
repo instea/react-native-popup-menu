@@ -277,6 +277,11 @@ export default class MenuProvider extends Component {
   _initOpen(menu) {
     debug('opening', menu.name);
     const trigger = menu.instance._getTrigger();
+    if (!trigger) {
+      // the trigger unmounted between the open and its setState callback
+      debug('trigger is unmounted, skipping open', menu.name);
+      return;
+    }
     measure(trigger).then(triggerLayout => {
       debug('got trigger measurements', triggerLayout);
       this._menuRegistry.updateLayoutInfo(menu.name, { triggerLayout });
@@ -324,6 +329,10 @@ export default class MenuProvider extends Component {
     }
     const { instance } = this._getOpenedMenu();
     const trigger = instance._getTrigger();
+    if (!trigger) {
+      debug('trigger is unmounted, skipping measure after context layout change');
+      return;
+    }
     measure(trigger).then(triggerLayout => {
       debug('got trigger measurements after context layout change', triggerLayout);
       this._menuRegistry.updateLayoutInfo(instance.getName(), { triggerLayout });
