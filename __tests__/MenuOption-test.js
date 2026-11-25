@@ -38,7 +38,8 @@ describe('MenuOption', () => {
       <MenuOption />,
       makeMockContext()
     );
-    expect(instance.props.disabled).toBe(false);
+    // react deprecated default props -> disabled = undefined
+    expect(instance.props.disabled).toBe(undefined);
   });
 
   it('should trigger on select event with value', () => {

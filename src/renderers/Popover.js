@@ -233,10 +233,10 @@ export default class Popover extends React.Component {
       children,
       layouts,
       anchorStyle,
-      preferredPlacement,
+      preferredPlacement = 'top',
       openAnimationDuration,
       closeAnimationDuration,
-      placement: userPlacement,
+      placement: userPlacement = 'auto',
       ...other
     } = this.props;
     const isRTL = I18nManager.isRTL;
@@ -286,11 +286,6 @@ Popover.propTypes = {
   preferredPlacement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
   openAnimationDuration: PropTypes.number,
   closeAnimationDuration: PropTypes.number,
-};
-
-Popover.defaultProps = {
-  preferredPlacement: 'top',
-  placement: 'auto',
 };
 
 const getContainerStyle = ({ placement, isRTL }) => ({

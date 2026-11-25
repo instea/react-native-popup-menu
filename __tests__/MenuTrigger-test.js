@@ -38,7 +38,8 @@ describe('MenuTrigger', () => {
     const { instance } = render(
       <MenuTrigger />
     );
-    expect(instance.props.disabled).toBe(false);
+    // react deprecated default props -> disabled = undefined
+    expect(instance.props.disabled).toBe(undefined);
   });
 
   it('should trigger on ref event', () => {

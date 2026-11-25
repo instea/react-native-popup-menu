@@ -1,6 +1,6 @@
 import React, { Component, createContext } from 'react';
 import PropTypes from 'prop-types';
-import { View, BackHandler, SafeAreaView, StyleSheet } from 'react-native';
+import { View, BackHandler, StyleSheet } from 'react-native';
 
 import { withContext } from './with-context';
 import makeMenuRegistry from './menuRegistry';
@@ -8,6 +8,7 @@ import MenuPlaceholder from './MenuPlaceholder';
 import { measure, isClassComponent } from './helpers';
 import { debug } from './logger.js';
 import MenuOutside from './renderers/MenuOutside';
+import { menuConfig } from './config.js';
 
 const defaultOptionsContainerRenderer = options => options;
 const layoutsEqual = (a, b) => (
@@ -29,7 +30,7 @@ export default class MenuProvider extends Component {
     super(props);
     this._menuRegistry = makeMenuRegistry();
     this._isMenuClosing = false;
-    this._isBackHandlerRegistered = false;
+    this._backHandlerSubscription = null;
     const menuActions = {
       openMenu: name => this.openMenu(name),
       closeMenu: () => this.closeMenu(),
@@ -62,7 +63,7 @@ export default class MenuProvider extends Component {
   }
 
   componentDidMount() {
-    const { customStyles, skipInstanceCheck } = this.props;
+    const { customStyles = {}, skipInstanceCheck } = this.props;
     if (customStyles.menuContextWrapper) {
       console.warn('menuContextWrapper custom style is deprecated and it might be removed in future releases, use menuProviderWrapper instead.');
     }
@@ -76,8 +77,9 @@ export default class MenuProvider extends Component {
 
   componentWillUnmount() {
     debug('unmounting menu provider')
-    if (this._isBackHandlerRegistered) {
-      BackHandler.removeEventListener('hardwareBackPress', this._handleBackButton);
+    if (this._backHandlerSubscription != null) {
+      this._backHandlerSubscription.remove();
+      this._backHandlerSubscription = null;
     }
     const { skipInstanceCheck } = this.props;
     if (!skipInstanceCheck) {
@@ -96,11 +98,10 @@ export default class MenuProvider extends Component {
       return Promise.resolve();
     }
     debug('open menu', name);
-    if (!this._isBackHandlerRegistered) {
+    if (this._backHandlerSubscription == null) {
       // delay menu registration until the menu is really opened (and thus this back handler will be called "sooner")
       // too soon registration can cause another back handlers (e.g. react navigation) to be called instead of our back handler
-      BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
-      this._isBackHandlerRegistered = true;
+      this._backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this._handleBackButton);
     }
     menu.instance._setOpened(true);
     return this._notify();
@@ -171,10 +172,10 @@ export default class MenuProvider extends Component {
     if (prev.name !== next.name) {
       if (prev !== NULL && !prev.instance.isOpen()) {
         beforeSetState = () => this._beforeClose(prev)
-          .then(() => prev.instance.props.onClose());
+          .then(() => prev.instance.props.onClose && prev.instance.props.onClose());
       }
       if (next !== NULL) {
-        next.instance.props.onOpen();
+        next.instance.props.onOpen && next.instance.props.onOpen();
         afterSetState = () => this._initOpen(next);
       }
     }
@@ -208,7 +209,9 @@ export default class MenuProvider extends Component {
   }
 
   render() {
-    const { style, customStyles } = this.props;
+    const { style, customStyles = {} } = this.props;
+    const SafeAreaComponent = this.props.SafeAreaComponent || View;
+    const safeAreaStyles = this._computeSafeAreaStyles();
     debug('render menu', this.isMenuOpen(), this._ownLayout);
     return (
       <PopupMenuContext.Provider value={this.menuCtx}>
@@ -221,8 +224,8 @@ export default class MenuProvider extends Component {
           ]}>
             { this.props.children }
           </View>
-          <SafeAreaView
-            style={styles.safeArea}
+          <SafeAreaComponent
+            style={safeAreaStyles}
             pointerEvents="box-none"
           >
             <View
@@ -235,7 +238,7 @@ export default class MenuProvider extends Component {
               backdropStyles={customStyles.backdrop}
               ref={this._onPlaceholderRef}
               />
-          </SafeAreaView>
+          </SafeAreaComponent>
         </View>
       </PopupMenuContext.Provider>
     );
@@ -262,7 +265,7 @@ export default class MenuProvider extends Component {
     debug('on backdrop press');
     const menu = this._getOpenedMenu();
     if (menu) {
-      menu.instance.props.onBackdropPress();
+      menu.instance.props.onBackdropPress && menu.instance.props.onBackdropPress();
     }
     this.closeMenu();
   }
@@ -293,10 +296,10 @@ export default class MenuProvider extends Component {
   _makeOptions() {
     const { instance, triggerLayout, optionsLayout } = this._getOpenedMenu();
     const options = instance._getOptions();
-    const { renderer, rendererProps } = instance.props;
+    const { renderer = menuConfig.defRenderer, rendererProps = menuConfig.defRendererProps } = instance.props;
     const windowLayout = this._ownLayout;
     const safeAreaLayout = this._safeAreaLayout;
-    const { optionsContainerStyle, renderOptionsContainer, customStyles } = options.props;
+    const { optionsContainerStyle, renderOptionsContainer, customStyles = {} } = options.props;
     const optionsRenderer = renderOptionsContainer || defaultOptionsContainerRenderer;
     const isOutside = !triggerLayout || !optionsLayout;
     const onLayout = e => this._onOptionsLayout(e, instance.getName(), isOutside);
@@ -341,19 +344,29 @@ export default class MenuProvider extends Component {
     this._notify(true);
   }
 
+  _computeSafeAreaStyles() {
+    const { customStyles = {} } = this.props;
+    const { safeArea: customSafeAreaStyle } = customStyles;
+
+    if (customSafeAreaStyle) {
+      return [styles.safeArea, customSafeAreaStyle];
+    } else {
+      const defaultSafeAreaStyles = {
+        paddingTop: 30,
+        paddingBottom: 30,
+      };
+      return [styles.safeArea, defaultSafeAreaStyles];
+    }
+  }
+
 }
 
 MenuProvider.propTypes = {
   customStyles: PropTypes.object,
   backHandler: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
   skipInstanceCheck: PropTypes.bool,
+  SafeAreaComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 }
-
-MenuProvider.defaultProps = {
-  customStyles: {},
-  backHandler: false,
-  skipInstanceCheck: false,
-};
 
 const styles = StyleSheet.create({
   flex1: {

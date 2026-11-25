@@ -6,7 +6,7 @@ import { withCtx } from './MenuProvider';
 export class MenuOptions extends React.Component {
 
   updateCustomStyles(_props) {
-    const { customStyles } = _props
+    const { customStyles = {} } = _props
     const menu = this.props.ctx.menuActions._getOpenedMenu()
     // FIXME react 16.3 workaround for ControlledExample!
     if (!menu) return
@@ -23,7 +23,7 @@ export class MenuOptions extends React.Component {
   }
 
   render() {
-    const { customStyles, style, children } = this.props
+    const { customStyles = {}, style, children } = this.props
     return (
       <View style={[customStyles.optionsWrapper, style]}>
         {children}
@@ -40,10 +40,6 @@ MenuOptions.propTypes = {
     PropTypes.number,
     PropTypes.array,
   ]),
-};
-
-MenuOptions.defaultProps = {
-  customStyles: {},
 };
 
 export default withCtx(MenuOptions);

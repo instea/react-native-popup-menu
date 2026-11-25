@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import MenuOptions from './MenuOptions';
 import MenuTrigger from './MenuTrigger';
-import ContextMenu from './renderers/ContextMenu';
 import { makeName } from './helpers';
 import { debug, CFG } from './logger';
 import { withCtx } from './MenuProvider';
+import { menuConfig } from './config';
 
 const isRegularComponent = c => c.type !== MenuOptions && c.type !== MenuTrigger;
 const isTrigger = c => c.type === MenuTrigger;
@@ -139,14 +139,6 @@ Menu.propTypes = {
   onBackdropPress: PropTypes.func,
 };
 
-Menu.defaultProps = {
-  renderer: ContextMenu,
-  rendererProps: {},
-  onSelect: () => {},
-  onOpen: () => {},
-  onClose: () => {},
-  onBackdropPress: () => {},
-};
 
 const MenuExternal = withCtx(Menu);
 Object.defineProperty(MenuExternal, 'debug', 
@@ -155,9 +147,9 @@ Object.defineProperty(MenuExternal, 'debug',
       set: function(val) { CFG.debug = val }, 
     });
 MenuExternal.setDefaultRenderer = (renderer) => {
-  Menu.defaultProps.renderer = renderer;
+  menuConfig.defRenderer = renderer;
 }
 MenuExternal.setDefaultRendererProps = (rendererProps) => {
-  Menu.defaultProps.rendererProps = rendererProps;
+  menuConfig.defRendererProps = rendererProps;
 }
 export default MenuExternal;

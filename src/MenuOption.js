@@ -5,6 +5,7 @@ import { debug } from './logger';
 import { makeTouchable } from './helpers';
 import { withCtx } from './MenuProvider';
 
+const noop = () => {};
 
 export class MenuOption extends Component {
 
@@ -20,7 +21,7 @@ export class MenuOption extends Component {
 
   _getMenusOnSelect() {
     const menu = this.props.ctx.menuActions._getOpenedMenu();
-    return menu.instance.props.onSelect;
+    return menu.instance.props.onSelect || noop;
   }
 
   _getCustomStyles() {
@@ -34,7 +35,7 @@ export class MenuOption extends Component {
   }
 
   render() {
-    const { text, disabled, disableTouchable, children, style, testID } = this.props;
+    const { text, disabled, disableTouchable, children, style, testID, ...accessibilityProps } = this.props;
     const customStyles = this._getCustomStyles()
     if (text && React.Children.count(children) > 0) {
       console.warn("MenuOption: Please don't use text property together with explicit children. Children are ignored.");
@@ -62,6 +63,7 @@ export class MenuOption extends Component {
           testID={testID}
           onPress={() => this._onSelect()}
           {...defaultTouchableProps}
+          {...accessibilityProps}
           {...customStyles.optionTouchable}
         >
           {rendered}
@@ -79,13 +81,9 @@ MenuOption.propTypes = {
   value: PropTypes.any,
   customStyles: PropTypes.object,
   testID: PropTypes.string,
-};
-
-MenuOption.defaultProps = {
-  disabled: false,
-  disableTouchable: false,
-  customStyles: {},
-  testID: undefined,
+  accessible: PropTypes.bool,
+  accessibilityRole: PropTypes.string,
+  accessibilityLabel: PropTypes.string,
 };
 
 const defaultStyles = StyleSheet.create({
